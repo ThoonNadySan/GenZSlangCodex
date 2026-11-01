@@ -1,5 +1,5 @@
 # GenZ Slang CodeX
-**A Gamified Burmese Slang Game with an Adaptive AI Tutor Agent**
+**A Gamified Burmese Slang Game with an Adaptive AI Tutor Agent** 12345
 
 *1305394 Seminar in Software Engineering · Project Proposal (condensed draft v3, 17/10/2026)*
 
@@ -282,7 +282,12 @@ The frontend records start and end time, score, wrong attempts and the error typ
 
 Image version (from draw.io):
 
+<<<<<<< HEAD
 ![Gen Z Slang CodeX ER Diagram](./ERDIAGRAMgenZ.drawio.png)
+=======
+![ER Diagram](./ERDIAGRAMgenZ.drawio.png)
+
+>>>>>>> origin/main
 
 Mermaid version (renders in VS Code with the Mermaid extension, and on GitHub):
 
