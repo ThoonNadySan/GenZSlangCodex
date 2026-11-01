@@ -1,5 +1,5 @@
 # GenZ Slang CodeX
-**A Gamified Burmese Slang Game with an Adaptive AI Tutor Agent**
+**A Gamified Burmese Slang Game with an Adaptive AI Tutor Agent**  1234567890
 
 *1305394 Seminar in Software Engineering · Project Proposal (condensed draft v3, 17/10/2026)*
 
