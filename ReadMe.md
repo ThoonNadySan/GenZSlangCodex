@@ -122,7 +122,7 @@ The problems above are team assumptions. No learner evidence has been collected 
 
 ---
 
-## 7. Method / Approach
+## 7. Method / Approach HIHI
 
 The game is **rules-first and agent-assisted**. The backend owns everything that must be fair and exact: scoring, the pass mark, rewards, lives and unlocking. The AI agent is used where judgement and personalisation are needed: choosing and creating the next question, judging free-text Castle replies, explaining mistakes, giving hints and recommending review. We do not train models; we wrap Gemini Flash [6] with backend code so it can take real action instead of only chatting.
 
@@ -131,6 +131,9 @@ The game is **rules-first and agent-assisted**. The backend owns everything that
 Six components: the React game, the Agent Controller, the Game Rules module, the Game Tools, the Gemini agent and Supabase. The Agent Controller is the only component that talks to all the others, so the AI never writes the database directly.
 
 Per interaction: the app sends the answer and metrics → the backend applies game rules → the controller builds the prompt and allow-list → Gemini reasons and requests a tool call → the backend validates and executes it, writes to Supabase, returns the result to Gemini → Gemini writes the in-character reply.
+
+![System Architecture](<./System Architecture.drawio (1).png>)
+
 
 ```mermaid
 flowchart TD
@@ -210,6 +213,7 @@ Other elements already in the designs: avatar customization with traditional Bur
 The agent is a **tool-augmented adaptive tutor agent** built on the ReAct pattern [4]: one reason → act → observe loop per player interaction. It uses data as evidence, thinks about what it means for this player, decides what to do next, acts through a tool, and checks the result. Conversation state lives in Supabase, not inside one long agent run; the backend loads progress, the target slang card, lives and hints into the prompt.
 
 
+![Screenshot](<./Screenshot 2026-10-24 120748.png>)
 
 ```mermaid
 flowchart LR
