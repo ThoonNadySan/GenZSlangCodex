@@ -1,5 +1,9 @@
 # GenZ Slang CodeX
+<<<<<<< HEAD
 **A Gamified Burmese Slang Game with an Adaptive AI Tutor Agent**  we are girl power
+=======
+**A Gamified Burmese Slang Game with an Adaptive AI Tutor Agent** 12345
+>>>>>>> 16ee977b66489009b575b81161f37e0df2fe7c4d
 
 *1305394 Seminar in Software Engineering · Project Proposal (condensed draft v3, 17/10/2026)*
 
@@ -161,6 +165,8 @@ flowchart TD
 | Agent brain | Gemini Flash on Google Cloud Vertex AI | Reasons about the player, chooses a tool, writes questions. Vertex AI gives access control, quotas, usage monitoring and logging; Flash keeps latency and cost low. AI Studio is fine for this semester's prompt-only test. |
 | Database and auth | Supabase [8] | Authentication, progress, slang cards, Castle state, avatar, learning-gap data, behavior and agent logs |
 
+![System architecture overview](./System%20Architecture.drawio%20%281%29.png)
+
 ### 7.2 Game flow
 
 Players sign in and choose an avatar, repeat the destination loop six times, then enter the Castle.
@@ -280,8 +286,12 @@ The frontend records start and end time, score, wrong attempts and the error typ
 
 Image version (from draw.io):
 
+<<<<<<< HEAD
+![Gen Z Slang CodeX ER Diagram](./ERDIAGRAMgenZ.drawio.png)
+=======
 ![ER Diagram](./ERDIAGRAMgenZ.drawio.png)
 
+>>>>>>> origin/main
 
 Mermaid version (renders in VS Code with the Mermaid extension, and on GitHub):
 
@@ -527,7 +537,9 @@ This plan covers semester 1 only (course weeks 10–15): research, design and cl
 - Figure 2: game flow (Section 7.2)
 - Figure 3: ER diagram (Section 7.5)
 
-UI screen designs (landscape): Avatar selection, World Map, Destination 1 introduction, Assembly challenge, Collection Book, Castle chat, Certificate, Settings. *(Add the screenshots to an `images/` folder and link them here, e.g. `![World Map](./images/world-map.png)`.)*
+UI screen designs (landscape): Avatar selection, World Map, Destination 1 introduction, Assembly challenge, Collection Book, Castle chat, Certificate, Settings.
+
+![Sample UI screen design](./Screenshot%202026-10-24%20120748.png)
 
 ## Appendix C: Glossary
 
