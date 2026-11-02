@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Code2, Play } from 'lucide-react'
+import { Code2, Play, X } from 'lucide-react'
 import { useGame } from '../context/GameContext'
 import { Button, Modal } from './ui'
 
@@ -7,6 +7,7 @@ export default function WelcomeScreen() {
   const { setActiveScreen, modal, setModal, player, setPlayer } = useGame()
   const [authMode, setAuthMode] = useState('register')
   const [avatar, setAvatar] = useState(player.avatar)
+  const [showHowToPlay, setShowHowToPlay] = useState(false)
   const avatars = ['🧑🏽‍🚀', '👩🏽‍🎤', '🧑🏾‍🎨', '👩🏾‍💻']
 
   const start = () => {
@@ -20,7 +21,7 @@ export default function WelcomeScreen() {
         <header className="welcome-toolbar">
           <h1>GenZ Slang Codex <span aria-hidden="true">·</span> World map</h1>
           <div className="welcome-actions">
-            <button type="button" aria-label="View code" title="View code">
+            <button type="button" className="is-active" aria-label="View code" title="View code">
               <Code2 size={24} strokeWidth={2.2} />
             </button>
             <button type="button" aria-label="Start your journey" title="Start your journey" onClick={() => setModal('avatar')}>
@@ -37,8 +38,32 @@ export default function WelcomeScreen() {
               <span>Slang</span> <strong>Codex</strong>
             </span>
           </div>
+          <img className="welcome-monkey" src="/Monkey%20explorer.png" alt="" aria-hidden="true" />
+          <div className="welcome-buttons">
+            <button type="button" className="welcome-primary-button" onClick={() => setModal('avatar')}>
+              START ADVENTURE
+            </button>
+            <button type="button" className="welcome-secondary-button" onClick={() => setShowHowToPlay(true)}>
+              HOW TO PLAY
+            </button>
+          </div>
         </div>
       </section>
+
+      {showHowToPlay && (
+        <div className="welcome-help-backdrop" role="dialog" aria-modal="true" aria-labelledby="how-to-play-title">
+          <div className="welcome-help">
+            <button type="button" className="welcome-help-close" aria-label="Close how to play" onClick={() => setShowHowToPlay(false)}>
+              <X size={18} />
+            </button>
+            <h2 id="how-to-play-title">How to play</h2>
+            <p>Choose your explorer, visit each destination, and learn Burmese slang through short challenges.</p>
+            <button type="button" className="welcome-primary-button" onClick={() => { setShowHowToPlay(false); setModal('avatar') }}>
+              START ADVENTURE
+            </button>
+          </div>
+        </div>
+      )}
 
       {modal === 'avatar' && (
         <Modal title="Choose your explorer" onClose={() => setModal(null)}>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,15 +19,32 @@ button { cursor: pointer; }
 .welcome-toolbar h1 { margin: 0; font-size: clamp(.95rem, 2vw, 1.15rem); font-weight: 700; letter-spacing: .01em; }
 .welcome-toolbar h1 span { color: #7594b4; padding: 0 3px; }
 .welcome-actions { display: flex; align-items: center; gap: 12px; }
-.welcome-actions button { display: grid; place-items: center; padding: 0; border: 0; color: #86baf0; background: transparent; transition: transform .2s ease, color .2s ease; }
+.welcome-actions button { display: grid; place-items: center; width: 25px; height: 25px; padding: 0; border: 0; border-radius: 6px; color: #86baf0; background: transparent; transition: transform .2s ease, color .2s ease, background .2s ease; }
+.welcome-actions button.is-active { color: #fff; background: #5da05e; }
 .welcome-actions button:hover { color: #b6d8ff; transform: scale(1.1); }
-.welcome-map { position: relative; overflow: hidden; aspect-ratio: 1.62; border: 2px solid #6faef2; background: #8eddf0; }
+.welcome-actions button.is-active:hover { color: #fff; background: #70b670; }
+.welcome-actions button:focus-visible, .welcome-buttons button:focus-visible, .welcome-help button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.welcome-map { position: relative; container-type: inline-size; overflow: hidden; aspect-ratio: 1.6; border: 2px solid #6faef2; background: #8eddf0; }
 .welcome-map img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.welcome-title { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 5%; color: #fffaf0; font-family: 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif; font-weight: 900; line-height: .8; text-align: center; text-shadow: 0 5px 0 #5c321f, 0 8px 10px rgba(39,24,16,.3); }
-.welcome-title-top { font-size: clamp(3.2rem, 10vw, 6.7rem); letter-spacing: -.08em; }
-.welcome-title-bottom { display: block; margin-top: clamp(1.2rem, 4vw, 2.4rem); font-size: clamp(3.3rem, 11vw, 7.3rem); letter-spacing: -.1em; white-space: nowrap; }
+.welcome-map::after { content: ''; position: absolute; z-index: 0; inset: 5.56% 11.25%; pointer-events: none; background: radial-gradient(ellipse 50% 52% at 51.33% 51.33%, rgba(255,250,222,.91) 0%, rgba(255,248,217,.68) 52%, rgba(255,248,217,0) 100%); }
+.welcome-title { position: absolute; z-index: 1; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 0; color: #fffced; font-family: Fredoka, sans-serif; font-weight: 700; line-height: .8; text-align: center; text-shadow: 0 5px 0 #4c321f, 0 8px 10px rgba(76,50,31,.21); }
+.welcome-title-top { font-size: 8.82cqw; letter-spacing: -.06em; }
+.welcome-title-bottom { display: block; margin-top: 2.2cqw; font-size: 11.47cqw; letter-spacing: -.08em; white-space: nowrap; }
 .welcome-title-bottom span { color: #ffd458; }
 .welcome-title-bottom strong { color: #4fc4ec; font-weight: inherit; }
+.welcome-map .welcome-monkey { position: absolute; z-index: 1; right: 3.94%; top: 26.3%; width: 14.69%; height: auto; object-fit: contain; filter: drop-shadow(0 5px 3px rgba(54,35,18,.28)); animation: monkey-shake 2.8s ease-in-out infinite; transform-origin: 50% 85%; }
+.welcome-buttons { position: absolute; z-index: 2; bottom: 7.9%; left: 50%; display: flex; width: 20.25%; flex-direction: column; gap: .875cqw; transform: translateX(-50%); }
+.welcome-buttons button, .welcome-help .welcome-primary-button { min-height: 4cqw; border: .1875cqw solid #68361f; border-radius: 1.375cqw; color: #4c321f; font-family: Fredoka, sans-serif; font-size: 1.5cqw; font-weight: 600; letter-spacing: 0; box-shadow: 0 .375cqw 0 #805027, 0 .1875cqw 0 rgba(255,255,232,.69) inset, 0 .4375cqw 1.125cqw rgba(255,212,86,.28); transition: transform .15s ease, filter .15s ease, box-shadow .15s ease; }
+.welcome-primary-button { background: linear-gradient(180deg, #ffdf7b 0%, #f8bc48 100%); }
+.welcome-secondary-button { border-color: #ad7836 !important; box-shadow: 0 .375cqw 0 #9b743b, 0 .1875cqw 0 rgba(255,255,232,.69) inset, 0 .4375cqw 1.125cqw rgba(59,41,31,.13) !important; background: linear-gradient(180deg, #fffced 0%, #fff0bd 100%); }
+.welcome-buttons button:hover, .welcome-help .welcome-primary-button:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.welcome-buttons button:active, .welcome-help .welcome-primary-button:active { box-shadow: inset 0 2px 4px rgba(53, 33, 17, .3); transform: translateY(1px); }
+.welcome-help-backdrop { position: fixed; z-index: 10; inset: 0; display: grid; place-items: center; padding: 18px; background: rgba(15, 15, 15, .7); backdrop-filter: blur(4px); }
+.welcome-help { position: relative; width: min(100%, 360px); padding: 28px; border: 2px solid #555; border-radius: 14px; color: #fff; background: #292929; box-shadow: 0 18px 50px rgba(0,0,0,.4); }
+.welcome-help h2 { margin: 0 0 10px; color: #9dc9f4; font-size: 1.5rem; }
+.welcome-help p { margin: 0 0 22px; color: rgba(255,255,255,.72); line-height: 1.6; }
+.welcome-help .welcome-primary-button { width: 100%; }
+.welcome-help-close { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 30px; height: 30px; border: 0; border-radius: 50%; color: #fff; background: rgba(255,255,255,.1); }
 @media (max-width: 520px) {
   .welcome-bg { padding: 8px; }
   .welcome-card { padding: 7px 7px 9px; border-radius: 12px; }
@@ -33,6 +52,19 @@ button { cursor: pointer; }
   .welcome-actions { gap: 8px; }
   .welcome-actions svg { width: 19px; height: 19px; }
   .welcome-title { padding-top: 0; }
+  .welcome-monkey { top: 25%; right: 2%; width: 19%; }
+  .welcome-buttons { bottom: 5%; width: min(145px, 40%); gap: 4px; }
+}
+@keyframes monkey-shake {
+  0%, 65%, 100% { transform: rotate(0deg) translate(0, 0); }
+  68% { transform: rotate(-5deg) translate(-2px, 1px); }
+  71% { transform: rotate(5deg) translate(2px, -1px); }
+  74% { transform: rotate(-4deg) translate(-1px, 1px); }
+  77% { transform: rotate(3deg) translate(1px, 0); }
+  80% { transform: rotate(0deg) translate(0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .welcome-map .welcome-monkey { animation: none; }
 }
 @keyframes float { 50% { transform: translateY(-7px); } }
 .float { animation: float 3s ease-in-out infinite; }
