@@ -30,12 +30,21 @@ button { cursor: pointer; }
 .welcome-title-bottom { display: block; margin-top: clamp(1.2rem, 4vw, 2.4rem); font-size: clamp(3.3rem, 11vw, 7.3rem); letter-spacing: -.1em; white-space: nowrap; }
 .welcome-title-bottom span { color: #ffd458; }
 .welcome-title-bottom strong { color: #4fc4ec; font-weight: inherit; }
-.welcome-monkey-frame { position: absolute; z-index: 2; top: 15%; right: 2%; width: 235px; height: 298px; display: grid; place-items: center; }
+.welcome-stars { position: absolute; z-index: 1; inset: 0; color: #ffe66d; font-family: Georgia, serif; pointer-events: none; }
+.welcome-star { position: absolute; display: block; text-shadow: 0 0 8px rgba(255, 236, 125, .9); animation: star-twinkle 2.6s ease-in-out infinite; }
+.welcome-star-one { top: 28%; left: 28%; font-size: clamp(1.1rem, 2.3vw, 1.8rem); }
+.welcome-star-two { top: 39%; left: 18%; font-size: clamp(.8rem, 1.5vw, 1.2rem); animation-delay: .6s; }
+.welcome-star-three { top: 22%; right: 30%; font-size: clamp(1rem, 1.9vw, 1.5rem); animation-delay: 1.1s; }
+.welcome-star-four { top: 48%; right: 18%; font-size: clamp(1.1rem, 2.2vw, 1.7rem); animation-delay: 1.7s; }
+.welcome-star-five { top: 60%; left: 26%; font-size: clamp(.8rem, 1.6vw, 1.2rem); animation-delay: 2.1s; }
+.welcome-monkey-frame { position: absolute; z-index: 2; top: 19%; right: 14%; width: 170px; height: 215px; display: grid; place-items: center; }
 .welcome-monkey { display: block; width: 100% !important; height: 100% !important; object-fit: contain !important; filter: drop-shadow(0 5px 3px rgba(61, 35, 18, .35)); animation: float 3s ease-in-out infinite; }
 .welcome-entry { position: absolute; z-index: 3; left: 50%; bottom: 5%; display: flex; flex-direction: column; align-items: center; gap: 5px; transform: translateX(-50%); }
 .welcome-adventure:focus-visible, .welcome-how-to-play:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
-.welcome-how-to-play { min-width: clamp(130px, 19vw, 190px); padding: 7px 18px; border: 2px solid #9c602d; border-radius: 12px; color: #5c321f; background: linear-gradient(#fff9dc, #ffeab0); box-shadow: 0 3px 0 #7b4523, 0 5px 8px rgba(61, 35, 18, .3); font-size: clamp(.65rem, 1.4vw, .9rem); font-weight: 900; text-transform: uppercase; transition: transform .2s ease, background .2s ease; }
-.welcome-how-to-play:hover { background: #fff7ce; transform: scale(1.03); }
+.welcome-how-to-play { min-width: clamp(130px, 19vw, 190px); padding: 7px 18px; border: 2px solid #9c602d; border-radius: 12px; color: #5c321f; background: linear-gradient(#fff9dc, #ffeab0); box-shadow: 0 3px 0 #7b4523, 0 5px 8px rgba(61, 35, 18, .3); font-size: clamp(.65rem, 1.4vw, .9rem); font-weight: 900; text-transform: uppercase; transition: transform .2s ease, background .2s ease, box-shadow .2s ease; }
+.welcome-adventure { border-color: #78431f; background: linear-gradient(180deg, #ffd66b 0%, #f6aa3f 100%); box-shadow: 0 3px 0 #7b4523, 0 5px 8px rgba(61, 35, 18, .3); animation: button-glow 3s ease-in-out infinite; }
+.welcome-how-to-play:hover { background: #fff7ce; transform: translateY(-2px); box-shadow: 0 5px 0 #7b4523, 0 7px 10px rgba(61, 35, 18, .28); }
+.welcome-adventure:hover { background: linear-gradient(180deg, #ffe28a 0%, #ffc15a 100%); }
 @media (max-width: 520px) {
   .welcome-bg { padding: 8px; }
   .welcome-card { padding: 7px 7px 9px; border-radius: 12px; }
@@ -43,9 +52,20 @@ button { cursor: pointer; }
   .welcome-actions { gap: 8px; }
   .welcome-actions svg { width: 19px; height: 19px; }
   .welcome-title { padding-top: 0; }
-  .welcome-monkey-frame { width: min(235px, 30vw); height: min(298px, 38vw); }
+  .welcome-monkey-frame { top: 18%; right: 9%; width: min(170px, 24vw); height: min(215px, 30vw); }
   .welcome-entry { bottom: 4%; }
   .welcome-how-to-play { padding: 5px 12px; }
 }
 @keyframes float { 50% { transform: translateY(-7px); } }
+@keyframes star-twinkle {
+  0%, 100% { opacity: .45; transform: scale(.8) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(15deg); }
+}
+@keyframes button-glow {
+  0%, 100% { box-shadow: 0 3px 0 #7b4523, 0 5px 8px rgba(61, 35, 18, .3); }
+  50% { box-shadow: 0 3px 0 #7b4523, 0 6px 14px rgba(255, 191, 74, .55); }
+}
 .float { animation: float 3s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .welcome-star, .welcome-adventure, .welcome-monkey { animation: none; }
+}

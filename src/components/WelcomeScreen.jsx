@@ -41,8 +41,15 @@ export default function WelcomeScreen() {
               <span>Slang</span> <strong>Codex</strong>
             </span>
           </div>
+          <div className="welcome-stars" aria-hidden="true">
+            <span className="welcome-star welcome-star-one">✦</span>
+            <span className="welcome-star welcome-star-two">✦</span>
+            <span className="welcome-star welcome-star-three">✧</span>
+            <span className="welcome-star welcome-star-four">✦</span>
+            <span className="welcome-star welcome-star-five">✧</span>
+          </div>
           <div className="welcome-entry">
-            <button type="button" className="welcome-how-to-play" onClick={() => setModal('avatar')}>
+            <button type="button" className="welcome-how-to-play welcome-adventure" onClick={() => setModal('avatar')}>
               Start Adventure
             </button>
             <button type="button" className="welcome-how-to-play" onClick={() => setModal('avatar')}>
