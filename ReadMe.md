@@ -283,12 +283,7 @@ The frontend records start and end time, score, wrong attempts and the error typ
 
 Image version (from draw.io):
 
-<<<<<<< HEAD
 ![Gen Z Slang CodeX ER Diagram](./ERDIAGRAMgenZ.drawio.png)
-=======
-![ER Diagram](./ERDIAGRAMgenZ.drawio.png)
-
->>>>>>> origin/main
 
 Mermaid version (renders in VS Code with the Mermaid extension, and on GitHub):
 
