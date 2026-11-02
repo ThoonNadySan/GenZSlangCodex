@@ -31,11 +31,22 @@ export default function WelcomeScreen() {
 
         <div className="welcome-map">
           <img src="/continuous-myanmar-storybook-world.png" alt="Illustrated Myanmar world map" />
+          <div className="welcome-monkey-frame">
+            <img className="welcome-monkey" src="/monkeysticker.png" alt="Friendly monkey guide" />
+          </div>
           <div className="welcome-title" aria-label="GenZ Slang Codex">
             <span className="welcome-title-top">GenZ</span>
             <span className="welcome-title-bottom">
               <span>Slang</span> <strong>Codex</strong>
             </span>
+          </div>
+          <div className="welcome-entry">
+            <button type="button" className="welcome-how-to-play" onClick={() => setModal('avatar')}>
+              Start Adventure
+            </button>
+            <button type="button" className="welcome-how-to-play" onClick={() => setModal('avatar')}>
+              How to play
+            </button>
           </div>
         </div>
       </section>
