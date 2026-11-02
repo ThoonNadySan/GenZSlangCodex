@@ -1,5 +1,5 @@
 # GenZ Slang CodeX
-**A Gamified Burmese Slang Game with an Adaptive AI Tutor Agent** 12345
+**A Gamified Burmese Slang Game with an Adaptive AI Tutor Agent** 
 
 *1305394 Seminar in Software Engineering · Project Proposal (condensed draft v3, 17/10/2026)*
 
@@ -10,6 +10,7 @@
 | **Faculty advisor** | Ajr. Nang Hsu Mon Pyae |
 | **Platform** | React game, landscape (final platform to confirm) |
 | **Keywords** | Burmese slang; gamified language learning; Burmese script assembly; adaptive tutoring; tool-augmented ReAct agent; semantic evaluation |
+
 
 > **Tip for VS Code:** press `Ctrl+Shift+V` (Mac: `Cmd+Shift+V`) to open the Markdown preview. To see the Mermaid diagrams in the preview, install the extension **"Markdown Preview Mermaid Support"** (bierner.markdown-mermaid). Keep `er-diagram.png` in the same folder as this file.
 
