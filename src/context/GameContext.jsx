@@ -1,0 +1,56 @@
+import { createContext, useContext, useMemo, useState } from 'react'
+
+const initialDestinations = [
+  { id: 'yangon', name: 'Yangon', region: 'Lower Myanmar', icon: '🛕', color: '#ffbd69', unlocked: true, slang: 'ချောတယ်' },
+  { id: 'mawlamyine', name: 'Mawlamyine', region: 'Mon State', icon: '🌴', color: '#86f0ce', unlocked: false, slang: 'မိုက်တယ်' },
+  { id: 'naypyitaw', name: 'Naypyitaw', region: 'Central Myanmar', icon: '🏛️', color: '#b7a5ff', unlocked: false, slang: 'အေးဆေး' },
+  { id: 'bagan', name: 'Bagan', region: 'Archaeological Zone', icon: '🌅', color: '#ff8b89', unlocked: false, slang: 'လန်းတယ်' },
+  { id: 'inle', name: 'Inle Lake', region: 'Shan State', icon: '🛶', color: '#8bd5ff', unlocked: false, slang: 'ဟုတ်တယ်' },
+  { id: 'kyaiktiyo', name: 'Kyaiktiyo', region: 'Mon State', icon: '⛰️', color: '#ffd36e', unlocked: false, slang: 'ရပြီ' }
+]
+
+const GameContext = createContext(null)
+
+export function GameProvider({ children }) {
+  const [activeScreen, setActiveScreen] = useState('welcome')
+  const [player, setPlayer] = useState({ name: 'New Explorer', avatar: '🧑🏽‍🚀', email: '' })
+  const [score, setScore] = useState(0)
+  const [xp, setXp] = useState(120)
+  const [lives, setLives] = useState(3)
+  const [coins, setCoins] = useState(240)
+  const [destinations, setDestinations] = useState(initialDestinations)
+  const [collectedCards, setCollectedCards] = useState(['yangon'])
+  const [selectedDestination, setSelectedDestination] = useState(initialDestinations[0])
+  const [modal, setModal] = useState(null)
+  const [settings, setSettings] = useState({ sound: true, language: 'English' })
+
+  const openDestination = (destination) => {
+    if (!destination.unlocked) return
+    setSelectedDestination(destination)
+    setActiveScreen('assembly')
+  }
+  const unlockNext = () => {
+    setDestinations((items) => items.map((item, index) => index === collectedCards.length ? { ...item, unlocked: true } : item))
+  }
+  const reward = (points = 80) => {
+    setScore((value) => value + points)
+    setXp((value) => value + points)
+    setCoins((value) => value + 25)
+    if (!collectedCards.includes(selectedDestination.id)) {
+      setCollectedCards((cards) => [...cards, selectedDestination.id])
+      unlockNext()
+    }
+  }
+  const value = useMemo(() => ({
+    activeScreen, setActiveScreen, player, setPlayer, score, setScore, xp, lives, setLives,
+    coins, destinations, selectedDestination, setSelectedDestination, collectedCards, modal, setModal,
+    settings, setSettings, openDestination, reward
+  }), [activeScreen, player, score, xp, lives, coins, destinations, selectedDestination, collectedCards, modal, settings])
+  return <GameContext.Provider value={value}>{children}</GameContext.Provider>
+}
+
+export function useGame() {
+  const context = useContext(GameContext)
+  if (!context) throw new Error('useGame must be used inside GameProvider')
+  return context
+}

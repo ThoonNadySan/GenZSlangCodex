@@ -1,0 +1,7 @@
+import { Pencil, Award, BookOpen } from 'lucide-react'
+import { useGame } from '../context/GameContext'
+import { Button, Modal } from './ui'
+export default function UserProfile() {
+  const { player, setPlayer, xp, score, collectedCards, setModal } = useGame()
+  return <Modal title="Explorer profile" onClose={() => setModal(null)}><div className="flex items-center gap-4 rounded-2xl bg-white/10 p-4"><span className="grid h-16 w-16 place-items-center rounded-full bg-lilac text-3xl">{player.avatar}</span><div className="min-w-0 flex-1"><input value={player.name} onChange={(e) => setPlayer({ ...player, name: e.target.value })} className="w-full bg-transparent text-xl font-black outline-none" /><p className="text-sm text-white/50">Level {Math.floor(xp / 100) + 1} explorer</p></div><Pencil size={17} className="text-mint" /></div><div className="mt-5 grid grid-cols-2 gap-3"><div className="rounded-2xl bg-white/10 p-4"><Award className="mb-2 text-gold" size={18} /><b className="block text-xl">{score}</b><small className="text-white/50">score</small></div><div className="rounded-2xl bg-white/10 p-4"><BookOpen className="mb-2 text-mint" size={18} /><b className="block text-xl">{collectedCards.length}/6</b><small className="text-white/50">stamps</small></div></div><Button variant="secondary" className="mt-5 w-full" onClick={() => setModal('certificate')}>View certificate</Button></Modal>
+}
