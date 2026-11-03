@@ -24,7 +24,7 @@ export default function WelcomeScreen() {
             <button type="button" className="is-active" aria-label="View code" title="View code">
               <Code2 size={24} strokeWidth={2.2} />
             </button>
-            <button type="button" aria-label="Start your journey" title="Start your journey" onClick={() => setModal('avatar')}>
+            <button type="button" aria-label="Start your journey" title="Start your journey" onClick={() => setActiveScreen('signin')}>
               <Play size={24} fill="currentColor" strokeWidth={2.2} />
             </button>
           </div>
@@ -49,10 +49,10 @@ export default function WelcomeScreen() {
             <span className="welcome-star welcome-star-five">✧</span>
           </div>
           <div className="welcome-entry">
-            <button type="button" className="welcome-how-to-play welcome-adventure" onClick={() => setModal('avatar')}>
+            <button type="button" className="welcome-how-to-play welcome-adventure" onClick={() => setActiveScreen('signin')}>
               Start Adventure
             </button>
-            <button type="button" className="welcome-how-to-play" onClick={() => setModal('avatar')}>
+            <button type="button" className="welcome-how-to-play" onClick={() => setActiveScreen('signin')}>
               How to play
             </button>
           </div>
@@ -67,7 +67,7 @@ export default function WelcomeScreen() {
             </button>
             <h2 id="how-to-play-title">How to play</h2>
             <p>Choose your explorer, visit each destination, and learn Burmese slang through short challenges.</p>
-            <button type="button" className="welcome-primary-button" onClick={() => { setShowHowToPlay(false); setModal('avatar') }}>
+            <button type="button" className="welcome-primary-button" onClick={() => { setShowHowToPlay(false); setActiveScreen('signin') }}>
               START ADVENTURE
             </button>
           </div>
@@ -90,7 +90,7 @@ export default function WelcomeScreen() {
             ))}
           </div>
           <Button className="mt-6 w-full" onClick={start}>Enter the CodeX <span>→</span></Button>
-          <button type="button" className="mt-3 w-full text-center text-sm font-bold text-white/60" onClick={() => setModal('auth')}>Sign up or log in</button>
+          <button type="button" className="mt-3 w-full text-center text-sm font-bold text-white/60" onClick={() => setActiveScreen('signin')}>Sign up or log in</button>
         </Modal>
       )}
 
