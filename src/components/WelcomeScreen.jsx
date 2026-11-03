@@ -19,7 +19,7 @@ export default function WelcomeScreen() {
     <main className="welcome-bg">
       <section className="welcome-card" aria-label="GenZ Slang Codex world map">
         <header className="welcome-toolbar">
-          <h1>GenZ Slang Codex <span aria-hidden="true">·</span> World map</h1>
+          <h1>GenZ Slang Codex <span aria-hidden="true">·</span> {showHowToPlay ? 'How to Play' : 'Welcome'}</h1>
           <div className="welcome-actions">
             <button type="button" className="is-active" aria-label="View code" title="View code">
               <Code2 size={24} strokeWidth={2.2} />
@@ -33,7 +33,7 @@ export default function WelcomeScreen() {
         <div className="welcome-map">
           <img src="/continuous-myanmar-storybook-world.png" alt="Illustrated Myanmar world map" />
           <div className="welcome-monkey-frame">
-            <img className="welcome-monkey" src="/monkeysticker.png" alt="Friendly monkey guide" />
+            <img className="welcome-monkey" src="/welcome-monkey.png" alt="Friendly monkey guide" />
           </div>
           <div className="welcome-title" aria-label="GenZ Slang Codex">
             <span className="welcome-title-top">GenZ</span>
@@ -52,27 +52,41 @@ export default function WelcomeScreen() {
             <button type="button" className="welcome-how-to-play welcome-adventure" onClick={() => setActiveScreen('signin')}>
               Start Adventure
             </button>
-            <button type="button" className="welcome-how-to-play" onClick={() => setActiveScreen('signin')}>
+            <button type="button" className="welcome-how-to-play" onClick={() => setShowHowToPlay(true)}>
               How to play
             </button>
           </div>
+          {showHowToPlay && (
+            <div className="how-to-play-overlay" role="presentation" onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setShowHowToPlay(false)
+            }}>
+              <section className="how-to-play-panel" role="dialog" aria-modal="true" aria-labelledby="how-to-play-title" onMouseDown={(event) => event.stopPropagation()}>
+                <button type="button" className="how-to-play-close" aria-label="Close how to play" onClick={() => setShowHowToPlay(false)}>
+                  <X size={18} />
+                </button>
+                <h2 id="how-to-play-title">HOW TO PLAY</h2>
+                <div className="how-to-play-steps">
+                  <article className="how-to-play-step">
+                    <img className="how-to-play-map-art" src="/how-to-play-map.png" alt="" />
+                    <h3>EXPLORE DESTINATIONS</h3>
+                  </article>
+                  <article className="how-to-play-step">
+                    <img className="how-to-play-book-art" src="/how-to-play-book.png" alt="" />
+                    <h3>LEARN BURMESE SLANG</h3>
+                  </article>
+                  <article className="how-to-play-step">
+                    <img src="/how-to-play-badge.png" alt="" />
+                    <h3>EARN STAMPS AND XP</h3>
+                  </article>
+                </div>
+                <button type="button" className="how-to-play-start" onClick={() => setActiveScreen('signin')}>
+                  LET&apos;S PLAY
+                </button>
+              </section>
+            </div>
+          )}
         </div>
       </section>
-
-      {showHowToPlay && (
-        <div className="welcome-help-backdrop" role="dialog" aria-modal="true" aria-labelledby="how-to-play-title">
-          <div className="welcome-help">
-            <button type="button" className="welcome-help-close" aria-label="Close how to play" onClick={() => setShowHowToPlay(false)}>
-              <X size={18} />
-            </button>
-            <h2 id="how-to-play-title">How to play</h2>
-            <p>Choose your explorer, visit each destination, and learn Burmese slang through short challenges.</p>
-            <button type="button" className="welcome-primary-button" onClick={() => { setShowHowToPlay(false); setActiveScreen('signin') }}>
-              START ADVENTURE
-            </button>
-          </div>
-        </div>
-      )}
 
       {modal === 'avatar' && (
         <Modal title="Choose your explorer" onClose={() => setModal(null)}>
