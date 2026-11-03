@@ -96,7 +96,7 @@ export default function SignInScreen() {
           <div className="signin-register">
             <div className="signin-divider" />
             <span>New to the adventure?</span>
-            <button type="button" onClick={() => setActiveScreen('welcome')}>Create an Account</button>
+            <button type="button" onClick={() => setActiveScreen('create-account')}>Create an Account</button>
           </div>
           </form>
           </div>

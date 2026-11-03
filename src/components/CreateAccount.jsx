@@ -78,7 +78,7 @@ export default function CreateAccount() {
             {error && <p className="account-error" role="alert">{error}</p>}
             <button className="account-submit" type="submit">CREATE MY PLAYER ACCOUNT <Gamepad2 size={16} fill="currentColor" /></button>
           </form>
-          <div className="account-signin">Already have an account? <button type="button" onClick={() => setActiveScreen('welcome')}>Sign In</button></div>
+          <div className="account-signin">Already have an account? <button type="button" onClick={() => setActiveScreen('signin')}>Sign In</button></div>
         </div>
       </section>
     </main>
