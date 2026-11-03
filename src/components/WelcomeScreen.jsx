@@ -90,7 +90,7 @@ export default function WelcomeScreen() {
             ))}
           </div>
           <Button className="mt-6 w-full" onClick={start}>Enter the CodeX <span>→</span></Button>
-          <button type="button" className="mt-3 w-full text-center text-sm font-bold text-white/60" onClick={() => setActiveScreen('signin')}>Sign up or log in</button>
+          <button type="button" className="mt-3 w-full text-center text-sm font-bold text-white/60" onClick={() => { setModal(null); setActiveScreen('create-account') }}>Sign up or log in</button>
         </Modal>
       )}
 
