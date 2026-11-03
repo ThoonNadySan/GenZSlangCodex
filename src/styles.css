@@ -13,9 +13,9 @@ button { cursor: pointer; }
 .glass { background: rgba(48, 34, 102, .74); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(18px); }
 .dots { background-image: radial-gradient(rgba(255,255,255,.12) 1px, transparent 1px); background-size: 24px 24px; }
 .map-grid { background: linear-gradient(120deg, rgba(134,240,206,.08) 1px, transparent 1px), linear-gradient(30deg, rgba(134,240,206,.08) 1px, transparent 1px); background-size: 42px 42px; }
-.welcome-bg { min-height: 100vh; display: grid; place-items: center; padding: 18px; background: #1d1d1d; }
-.welcome-card { width: min(100%, 1000px); padding: 10px 10px 12px; border: 2px solid #3b3b3b; border-radius: 16px; background: #292929; box-shadow: 0 16px 45px rgba(0,0,0,.28); }
-.welcome-toolbar { min-height: 36px; display: flex; align-items: center; justify-content: space-between; padding: 0 2px 6px; color: #86baf0; }
+.welcome-bg { min-height: 100vh; display: grid; place-items: center; padding: 0; background: #8eddf0; }
+.welcome-card { width: 100%; height: 100vh; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.welcome-toolbar { display: none; }
 .welcome-toolbar h1 { margin: 0; font-size: clamp(.95rem, 2vw, 1.15rem); font-weight: 700; letter-spacing: .01em; }
 .welcome-toolbar h1 span { color: #7594b4; padding: 0 3px; }
 .welcome-actions { display: flex; align-items: center; gap: 12px; }
@@ -24,7 +24,7 @@ button { cursor: pointer; }
 .welcome-actions button:hover { color: #b6d8ff; transform: scale(1.1); }
 .welcome-actions button.is-active:hover { color: #fff; background: #70b670; }
 .welcome-actions button:focus-visible, .welcome-buttons button:focus-visible, .welcome-help button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
-.welcome-map { position: relative; container-type: inline-size; overflow: hidden; aspect-ratio: 1.6; border: 2px solid #6faef2; background: #8eddf0; }
+.welcome-map { position: relative; container-type: inline-size; width: 100%; height: 100%; overflow: hidden; aspect-ratio: auto; border: 0; background: #8eddf0; }
 .welcome-map img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .welcome-title { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 0; color: #fffaf0; font-family: 'Fredoka', ui-sans-serif, system-ui, sans-serif; font-weight: 700; line-height: .8; text-align: center; text-shadow: 0 5px 0 #5c321f, 0 8px 10px rgba(39,24,16,.3); pointer-events: none; }
 .welcome-title-top { font-size: clamp(3.2rem, 10vw, 6.7rem); letter-spacing: -.08em; }
