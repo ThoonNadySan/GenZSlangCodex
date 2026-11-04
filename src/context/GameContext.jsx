@@ -2,24 +2,25 @@ import { createContext, useContext, useMemo, useState } from 'react'
 
 const initialDestinations = [
   { id: 'yangon', name: 'Yangon', region: 'Lower Myanmar', icon: '🛕', color: '#ffbd69', unlocked: true, slang: 'ချောတယ်' },
-  { id: 'mawlamyine', name: 'Mawlamyine', region: 'Mon State', icon: '🌴', color: '#86f0ce', unlocked: false, slang: 'မိုက်တယ်' },
-  { id: 'naypyitaw', name: 'Naypyitaw', region: 'Central Myanmar', icon: '🏛️', color: '#b7a5ff', unlocked: false, slang: 'အေးဆေး' },
+  { id: 'mawlamyine', name: 'Mawlamyine', region: 'Mon State', icon: '🌴', color: '#86f0ce', unlocked: true, slang: 'မိုက်တယ်', meaning: 'Cool' },
+  { id: 'naypyitaw', name: 'Naypyitaw', region: 'Central Myanmar', icon: '🏛️', color: '#b7a5ff', unlocked: true, slang: 'အေးဆေး', meaning: 'Relaxed' },
   { id: 'bagan', name: 'Bagan', region: 'Archaeological Zone', icon: '🌅', color: '#ff8b89', unlocked: false, slang: 'လန်းတယ်' },
   { id: 'inle', name: 'Inle Lake', region: 'Shan State', icon: '🛶', color: '#8bd5ff', unlocked: false, slang: 'ဟုတ်တယ်' },
-  { id: 'kyaiktiyo', name: 'Kyaiktiyo', region: 'Mon State', icon: '⛰️', color: '#ffd36e', unlocked: false, slang: 'ရပြီ' }
+  { id: 'mandalay', name: 'Mandalay', region: 'Mandalay Region', icon: '🏯', color: '#ffd36e', unlocked: false, slang: 'ရပြီ' }
 ]
+const progressionOrder = ['naypyitaw', 'mawlamyine', 'yangon', 'inle', 'bagan', 'mandalay']
 
 const GameContext = createContext(null)
 
 export function GameProvider({ children }) {
   const [activeScreen, setActiveScreen] = useState('welcome')
-  const [player, setPlayer] = useState({ name: 'New Explorer', avatar: '🧑🏽‍🚀', email: '' })
+  const [player, setPlayer] = useState({ name: 'Thiri', avatar: '/girl.png', email: '' })
   const [score, setScore] = useState(0)
-  const [xp, setXp] = useState(120)
+  const [xp, setXp] = useState(350)
   const [lives, setLives] = useState(3)
   const [coins, setCoins] = useState(240)
   const [destinations, setDestinations] = useState(initialDestinations)
-  const [collectedCards, setCollectedCards] = useState(['yangon'])
+  const [collectedCards, setCollectedCards] = useState(['naypyitaw', 'mawlamyine'])
   const [selectedDestination, setSelectedDestination] = useState(initialDestinations[0])
   const [modal, setModal] = useState(null)
   const [settings, setSettings] = useState({ sound: true, language: 'English' })
@@ -30,7 +31,10 @@ export function GameProvider({ children }) {
     setActiveScreen('assembly')
   }
   const unlockNext = () => {
-    setDestinations((items) => items.map((item, index) => index === collectedCards.length ? { ...item, unlocked: true } : item))
+    setDestinations((items) => {
+      const nextId = progressionOrder.find((id) => !items.find((item) => item.id === id)?.unlocked)
+      return nextId ? items.map((item) => item.id === nextId ? { ...item, unlocked: true } : item) : items
+    })
   }
   const reward = (points = 80) => {
     setScore((value) => value + points)

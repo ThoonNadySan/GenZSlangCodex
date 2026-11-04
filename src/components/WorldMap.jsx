@@ -1,8 +1,74 @@
-import { Lock, MapPin, Settings, Trophy, BookOpen } from 'lucide-react'
+import { BookOpen, Check, Lock } from 'lucide-react'
+import { useState } from 'react'
 import { useGame } from '../context/GameContext'
-import { Button, SectionTitle, Stat, TopBar } from './ui'
+
+const mapStops = [
+  { id: 'bagan', number: 5, className: 'map-stop-bagan' },
+  { id: 'mandalay', number: 6, className: 'map-stop-mandalay' },
+  { id: 'inle', number: 4, className: 'map-stop-inle' },
+  { id: 'naypyitaw', number: 1, className: 'map-stop-naypyitaw' },
+  { id: 'mawlamyine', number: 2, className: 'map-stop-mawlamyine' },
+  { id: 'yangon', number: 3, className: 'map-stop-yangon' }
+]
+const collectionOrder = ['naypyitaw', 'mawlamyine', 'yangon', 'inle', 'bagan', 'mandalay']
 
 export default function WorldMap() {
-  const { destinations, openDestination, setModal, setActiveScreen } = useGame()
-  return <main className="screen-bg min-h-screen"><TopBar back={false} title="GENZ SLANG CODEX" /><div className="mx-auto max-w-7xl px-4 pb-10 sm:px-8"><div className="mb-7 flex flex-wrap items-end justify-between gap-4"><SectionTitle eyebrow="Chapter one" title="Myanmar map" action={<div className="flex gap-2"><button onClick={() => setActiveScreen('collection')} className="rounded-xl bg-white/10 p-3" aria-label="Collection"><BookOpen size={19} /></button><button onClick={() => setModal('leaderboard')} className="rounded-xl bg-white/10 p-3" aria-label="Leaderboard"><Trophy size={19} /></button><button onClick={() => setModal('settings')} className="rounded-xl bg-white/10 p-3" aria-label="Settings"><Settings size={19} /></button></div>} /></div><div className="grid grid-cols-3 gap-2 sm:flex sm:gap-3"><Stat icon={<MapPin size={16} />} value="1/6" label="destinations" /><Stat icon={<Trophy size={16} />} value="120" label="total score" /><Stat icon={<BookOpen size={16} />} value="1" label="slang cards" /></div><div className="map-grid relative mt-6 min-h-[520px] overflow-hidden rounded-[2rem] border border-white/10 bg-[#183d59]/70 p-5 sm:p-10"><div className="absolute left-[8%] top-[20%] h-56 w-56 rounded-full bg-mint/10 blur-3xl" /><div className="absolute right-[5%] top-[8%] h-72 w-72 rounded-full bg-gold/10 blur-3xl" /><div className="relative grid h-full min-h-[480px] grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-10">{destinations.map((destination, index) => <button key={destination.id} disabled={!destination.unlocked} onClick={() => openDestination(destination)} className={`group relative flex flex-col items-center justify-center rounded-3xl border p-4 text-center transition sm:p-6 ${destination.unlocked ? 'border-white/20 bg-white/10 hover:-translate-y-1 hover:bg-white/20' : 'cursor-not-allowed border-white/5 bg-black/10 opacity-55'}`}><div className="mb-2 text-5xl drop-shadow-lg sm:text-6xl">{destination.icon}</div><b className="text-sm sm:text-base">{destination.name}</b><span className="mt-1 text-[10px] text-white/50">{destination.region}</span>{destination.unlocked ? <span className="mt-3 rounded-full bg-mint/15 px-3 py-1 text-[10px] font-black uppercase text-mint">Explore</span> : <Lock size={16} className="mt-3 text-white/40" />}<span className="absolute -right-2 -top-2 grid h-7 w-7 place-items-center rounded-full bg-ink text-xs font-black">{index + 1}</span></button>)}</div><div className="absolute bottom-5 left-5 max-w-xs rounded-2xl bg-ink/80 p-4 text-xs leading-5 text-white/70">Complete a destination with <b className="text-mint">8/10</b> mastery to unlock the next stop.</div></div><Button variant="gold" className="mt-5 w-full sm:w-auto" onClick={() => setActiveScreen('castle')}>Visit AI Castle <span className="ml-2">→</span></Button></div></main>
+  const { destinations, openDestination, setActiveScreen, setModal, collectedCards } = useGame()
+  const [lockedMessage, setLockedMessage] = useState('')
+  const [collectionOpen, setCollectionOpen] = useState(true)
+  const [selectedStamp, setSelectedStamp] = useState(null)
+  const byId = Object.fromEntries(destinations.map((destination) => [destination.id, destination]))
+
+  const visit = (destination) => {
+    if (!destination.unlocked) {
+      setLockedMessage(`${destination.name} is locked. Complete the previous destination to unlock it.`)
+      window.setTimeout(() => setLockedMessage(''), 3500)
+      return
+    }
+    openDestination(destination)
+  }
+
+  return (
+    <main className="world-map-screen">
+      <section className="world-map-stage" aria-label="GenZ Slang Codex world map">
+        <img className="world-map-background" src="/continuous-myanmar-storybook-world.png" alt="Illustrated Myanmar jungle world map" />
+        <div className="world-map-brand"><img src="/generated/codex-logo.png" alt="GenZ Slang Codex" /></div>
+
+        <header className="world-map-profile">
+          <img src="/generated/setting-bar-full.png" alt="Thiri profile, XP, settings and leaderboard" />
+          <button className="profile-hitbox" onClick={() => setModal('profile')} aria-label="Open profile" />
+          <button className="settings-hitbox" onClick={() => setModal('settings')} aria-label="Settings" />
+          <button className="leaderboard-hitbox" onClick={() => setModal('leaderboard')} aria-label="Leaderboard" />
+        </header>
+
+        <button className="castle-sticker" onClick={() => setActiveScreen('castle')} aria-label="Open AI Castle"><img src="/generated/castle-sticker.png" alt="AI Castle illustration" /></button>
+        <button className="map-castle-card" onClick={() => setActiveScreen('castle')} aria-label="Open AI Castle"><strong>AI Castle</strong><small>Complete all 6 destinations<br />to unlock</small><i><span /><span /><span /><span /><span /><span /></i></button>
+        <section className={`map-collection-card ${collectionOpen ? 'is-open' : 'is-closed'}`} aria-label="Slang Collection">
+          <button className="collection-toggle" onClick={() => setCollectionOpen((open) => !open)} aria-expanded={collectionOpen}>
+            <h2><BookOpen size={18} /> Slang Collection</h2>
+            <span className="collection-toggle-icon">{collectionOpen ? '−' : '+'}</span>
+          </button>
+          {collectionOpen && <div className="collection-popup-content">
+            <p>Collect words as you explore!</p><b>{collectedCards.length} / 6 stamps collected</b><div className="collection-progress">{[0, 1, 2, 3, 4, 5].map((item) => <span className={item < collectedCards.length ? 'filled' : ''} key={item} />)}</div>
+            <div className="stamp-grid">{collectionOrder.map((id) => { const destination = byId[id]; const collected = collectedCards.includes(id); return <div className={`stamp-card ${collected ? 'collected' : ''} ${selectedStamp === id ? 'selected' : ''}`} key={id} role="button" tabIndex={0} onClick={(event) => { event.stopPropagation(); setSelectedStamp(id) }} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') setSelectedStamp(id) }}>{collected ? <img className="stamp-art stamp-art-full" src={`/generated/${id}-slang-card.png`} alt={`${destination.name} slang sticker`} /> : <><span className="stamp-art stamp-art-locked">?</span><b>Undiscovered</b><small>{destination.name}</small></>}</div> })}</div>
+            {selectedStamp && <div className="stamp-detail"><strong>{byId[selectedStamp].name}</strong><span>{collectedCards.includes(selectedStamp) ? `${byId[selectedStamp].slang} · ${byId[selectedStamp].meaning}` : 'Explore this destination to discover its slang!'}</span></div>}
+            <button className="collection-book-link" onClick={() => setActiveScreen('collection')}>Open Slang Book <span>→</span></button>
+          </div>}
+        </section>
+
+        <img className="map-route" src="/generated/worldmap-destination-route-reference.png" alt="" aria-hidden="true" />
+        <div className="map-stops">
+          {mapStops.map(({ id, number, className }) => {
+            const destination = byId[id]
+            if (!destination) return null
+            const current = id === 'yangon'
+            return <button key={id} className={`map-stop ${className} ${current ? 'current' : destination.unlocked ? 'unlocked' : 'locked'}`} onClick={() => visit(destination)} aria-label={`${destination.name}, ${current ? 'current' : destination.unlocked ? 'completed' : 'locked'}`}>
+              <span className="map-stop-number">{number}</span>{current ? <span className="map-stop-status map-stop-play">▶</span> : destination.unlocked ? <Check className="map-stop-status" size={17} /> : <Lock className="map-stop-status" size={16} />}<strong>{destination.name}</strong><small>{current ? 'YOU ARE HERE · START' : destination.unlocked ? 'COMPLETED' : 'LOCKED'}</small>
+            </button>
+          })}
+        </div>
+        {lockedMessage && <div className="world-map-locked-message" role="status">{lockedMessage}</div>}
+      </section>
+    </main>
+  )
 }
