@@ -5,11 +5,14 @@ export function Button({ children, variant = 'primary', className = '', ...props
   const styles = { primary: 'bg-mint text-ink hover:bg-white', secondary: 'bg-white/10 text-white hover:bg-white/20', gold: 'bg-gold text-ink hover:bg-yellow-200', danger: 'bg-coral text-ink hover:bg-red-200' }
   return <button className={`rounded-2xl px-5 py-3 font-black transition ${styles[variant]} ${className}`} {...props}>{children}</button>
 }
+export function AvatarDisplay({ avatar, className = '' }) {
+  return avatar.startsWith('/') ? <img className={`avatar-art ${className}`} src={avatar} alt="" /> : avatar
+}
 export function TopBar({ back = true, title = 'GenZ Slang CodeX' }) {
   const { setActiveScreen, xp, lives, coins, player, setModal } = useGame()
   return <header className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-8">
     <div className="flex items-center gap-3">{back && <button onClick={() => setActiveScreen('map')} className="rounded-xl bg-white/10 p-2" aria-label="Go back"><ArrowLeft size={19} /></button>}<span className="text-sm font-black tracking-wide sm:text-base">{title}</span></div>
-    <div className="flex items-center gap-2 text-xs font-bold sm:gap-4 sm:text-sm"><span className="hidden text-mint sm:inline">⚡ {xp} XP</span><span className="flex items-center gap-1"><Heart size={16} className="fill-coral text-coral" />{lives}</span><span className="flex items-center gap-1"><Coins size={16} className="text-gold" />{coins}</span><button onClick={() => setModal('profile')} className="ml-1 grid h-9 w-9 place-items-center rounded-full bg-lilac text-lg">{player.avatar}</button></div>
+    <div className="flex items-center gap-2 text-xs font-bold sm:gap-4 sm:text-sm"><span className="hidden text-mint sm:inline">⚡ {xp} XP</span><span className="flex items-center gap-1"><Heart size={16} className="fill-coral text-coral" />{lives}</span><span className="flex items-center gap-1"><Coins size={16} className="text-gold" />{coins}</span><button onClick={() => setModal('profile')} className="ml-1 grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-lilac text-lg"><AvatarDisplay avatar={player.avatar} /></button></div>
   </header>
 }
 export function Modal({ title, children, onClose, wide = false }) {
