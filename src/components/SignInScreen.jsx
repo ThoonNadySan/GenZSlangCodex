@@ -1,4 +1,4 @@
-import { Code2, Eye, EyeOff, Play } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
 import { useGame } from '../context/GameContext'
 
@@ -16,42 +16,23 @@ export default function SignInScreen() {
   }
 
   return (
-    <main className="signin-screen">
-      <section className="signin-shell" aria-label="GenZ Slang Codex sign in">
-        <header className="signin-toolbar">
-          <h1>GenZ Slang Codex <span aria-hidden="true">·</span> World map</h1>
-          <div className="signin-actions">
-            <button type="button" className="is-active" aria-label="View code" title="View code">
-              <Code2 size={24} strokeWidth={2.2} />
-            </button>
-            <button type="button" aria-label="Start your journey" title="Start your journey">
-              <Play size={24} fill="currentColor" strokeWidth={2.2} />
-            </button>
+    <main className="account-page signin-screen">
+      <section className="account-shell signin-shell" aria-label="GenZ Slang Codex sign in">
+        <div className="account-intro signin-intro">
+          <div className="account-brand signin-logo" aria-label="GenZ Slang Codex">
+            <span className="account-brand-top">GenZ</span>
+            <span className="account-brand-bottom"><span>Slang</span> <strong>Codex</strong></span>
           </div>
-        </header>
-        <div className="signin-map">
-          <div className="signin-panel">
-        <div className="signin-intro">
-          <div className="signin-logo" aria-label="GenZ Slang Codex">
-            <div className="signin-logo-genz">♧ GenZ</div>
-            <div><span>Slang </span><strong>Codex</strong></div>
-          </div>
-          <h1>Ready for Another<br />Adventure?</h1>
-          <div className="signin-buddy">
-            <div className="signin-speech">Hey, bestie! Ready to<br />level up? 😎</div>
-            <div className="signin-buddy-art">
-              <img src="/Cheeky Jungle explorer.png" alt="Slang Buddy explorer" />
-            </div>
-            <span className="signin-buddy-label">Slang Buddy</span>
-          </div>
-          <div className="signin-features" aria-label="Adventure features">
-            <span>● Quiz it</span>
-            <span>● Explore it</span>
-            <span>● Collect it</span>
+          <div className="account-copy">
+            <p className="account-kicker">A new world awaits</p>
+            <h1>Ready for Another<br />Adventure?</h1>
+            <div className="account-speech">Hey, bestie! Ready to level up? <span aria-hidden="true">😎</span></div>
+            <img className="account-monkey" src="/monkey-another-pose-sticker.png" alt="Slang Buddy holding a map" />
+            <div className="account-features"><span>✦ Quiz it</span><span>✦ Explore it</span><span>✦ Collect it</span></div>
           </div>
         </div>
 
-        <form className="signin-card" onSubmit={signIn}>
+        <form className="account-card signin-card" onSubmit={signIn}>
           <div className="signin-heading">
             <p>WELCOME BACK, EXPLORER! 🌟</p>
             <h2>Let’s Jump Back In!</h2>
@@ -98,9 +79,7 @@ export default function SignInScreen() {
             <span>New to the adventure?</span>
             <button type="button" onClick={() => setActiveScreen('create-account')}>Create an Account</button>
           </div>
-          </form>
-          </div>
-        </div>
+        </form>
       </section>
     </main>
   )
