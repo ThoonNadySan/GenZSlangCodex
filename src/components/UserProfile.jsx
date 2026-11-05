@@ -13,11 +13,12 @@ const collectionCards = [
 ]
 
 export default function UserProfile() {
-  const { player, setPlayer, xp, setModal, setActiveScreen, setAvatarReturnScreen } = useGame()
+  const { player, setPlayer, xp, setModal, setActiveScreen, setAvatarReturnScreen, profileNeedsSave, setProfileNeedsSave } = useGame()
   const [savedName, setSavedName] = useState(player.name)
   const level = Math.floor(xp / 100) + 1
   const levelProgress = xp % 100
   const hasNameChanges = player.name !== savedName
+  const hasChanges = hasNameChanges || profileNeedsSave
 
   const changeAvatar = () => {
     setAvatarReturnScreen('profile')
@@ -92,7 +93,7 @@ export default function UserProfile() {
         <div className="profile-actions">
           <div className="profile-action-buttons">
             <button type="button" onClick={goBack}>← BACK</button>
-            <button type="button" className={`profile-save ${hasNameChanges ? 'has-changes' : ''}`} onClick={() => setSavedName(player.name)}>SAVE CHANGES ✓</button>
+            <button type="button" className={`profile-save ${hasChanges ? 'has-changes' : ''}`} onClick={() => { setSavedName(player.name); setProfileNeedsSave(false) }}>SAVE CHANGES ✓</button>
             <button type="button" onClick={goBack}><LogOut size={14} /> SIGN OUT</button>
           </div>
           <small>No changes yet · Edit your name to save.</small>

@@ -24,6 +24,7 @@ export function GameProvider({ children }) {
   const [selectedDestination, setSelectedDestination] = useState(initialDestinations[0])
   const [modal, setModal] = useState(null)
   const [avatarReturnScreen, setAvatarReturnScreen] = useState(null)
+  const [profileNeedsSave, setProfileNeedsSave] = useState(false)
   const [settings, setSettings] = useState({ sound: true, language: 'English' })
 
   const openDestination = (destination) => {
@@ -50,8 +51,9 @@ export function GameProvider({ children }) {
     activeScreen, setActiveScreen, player, setPlayer, score, setScore, xp, lives, setLives,
     coins, destinations, selectedDestination, setSelectedDestination, collectedCards, modal, setModal,
     avatarReturnScreen, setAvatarReturnScreen,
+    profileNeedsSave, setProfileNeedsSave,
     settings, setSettings, openDestination, reward
-  }), [activeScreen, player, score, xp, lives, coins, destinations, selectedDestination, collectedCards, modal, avatarReturnScreen, settings])
+  }), [activeScreen, player, score, xp, lives, coins, destinations, selectedDestination, collectedCards, modal, avatarReturnScreen, profileNeedsSave, settings])
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>
 }
 
