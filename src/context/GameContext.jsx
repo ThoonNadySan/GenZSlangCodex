@@ -23,6 +23,7 @@ export function GameProvider({ children }) {
   const [collectedCards, setCollectedCards] = useState(['naypyitaw', 'mawlamyine'])
   const [selectedDestination, setSelectedDestination] = useState(initialDestinations[0])
   const [modal, setModal] = useState(null)
+  const [avatarReturnScreen, setAvatarReturnScreen] = useState(null)
   const [settings, setSettings] = useState({ sound: true, language: 'English' })
 
   const openDestination = (destination) => {
@@ -48,8 +49,9 @@ export function GameProvider({ children }) {
   const value = useMemo(() => ({
     activeScreen, setActiveScreen, player, setPlayer, score, setScore, xp, lives, setLives,
     coins, destinations, selectedDestination, setSelectedDestination, collectedCards, modal, setModal,
+    avatarReturnScreen, setAvatarReturnScreen,
     settings, setSettings, openDestination, reward
-  }), [activeScreen, player, score, xp, lives, coins, destinations, selectedDestination, collectedCards, modal, settings])
+  }), [activeScreen, player, score, xp, lives, coins, destinations, selectedDestination, collectedCards, modal, avatarReturnScreen, settings])
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>
 }
 
