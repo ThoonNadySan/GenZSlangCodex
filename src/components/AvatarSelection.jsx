@@ -10,12 +10,26 @@ const avatarOptions = [
 ]
 
 export default function AvatarSelection() {
-  const { player, setPlayer, setActiveScreen } = useGame()
+  const { player, setPlayer, setActiveScreen, avatarReturnScreen, setAvatarReturnScreen, setModal } = useGame()
   const [selectedAvatar, setSelectedAvatar] = useState(player.avatar.startsWith('/') ? player.avatar : avatarOptions[0].image)
 
   const continueToMap = () => {
     setPlayer({ ...player, avatar: selectedAvatar })
+    if (avatarReturnScreen === 'profile') {
+      setAvatarReturnScreen(null)
+      setModal('profile')
+    }
     setActiveScreen('map')
+  }
+
+  const cancelSelection = () => {
+    if (avatarReturnScreen === 'profile') {
+      setAvatarReturnScreen(null)
+      setModal('profile')
+      setActiveScreen('map')
+      return
+    }
+    setActiveScreen('create-account')
   }
 
   return (
@@ -53,7 +67,7 @@ export default function AvatarSelection() {
 
         <p className="avatar-helper">Choose one avatar to join your slang quest.</p>
         <div className="avatar-actions">
-          <button type="button" className="avatar-cancel" onClick={() => setActiveScreen('create-account')}>← CANCEL</button>
+          <button type="button" className="avatar-cancel" onClick={cancelSelection}>← CANCEL</button>
           <button type="button" className="avatar-continue" onClick={continueToMap}>SAVE &amp; CONTINUE! <Sparkles aria-hidden="true" size={12} /></button>
         </div>
       </section>
