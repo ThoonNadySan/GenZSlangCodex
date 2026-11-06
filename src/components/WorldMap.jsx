@@ -47,7 +47,7 @@ export default function WorldMap() {
         <div className="world-map-brand"><img src="/generated/codex-logo.png" alt="GenZ Slang Codex" /></div>
 
         <header className="world-map-profile">
-          <img src="/generated/setting-bar-full.png" alt="Thiri profile, XP, settings and leaderboard" />
+          <img src="/generated/setting-bar-transparent.png" alt="Thiri profile, XP, settings and leaderboard" />
           <button className="profile-hitbox" onClick={() => setModal('profile')} aria-label="Open profile" />
           <button className="settings-hitbox" onClick={() => setActiveScreen('settings')} aria-label="Settings" />
           <button className="leaderboard-hitbox" onClick={() => setModal('leaderboard')} aria-label="Leaderboard" />

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Noto+Serif+Myanmar:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Noto+Sans+Myanmar:wght@400;500;600;700&family=Padauk:wght@400;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -396,20 +396,25 @@ button { cursor: pointer; }
 
 .slang-book-screen { padding: 12px; }
 .slang-book-stage { border: 0; background: #68c9e6; box-shadow: 0 12px 30px rgba(0,0,0,.35); }
-.slang-book-title { position: absolute; z-index: 4; top: 10.2%; left: 50%; margin: 0; transform: translateX(-50%); color: #ffe28a; font-size: clamp(13px, 2.45vw, 30px); font-weight: 700; line-height: 1; text-shadow: 0 2px 0 #65401e, 2px 0 0 #65401e, -2px 0 0 #65401e, 0 -2px 0 #65401e, 0 4px 5px rgba(45,28,12,.42); text-transform: uppercase; white-space: nowrap; }
-.slang-book-art-toggle { position: absolute; z-index: 2; top: 20%; left: 12%; width: 76%; height: 53%; padding: 0; overflow: visible; border: 0; background: transparent; perspective: 900px; }
+.slang-book-title { position: absolute; z-index: 4; top: 10.9%; left: 50%; margin: 0; transform: translateX(-50%); color: #ffe28a; font-size: clamp(18px, 2.7cqw, 43px); font-weight: 700; line-height: 1; text-shadow: 0 2px 0 #65401e, 2px 0 0 #65401e, -2px 0 0 #65401e, 0 -2px 0 #65401e, 0 4px 5px rgba(45,28,12,.42); text-transform: uppercase; white-space: nowrap; }
+.slang-book-art-toggle { position: absolute; z-index: 2; top: 17.7%; left: 13.75%; width: 72.5%; height: 51.8%; padding: 0; overflow: visible; border: 0; background: transparent; perspective: 900px; }
 .slang-book-art { display: block; width: 100%; height: 100%; max-width: none; object-fit: fill; transform: scaleX(.04) rotateY(8deg); transform-origin: center; clip-path: inset(0 49% 0 49% round 12px); opacity: 0; transition: clip-path .9s cubic-bezier(.2,.8,.2,1), transform .9s cubic-bezier(.2,.8,.2,1), opacity .55s ease; }
 .slang-book-stage.is-open .slang-book-art { transform: scaleX(1) rotateY(0); clip-path: inset(0); opacity: 1; }
-.slang-book-cover { position: absolute; z-index: 4; top: 20%; left: 12%; width: 76%; height: 53%; max-width: none; object-fit: contain; object-position: center; pointer-events: none; transform: perspective(900px) rotateY(0); transform-origin: 32% center; backface-visibility: hidden; filter: drop-shadow(0 5px 5px rgba(62,37,17,.22)); transition: transform .72s cubic-bezier(.2,.8,.2,1), opacity .28s ease; }
+.slang-book-cover { position: absolute; z-index: 4; top: 17.7%; left: 13.75%; width: 72.5%; height: 51.8%; max-width: none; object-fit: contain; object-position: center; pointer-events: none; transform: perspective(900px) rotateY(0); transform-origin: 32% center; backface-visibility: hidden; filter: drop-shadow(0 5px 5px rgba(62,37,17,.22)); transition: transform .72s cubic-bezier(.2,.8,.2,1), opacity .28s ease; }
 .slang-book-stage.is-open .slang-book-cover { transform: perspective(900px) rotateY(-78deg); opacity: 0; }
-.slang-book-pages { position: absolute; z-index: 3; inset: 25.8% 23% 33.3%; display: grid; grid-template-columns: 1fr 1fr; gap: 5.2%; color: #583f26; pointer-events: none; transition: opacity .45s ease .18s, transform .65s cubic-bezier(.2,.8,.2,1) .12s; }
+.slang-book-pages { position: absolute; z-index: 3; top: 19.5%; left: 18.5%; width: 61.75%; height: 47.15%; display: grid; grid-template-columns: 1fr 1fr; gap: 0; color: #583f26; perspective: 1200px; pointer-events: none; transition: opacity .45s ease .18s, transform .65s cubic-bezier(.2,.8,.2,1) .12s; }
 .slang-book-stage.is-closed .slang-book-pages { transform: translateY(12px) scale(.97); opacity: 0; pointer-events: none; }
 .slang-book-stage.is-open .slang-book-stamp-page { animation: book-page-rustle 4.8s ease-in-out 1.25s infinite; transform-origin: right center; }
 .slang-book-stage.is-open .slang-book-detail-page { animation: book-page-rustle 4.8s ease-in-out 1.42s infinite; transform-origin: left center; }
-.slang-book-stamp-page, .slang-book-detail-page { position: relative; min-width: 0; }
-.slang-book-stamp-page { display: flex; flex-direction: column; align-items: center; padding: 1.8% 2% 0; text-align: center; }
+.slang-book-pages.is-turning-out-next .slang-book-detail-page { animation: book-sheet-out-next .24s ease-in both; }
+.slang-book-pages.is-turning-in-next .slang-book-detail-page { animation: book-sheet-in-next .36s cubic-bezier(.2,.8,.2,1) both; }
+.slang-book-pages.is-turning-out-previous .slang-book-stamp-page { animation: book-sheet-out-previous .24s ease-in both; }
+.slang-book-pages.is-turning-in-previous .slang-book-stamp-page { animation: book-sheet-in-previous .36s cubic-bezier(.2,.8,.2,1) both; }
+.slang-book-stamp-page, .slang-book-detail-page { position: relative; min-width: 0; backface-visibility: hidden; }
+.slang-book-stamp-page { display: flex; flex-direction: column; align-items: center; padding: 4.5% 6.5% 0; text-align: center; }
 .slang-book-eyebrow { margin: 0; color: #90724a; font-size: clamp(6px, .72vw, 10px); font-weight: 800; line-height: 1.2; text-transform: uppercase; }
-.slang-book-stamp { position: relative; width: min(67%, 174px); aspect-ratio: 514 / 532; flex: 0 0 auto; overflow: hidden; margin-top: 4.5%; }
+.slang-book-stamp { position: relative; width: min(65%, 280px); aspect-ratio: 514 / 532; flex: 0 0 auto; overflow: hidden; margin-top: 2%; }
+.slang-book-stamp.has-template { aspect-ratio: 280 / 315; }
 .slang-book-stamp.has-complete-art { aspect-ratio: 316 / 357; overflow: visible; }
 .slang-book-complete-stamp { display: block; width: 100%; height: 100%; object-fit: contain; }
 .slang-book-stamp.is-custom-city { aspect-ratio: 1; border: clamp(2px, .32vw, 4px) solid #d5ab58; border-radius: 50%; background: #fff9e6; box-shadow: 0 0 0 3px rgba(255,255,255,.82), 0 2px 5px rgba(95,63,28,.23); }
@@ -428,19 +433,19 @@ button { cursor: pointer; }
 .slang-book-stamp-page h2 { margin: 2.5% 0 0; color: #5a3925; font-size: clamp(11px, 1.75vw, 22px); line-height: 1.1; }
 .slang-book-status { margin: 1.5% 0 0; color: #38764c; font-size: clamp(6px, .72vw, 10px); font-weight: 900; line-height: 1.1; text-transform: uppercase; }
 .slang-book-status.is-available { color: #946c36; }
-.slang-book-progress { margin: 2% 0 0; color: #8d744f; font-size: clamp(6px, .7vw, 9px); font-weight: 700; }
-.slang-book-detail-page { padding: 2.7% 3% 0 1.3%; }
+.slang-book-progress { margin: 2.5% 0 0; padding: 0 1.5% .35%; border-bottom: 1px dashed rgba(102, 69, 37, .56); color: #563a22; font-size: clamp(8px, .82cqw, 13px); font-weight: 900; line-height: 1.2; text-shadow: 0 .25px currentColor; }
+.slang-book-detail-page { padding: 3% 6.9% 0 10.9%; }
 .slang-book-detail-heading { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
 .slang-book-detail-heading > span { overflow: hidden; color: #386348; font-size: clamp(6px, .75vw, 10px); font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
-.slang-book-phrase, .slang-book-meaning, .slang-book-example, .slang-book-translation { font-family: 'Caveat', 'Noto Serif Myanmar', serif; font-weight: 500; letter-spacing: .02em; text-shadow: 0 .3px currentColor, .3px .2px rgba(73,48,27,.28); }
-.slang-book-phrase { margin: 8% 0 6%; color: #315f42; font-size: clamp(17px, 2.2vw, 28px); font-weight: 600; line-height: 1.2; transform: rotate(-1deg); transform-origin: left center; }
-.slang-book-phrase[lang="my"], .slang-book-example[lang="my"] { font-family: 'Noto Serif Myanmar', 'Myanmar Text', serif; font-style: italic; letter-spacing: .015em; }
-.slang-book-meaning { margin: 2% 0 5%; color: #563d2a; font-size: clamp(13px, 1.55vw, 19px); line-height: 1.25; transform: rotate(-.6deg); transform-origin: left center; }
+.slang-book-phrase, .slang-book-meaning, .slang-book-example, .slang-book-translation { font-family: 'Caveat', 'Noto Serif Myanmar', serif; font-weight: 600; letter-spacing: .02em; text-shadow: 0 .5px currentColor, .35px .25px rgba(73,48,27,.3); }
+.slang-book-phrase { margin: 8% 0 6%; color: #315f42; font-size: clamp(20px, 2.35cqw, 38px); font-weight: 700; line-height: 1.2; transform: rotate(-1deg); transform-origin: left center; }
+.slang-book-phrase[lang="my"], .slang-book-example[lang="my"] { font-family: 'Padauk', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif; font-style: normal; font-weight: 400; letter-spacing: normal; line-height: 1.55; text-shadow: 0 .35px currentColor; transform: none; }
+.slang-book-meaning { margin: 2% 0 5%; color: #402d1e; font-size: clamp(16px, 1.65cqw, 26px); font-weight: 700; line-height: 1.25; transform: rotate(-.6deg); transform-origin: left center; }
 .slang-book-example-label { margin-top: 5%; }
-.slang-book-example { margin: 2% 0 1%; color: #715438; font-size: clamp(11px, 1.2vw, 15px); line-height: 1.35; transform: rotate(.5deg); transform-origin: left center; }
-.slang-book-translation { margin: 1% 0 0; color: #8c704e; font-size: clamp(11px, 1.2vw, 15px); font-style: italic; line-height: 1.3; transform: rotate(-.4deg); transform-origin: left center; }
+.slang-book-example { margin: 2% 0 1%; color: #54391f; font-size: clamp(15px, 1.35cqw, 21px); line-height: 1.45; transform: rotate(.5deg); transform-origin: left center; }
+.slang-book-translation { margin: 1% 0 0; color: #6d4e30; font-size: clamp(14px, 1.3cqw, 20px); font-style: italic; line-height: 1.3; transform: rotate(-.4deg); transform-origin: left center; }
 .slang-book-page-number { position: absolute; right: 3%; bottom: -1%; color: #9c8058; font-size: clamp(6px, .65vw, 9px); font-weight: 700; }
-.slang-book-destinations { position: absolute; z-index: 5; top: 71.4%; left: 13.2%; width: 72%; height: 14.1%; padding: 1% 1.25% .8%; border: 2px solid #d8aa4d; border-radius: 15px; color: #745a38; background: #fff8df; box-shadow: 0 3px 8px rgba(55,41,20,.22); transition: transform .6s cubic-bezier(.2,.8,.2,1) .3s, opacity .4s ease .28s; }
+.slang-book-destinations { position: absolute; z-index: 5; top: 69.8%; left: 13.75%; width: 72.5%; height: 14.5%; padding: 1% 1.5% .8%; border: 2px solid #d8aa4d; border-radius: 15px; color: #745a38; background: #fff8df; box-shadow: 0 3px 8px rgba(55,41,20,.22); transition: transform .6s cubic-bezier(.2,.8,.2,1) .3s, opacity .4s ease .28s; }
 .slang-book-stage.is-closed .slang-book-destinations, .slang-book-stage.is-closed .slang-book-back { transform: translateY(16px); opacity: 0; pointer-events: none; }
 .slang-book-stage.is-open .slang-book-destination { animation: slang-stamp-lift .55s cubic-bezier(.2,.8,.2,1) both; }
 .slang-book-stage.is-open .slang-book-destination:nth-child(2) { animation-delay: .06s; }
@@ -455,57 +460,27 @@ button { cursor: pointer; }
 .slang-book-destination:active:not(:disabled) { transform: translateY(1px) scale(.97); box-shadow: inset 0 2px 4px rgba(93,67,28,.17); }
 .slang-book-destination:focus-visible, .slang-book-back:focus-visible { outline: 3px solid #3482a5; outline-offset: 2px; }
 .slang-book-destination.is-selected { border-color: #dfa833; background: #f5e5a7; }
-.slang-book-destination.is-locked { color: #847b66; background: #e4e0cf; cursor: not-allowed; opacity: .63; }
-.slang-book-destination-stamp { position: relative; display: grid; width: clamp(24px, 4.2vw, 49px); aspect-ratio: 1; flex: 0 0 auto; place-items: center; overflow: visible; border: 1px solid #bd984f; border-radius: 50%; background: #fff9e7; }
+.slang-book-destination.is-locked { color: #847b66; background: #e4e0cf; cursor: not-allowed; }
+.slang-book-destination-stamp { position: relative; display: grid; width: clamp(30px, 4.25cqw, 68px); aspect-ratio: 1; flex: 0 0 auto; place-items: center; overflow: hidden; border: 1.5px solid #bd984f; border-radius: 50%; background: #fff9e7; box-shadow: 0 1px 3px rgba(95,63,28,.2); }
 .slang-book-destination-stamp > img { width: 88%; height: 88%; object-fit: contain; }
-.slang-book-destination-stamp.has-complete-stamp { width: clamp(34px, 5vw, 58px); aspect-ratio: 316 / 357; overflow: visible; border: 0; border-radius: 0; background: transparent; }
-.slang-book-destination-stamp.has-complete-stamp > img { width: 100%; height: 100%; }
 .slang-book-destination-stamp.uses-custom-art { overflow: hidden; border-radius: 50%; }
 .slang-book-destination-stamp.uses-custom-art > img { width: 76%; height: 76%; }
+.slang-book-destination-stamp.has-full-stamp { width: clamp(30px, 4.25cqw, 68px); aspect-ratio: 1; }
+.slang-book-destination-stamp.has-full-stamp > img { width: 100%; height: 100%; }
 .slang-book-destination-stamp > span:not(.slang-book-lock) { font-size: clamp(15px, 2.2vw, 25px); line-height: 1; }
-.slang-book-destination-name { max-width: 100%; overflow: hidden; font-size: clamp(6px, .72vw, 10px); font-weight: 800; line-height: 1.1; text-overflow: ellipsis; white-space: nowrap; }
-.slang-book-lock { position: absolute; z-index: 1; top: -3px; right: -3px; display: grid; width: clamp(16px, 1.8vw, 22px); height: clamp(16px, 1.8vw, 22px); place-items: center; border: 1px solid #ada58f; border-radius: 50%; color: #76715f; background: #d3cfbd; box-shadow: 0 1px 2px rgba(49,39,22,.2); }
-.slang-book-back { position: absolute; z-index: 6; top: 86.7%; display: inline-flex; height: 5.6%; align-items: center; justify-content: center; gap: 7px; padding: 0 2%; border: 2px solid #d5a548; border-radius: 10px; color: #fff6df; background: #80522d; box-shadow: 0 3px 0 rgba(71,43,22,.55), inset 0 1px 0 rgba(255,255,255,.18); font-size: clamp(8px, 1vw, 13px); font-weight: 900; text-transform: uppercase; transition: transform .16s ease, background-color .16s ease, box-shadow .16s ease; }
+.slang-book-destination.is-locked .slang-book-destination-stamp > img { opacity: .25; }
+.slang-book-destination-name { max-width: 100%; overflow: hidden; font-size: clamp(6px, .72vw, 14px); font-weight: 800; line-height: 1.1; text-overflow: ellipsis; white-space: nowrap; }
+.slang-book-destination.is-locked .slang-book-destination-name { opacity: .6; }
+.slang-book-lock { position: absolute; z-index: 1; top: 4px; right: 4px; display: grid; width: clamp(16px, 1.75cqw, 28px); height: clamp(16px, 1.75cqw, 28px); place-items: center; border: 1.5px solid #ada58f; border-radius: 50%; color: #76715f; background: #c9c7b6; box-shadow: 0 1px 2px rgba(49,39,22,.2); }
+.slang-book-back { position: absolute; z-index: 6; top: 86.25%; display: inline-flex; height: 5.36%; align-items: center; justify-content: center; gap: 7px; padding: 0 2%; border: 2px solid #d5a548; border-radius: 10px; color: #fff6df; background: #89502a; box-shadow: 0 3px 0 rgba(71,43,22,.55), inset 0 1px 0 rgba(255,255,255,.18); font-size: clamp(8px, 1.2cqw, 19px); font-weight: 900; text-transform: uppercase; transition: transform .16s ease, background-color .16s ease, box-shadow .16s ease; }
 .slang-book-back:hover { transform: translateY(-2px); background: #96653a; box-shadow: 0 5px 0 rgba(71,43,22,.48), 0 6px 12px rgba(53,34,17,.22); }
 .slang-book-back:active { transform: translateY(2px); background: #704526; box-shadow: 0 1px 0 rgba(71,43,22,.6), inset 0 2px 4px rgba(48,27,13,.25); }
-.slang-book-back-collection { left: 13.2%; width: 20%; }
-.slang-book-back-map { right: 13.2%; width: 23%; }
-@media (max-width: 640px) {
-  .slang-book-screen { display: block; min-height: 100vh; overflow-x: auto; padding: 8px; }
-  .slang-book-stage { width: max(720px, calc(100vw - 16px)); max-width: min(1280px, calc((100vh - 16px) * 1.6)); margin-inline: auto; }
-  .slang-book-destinations { border-radius: 12px; }
-  .slang-book-back { min-height: 25px; }
-}
-.slang-book-screen { display: block; width: 100%; height: 100vh; height: 100dvh; min-height: 0; overflow: hidden; padding: 0; background: #1d1d1d; }
+.slang-book-back-collection { left: 13.75%; width: 20.625%; }
+.slang-book-back-map { right: 13.75%; width: 23.375%; }
+.slang-book-screen { display: grid; width: 100%; height: 100vh; height: 100dvh; min-height: 0; place-items: center; overflow: hidden; padding: 0; background: #1d1d1d; }
 .slang-book-stage { width: 100%; height: 100%; max-width: none; margin: 0; border: 0; border-radius: 0; box-shadow: none; }
 .slang-book-stage > .world-map-background { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; }
-@media (max-width: 640px) and (orientation: portrait) {
-  .slang-book-title { top: 8%; font-size: clamp(15px, 5vw, 22px); }
-  .slang-book-screen .world-map-brand { top: 1.6%; left: 4%; width: 26%; }
-  .slang-book-screen .world-map-profile { top: 2%; right: 2%; width: 52%; }
-  .slang-book-art-toggle, .slang-book-cover { top: 19%; left: 2%; width: 96%; height: 23%; }
-  .slang-book-pages { inset: auto; top: 23.5%; right: 15%; left: 15%; height: 15%; gap: 4%; }
-  .slang-book-detail-page { padding: 2% 2% 0 1%; }
-  .slang-book-phrase { margin: 5% 0 4%; font-size: clamp(14px, 4vw, 18px); }
-  .slang-book-meaning { font-size: clamp(11px, 3.2vw, 14px); }
-  .slang-book-example { font-size: clamp(9px, 2.7vw, 12px); }
-  .slang-book-translation { font-size: clamp(9px, 2.7vw, 12px); }
-  .slang-book-destinations { top: 46%; left: 4%; width: 92%; height: 25%; padding: 2%; }
-  .slang-book-destinations > h2 { margin-bottom: 1%; font-size: clamp(9px, 2.8vw, 11px); }
-  .slang-book-destination-list { height: 84%; gap: .5%; }
-  .slang-book-destination-stamp { width: clamp(24px, 7vw, 34px); }
-  .slang-book-destination-stamp.has-complete-stamp { width: clamp(30px, 8.6vw, 42px); }
-  .slang-book-destination-name { font-size: clamp(6px, 2.2vw, 9px); }
-  .slang-book-back { top: 76%; height: 6%; min-height: 38px; font-size: clamp(8px, 2.7vw, 11px); }
-  .slang-book-back-collection { left: 4%; width: 44%; }
-  .slang-book-back-map { right: 4%; width: 44%; }
-}
-@media (max-height: 500px) and (orientation: landscape) {
-  .slang-book-destinations { top: 72%; height: 16%; padding: .5% 1.25%; }
-  .slang-book-destination-list { height: 82%; }
-  .slang-book-destination-stamp.has-complete-stamp { width: clamp(28px, 4vw, 36px); }
-  .slang-book-back { top: 90%; height: 7%; min-height: 25px; }
-}
+.slang-book-canvas { position: absolute; top: 50%; left: 50%; width: min(100vw, 142.857dvh); height: min(100dvh, 70vw); overflow: hidden; container-type: size; transform: translate(-50%, -50%); }
 @keyframes book-page-rustle {
   0%, 88%, 100% { transform: rotate(0) translateY(0); }
   90% { transform: rotate(-.35deg) translateY(-1px); }
@@ -513,12 +488,26 @@ button { cursor: pointer; }
   94% { transform: rotate(-.16deg) translateY(0); }
   96% { transform: rotate(.08deg) translateY(0); }
 }
+@keyframes book-sheet-out-next {
+  to { transform: rotateY(-82deg); opacity: .15; }
+}
+@keyframes book-sheet-in-next {
+  from { transform: rotateY(82deg); opacity: .15; }
+  to { transform: rotateY(0); opacity: 1; }
+}
+@keyframes book-sheet-out-previous {
+  to { transform: rotateY(82deg); opacity: .15; }
+}
+@keyframes book-sheet-in-previous {
+  from { transform: rotateY(-82deg); opacity: .15; }
+  to { transform: rotateY(0); opacity: 1; }
+}
 @keyframes slang-stamp-lift {
   from { transform: translateY(12px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .slang-book-cover, .slang-book-art, .slang-book-pages, .slang-book-destinations, .slang-book-destination, .slang-book-back { animation: none !important; transition: none; }
+  .slang-book-cover, .slang-book-art, .slang-book-pages, .slang-book-stamp-page, .slang-book-detail-page, .slang-book-destinations, .slang-book-destination, .slang-book-back { animation: none !important; transition: none; }
   .slang-book-stage.is-closed .slang-book-pages, .slang-book-stage.is-closed .slang-book-destinations, .slang-book-stage.is-closed .slang-book-back { opacity: 0; }
 }
 

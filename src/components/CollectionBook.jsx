@@ -13,8 +13,14 @@ const cityImages = {
   mandalay: '/generated/mandalay-transparent.png'
 }
 const destinationStampImages = {
+  naypyitaw: '/generated/naypyitaw-stamp-transparent.png',
   mawlamyine: '/generated/mawlamyine-stamp-transparent.png',
   yangon: '/generated/yangon-stamp-transparent.png'
+}
+const lockedDestinationStampImages = {
+  inle: '/generated/inle-lock-stamp.png',
+  bagan: '/generated/bagan-lock-stamp.png',
+  mandalay: '/generated/mandalay-lock-stamp.png'
 }
 
 export default function CollectionBook() {
@@ -29,11 +35,12 @@ export default function CollectionBook() {
     : defaultDestination
   const [selectedId, setSelectedId] = useState(initialDestination?.id)
   const [bookOpen, setBookOpen] = useState(false)
+  const [pageTurn, setPageTurn] = useState(null)
   const destination = orderedDestinations.find((item) => item.id === selectedId) ?? defaultDestination
   const collected = destination ? collectedCards.includes(destination.id) : false
   const destinationIndex = destinationOrder.indexOf(destination?.id)
   const destinationStampImage = destination ? destinationStampImages[destination.id] : null
-  const hasIllustratedTemplate = destination?.id === 'naypyitaw'
+  const hasIllustratedTemplate = destination?.id === 'naypyitaw' && !destinationStampImage
   const stampImage = destination && !destinationStampImage && !hasIllustratedTemplate ? cityImages[destination.id] : null
 
   useEffect(() => {
@@ -41,39 +48,68 @@ export default function CollectionBook() {
     return () => window.clearTimeout(timer)
   }, [])
 
+  useEffect(() => {
+    if (!pageTurn) return undefined
+
+    const timer = window.setTimeout(() => {
+      if (pageTurn.phase === 'out') {
+        setSelectedId(pageTurn.destination.id)
+        setSelectedDestination(pageTurn.destination)
+        setPageTurn({ ...pageTurn, phase: 'in' })
+      } else {
+        setPageTurn(null)
+      }
+    }, pageTurn.phase === 'out' ? 240 : 360)
+    return () => window.clearTimeout(timer)
+  }, [pageTurn, setSelectedDestination])
+
   const selectDestination = (item) => {
-    if (!item.unlocked) return
-    setSelectedId(item.id)
-    setSelectedDestination(item)
+    if (!item.unlocked || pageTurn || item.id === selectedId) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setSelectedId(item.id)
+      setSelectedDestination(item)
+      return
+    }
+    const currentIndex = destinationOrder.indexOf(selectedId)
+    const nextIndex = destinationOrder.indexOf(item.id)
+    setPageTurn({
+      destination: item,
+      direction: nextIndex > currentIndex ? 'next' : 'previous',
+      phase: 'out'
+    })
   }
 
   return (
     <main className="world-map-screen slang-book-screen">
       <section className={`world-map-stage slang-book-stage ${bookOpen ? 'is-open' : 'is-closed'}`} aria-label="Slang book">
         <img className="world-map-background" src="/continuous-myanmar-storybook-world.png" alt="" />
-        <div className="world-map-brand"><img src="/generated/codex-logo.png" alt="GenZ Slang Codex" /></div>
+        <div className="slang-book-canvas">
+          <div className="world-map-brand"><img src="/generated/codex-logo.png" alt="GenZ Slang Codex" /></div>
 
-        <header className="world-map-profile">
-          <img src="/generated/setting-bar-full.png" alt={`${player.name}, level 4, ${xp} XP, settings and leaderboard`} />
-          <button className="profile-hitbox" onClick={() => setModal('profile')} aria-label="Open profile" />
-          <button className="settings-hitbox" onClick={() => setModal('settings')} aria-label="Settings" />
-          <button className="leaderboard-hitbox" onClick={() => setModal('leaderboard')} aria-label="Leaderboard" />
-        </header>
+          <header className="world-map-profile">
+            <img src="/generated/setting-bar-transparent.png" alt={`${player.name}, level 4, ${xp} XP, settings and leaderboard`} />
+            <button className="profile-hitbox" onClick={() => setModal('profile')} aria-label="Open profile" />
+            <button className="settings-hitbox" onClick={() => setModal('settings')} aria-label="Settings" />
+            <button className="leaderboard-hitbox" onClick={() => setModal('leaderboard')} aria-label="Leaderboard" />
+          </header>
 
-        <h1 className="slang-book-title">Slang Book</h1>
-        <button
-          type="button"
-          className="slang-book-art-toggle"
-          onClick={() => setBookOpen((open) => !open)}
-          aria-label={bookOpen ? 'Close slang book' : 'Open slang book'}
-          aria-expanded={bookOpen}
-        >
-          <img className="slang-book-art" src="/generated/book-underlay-transparent.png" alt="" />
-        </button>
-        <img className="slang-book-cover" src="/generated/closed-book-transparent.png" alt="" aria-hidden="true" />
+          <h1 className="slang-book-title">Slang Book</h1>
+          <button
+            type="button"
+            className="slang-book-art-toggle"
+            onClick={() => setBookOpen((open) => !open)}
+            aria-label={bookOpen ? 'Close slang book' : 'Open slang book'}
+            aria-expanded={bookOpen}
+          >
+            <img className="slang-book-art" src="/generated/book-underlay-transparent.png" alt="" />
+          </button>
+          <img className="slang-book-cover" src="/generated/closed-book-transparent.png" alt="" aria-hidden="true" />
 
-        {destination && (
-          <div className="slang-book-pages">
+          {destination && (
+            <div
+              className={`slang-book-pages ${pageTurn ? `is-turning-${pageTurn.phase}-${pageTurn.direction}` : ''}`}
+              aria-busy={Boolean(pageTurn)}
+            >
             <section className="slang-book-stamp-page" aria-label={`${destination.name} destination stamp`}>
               <p className="slang-book-eyebrow">Destination stamp</p>
               <div className={`slang-book-stamp ${destinationStampImage ? 'has-complete-art' : hasIllustratedTemplate ? 'has-template' : 'is-custom-city'}`} aria-label={`${destination.name} stamp`}>
@@ -90,7 +126,7 @@ export default function CollectionBook() {
                   </>}
               </div>
               {!destinationStampImage && !hasIllustratedTemplate && <div className="slang-book-ribbon">{destination.name}</div>}
-              <span className={`slang-book-number ${destinationStampImage || hasIllustratedTemplate ? 'is-in-art' : ''}`}>{destinationNumbers[destination.id]}</span>
+              <span className={`slang-book-number ${destinationStampImage ? 'is-in-art' : ''}`}>{destinationNumbers[destination.id]}</span>
               <h2>{destination.name}</h2>
               <p className={`slang-book-status ${collected ? '' : 'is-available'}`}>
                 {collected ? '✓ Collected' : 'Destination unlocked'}
@@ -113,17 +149,19 @@ export default function CollectionBook() {
               </p>
               <span className="slang-book-page-number">{destinationIndex + 1}</span>
             </section>
-          </div>
-        )}
+            </div>
+          )}
 
-        <section className="slang-book-destinations" aria-label="Your destinations">
+          <section className="slang-book-destinations" aria-label="Your destinations">
           <h2>Your destinations</h2>
           <div className="slang-book-destination-list">
             {orderedDestinations.map((item) => {
               const isSelected = item.id === destination?.id
               const itemCollected = collectedCards.includes(item.id)
-              const itemStamp = cityImages[item.id]
-              const completeStamp = destinationStampImages[item.id]
+              const isLocked = !item.unlocked
+              const itemStamp = isLocked
+                ? lockedDestinationStampImages[item.id] ?? cityImages[item.id]
+                : cityImages[item.id]
               return (
                 <button
                   key={item.id}
@@ -134,23 +172,24 @@ export default function CollectionBook() {
                   aria-pressed={isSelected}
                   aria-label={`${item.name}${item.unlocked ? itemCollected ? ', collected' : ', unlocked' : ', locked'}`}
                 >
-                  <span className={`slang-book-destination-stamp ${completeStamp ? 'has-complete-stamp' : item.id !== 'naypyitaw' ? 'uses-custom-art' : ''}`}>
-                    <img src={completeStamp ?? itemStamp} alt="" />
-                    {!item.unlocked && <span className="slang-book-lock"><Lock size={12} /></span>}
+                  <span className={`slang-book-destination-stamp ${isLocked ? 'has-full-stamp' : item.id !== 'naypyitaw' ? 'uses-custom-art' : ''}`}>
+                    <img src={itemStamp} alt="" />
                   </span>
+                  {isLocked && <span className="slang-book-lock"><Lock size={12} /></span>}
                   <span className="slang-book-destination-name">{item.name}</span>
                 </button>
               )
             })}
           </div>
-        </section>
+          </section>
 
-        <button className="slang-book-back slang-book-back-collection" onClick={() => setActiveScreen('map')}>
-          <span aria-hidden="true">←</span> Back to collection
-        </button>
-        <button className="slang-book-back slang-book-back-map" onClick={() => setActiveScreen('map')}>
-          <span aria-hidden="true">←</span> Back to map
-        </button>
+          <button className="slang-book-back slang-book-back-collection" onClick={() => setActiveScreen('map')}>
+            <span aria-hidden="true">←</span> Back to collection
+          </button>
+          <button className="slang-book-back slang-book-back-map" onClick={() => setActiveScreen('map')}>
+            <span aria-hidden="true">←</span> Back to map
+          </button>
+        </div>
       </section>
     </main>
   )
