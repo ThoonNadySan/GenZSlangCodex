@@ -19,6 +19,13 @@ export default function AvatarSelection() {
       setProfileNeedsSave(true)
       setAvatarReturnScreen(null)
       setModal('profile')
+      setActiveScreen('map')
+      return
+    }
+    if (avatarReturnScreen === 'settings') {
+      setAvatarReturnScreen(null)
+      setActiveScreen('settings')
+      return
     }
     setActiveScreen('map')
   }
@@ -28,6 +35,11 @@ export default function AvatarSelection() {
       setAvatarReturnScreen(null)
       setModal('profile')
       setActiveScreen('map')
+      return
+    }
+    if (avatarReturnScreen === 'settings') {
+      setAvatarReturnScreen(null)
+      setActiveScreen('settings')
       return
     }
     setActiveScreen('create-account')
