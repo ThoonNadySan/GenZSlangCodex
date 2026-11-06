@@ -1,4 +1,5 @@
 import { ArrowLeft, Check, Lock, LogOut, Pencil, ShieldCheck, Sparkles, Star, KeyRound, UserRoundPen } from 'lucide-react'
+import { useState } from 'react'
 import { useGame } from '../context/GameContext'
 import { AvatarDisplay } from './ui'
 
@@ -12,9 +13,12 @@ const collectionCards = [
 ]
 
 export default function UserProfile() {
-  const { player, setPlayer, xp, setModal, setActiveScreen, setAvatarReturnScreen } = useGame()
+  const { player, setPlayer, xp, setModal, setActiveScreen, setAvatarReturnScreen, profileNeedsSave, setProfileNeedsSave } = useGame()
+  const [savedName, setSavedName] = useState(player.name)
   const level = Math.floor(xp / 100) + 1
   const levelProgress = xp % 100
+  const hasNameChanges = player.name !== savedName
+  const hasChanges = hasNameChanges || profileNeedsSave
 
   const changeAvatar = () => {
     setAvatarReturnScreen('profile')
@@ -49,21 +53,24 @@ export default function UserProfile() {
         <div className="profile-identity">
           <div className="profile-avatar-frame"><AvatarDisplay avatar={player.avatar} /></div>
           <h2>{player.name || 'New Explorer'}</h2>
-          <span className="profile-level">LV 0{level} · Trail explorer</span>
+          <span className="profile-level">LV 0{level}</span>
           <Star className="profile-star" size={18} />
           <button type="button" className="profile-change-avatar" onClick={changeAvatar}><UserRoundPen size={15} /> CHANGE AVATAR</button>
-          <small>{player.avatar.startsWith('/') ? 'Selected avatar' : 'Base explorer'} · Avatar selection →</small>
+          <small>Base Girl · Avatar selection →</small>
+          <small className="profile-avatar-unlock">♙ New avatars unlock at LV 05</small>
         </div>
 
         <div className="profile-details">
           <h3>YOUR DETAILS</h3>
+          <p className="profile-details-intro">A little about the explorer behind the adventure.</p>
           <label htmlFor="profile-name">PLAYER NAME</label>
           <div className="profile-input-wrap"><input id="profile-name" value={player.name} onChange={(event) => setPlayer({ ...player, name: event.target.value })} /><Pencil size={15} /></div>
           <small>Your adventure name · 2-20 characters.</small>
           <label htmlFor="profile-email">EMAIL ADDRESS</label>
           <div className="profile-input-wrap profile-input-muted"><input id="profile-email" value={player.email || 'thiri@example.com'} readOnly /><ShieldCheck size={15} /></div>
+          <small className="profile-email-hint">◉ Your email is your Explorer ID · it stays locked.</small>
           <button type="button" className="profile-password"><KeyRound size={15} /> CHANGE PASSWORD</button>
-          <small>use 8+ characters with letters &amp; numbers</small>
+          <small className="profile-password-hint">▾ Guard your treasure: use 8+ characters with letters &amp; numbers.</small>
           <div className="profile-quest"><span className="profile-quest-icon">★</span><div><b>DAILY QUEST</b><small>Collect 1 new slang stamp today</small></div><strong>+50 XP</strong><em>0 / 1</em></div>
         </div>
 
@@ -86,7 +93,7 @@ export default function UserProfile() {
         <div className="profile-actions">
           <div className="profile-action-buttons">
             <button type="button" onClick={goBack}>← BACK</button>
-            <button type="button" className="profile-save">SAVE CHANGES ✓</button>
+            <button type="button" className={`profile-save ${hasChanges ? 'has-changes' : ''}`} onClick={() => { setSavedName(player.name); setProfileNeedsSave(false) }}>SAVE CHANGES ✓</button>
             <button type="button" onClick={goBack}><LogOut size={14} /> SIGN OUT</button>
           </div>
           <small>No changes yet · Edit your name to save.</small>

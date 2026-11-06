@@ -1,5 +1,44 @@
 import { createContext, useContext, useMemo, useState } from 'react'
 
+const defaultSettings = {
+  music: true,
+  musicVolume: 70,
+  sound: false,
+  soundVolume: 50,
+  hints: true,
+  answerFeedback: true,
+  confirmLeave: false,
+  language: 'English',
+  gameReminders: false
+}
+
+function readSettings() {
+  try {
+    const saved = window.localStorage.getItem('genz-slang-codex-settings')
+    if (!saved) return defaultSettings
+    const parsed = JSON.parse(saved)
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      throw new Error('Saved settings are not a valid object.')
+    }
+    const volume = (value, fallback) => Number.isInteger(value) && value >= 0 && value <= 100 ? value : fallback
+    return {
+      ...defaultSettings,
+      music: typeof parsed.music === 'boolean' ? parsed.music : defaultSettings.music,
+      musicVolume: volume(parsed.musicVolume, defaultSettings.musicVolume),
+      sound: typeof parsed.sound === 'boolean' ? parsed.sound : defaultSettings.sound,
+      soundVolume: volume(parsed.soundVolume, defaultSettings.soundVolume),
+      hints: typeof parsed.hints === 'boolean' ? parsed.hints : defaultSettings.hints,
+      answerFeedback: typeof parsed.answerFeedback === 'boolean' ? parsed.answerFeedback : defaultSettings.answerFeedback,
+      confirmLeave: typeof parsed.confirmLeave === 'boolean' ? parsed.confirmLeave : defaultSettings.confirmLeave,
+      language: parsed.language === 'မြန်မာ' ? 'မြန်မာ' : 'English',
+      gameReminders: typeof parsed.gameReminders === 'boolean' ? parsed.gameReminders : defaultSettings.gameReminders
+    }
+  } catch (error) {
+    console.error('Unable to load saved game settings; using defaults.', error)
+    return defaultSettings
+  }
+}
+
 const initialDestinations = [
   { id: 'yangon', name: 'Yangon', region: 'Lower Myanmar', icon: '🛕', color: '#ffbd69', unlocked: true, slang: 'ချောတယ်' },
   { id: 'mawlamyine', name: 'Mawlamyine', region: 'Mon State', icon: '🌴', color: '#86f0ce', unlocked: true, slang: 'မိုက်တယ်', meaning: 'Cool' },
@@ -24,7 +63,8 @@ export function GameProvider({ children }) {
   const [selectedDestination, setSelectedDestination] = useState(initialDestinations[0])
   const [modal, setModal] = useState(null)
   const [avatarReturnScreen, setAvatarReturnScreen] = useState(null)
-  const [settings, setSettings] = useState({ sound: true, language: 'English' })
+  const [profileNeedsSave, setProfileNeedsSave] = useState(false)
+  const [settings, setSettings] = useState(readSettings)
 
   const openDestination = (destination) => {
     if (!destination.unlocked) return
@@ -50,8 +90,9 @@ export function GameProvider({ children }) {
     activeScreen, setActiveScreen, player, setPlayer, score, setScore, xp, lives, setLives,
     coins, destinations, selectedDestination, setSelectedDestination, collectedCards, modal, setModal,
     avatarReturnScreen, setAvatarReturnScreen,
+    profileNeedsSave, setProfileNeedsSave,
     settings, setSettings, openDestination, reward
-  }), [activeScreen, player, score, xp, lives, coins, destinations, selectedDestination, collectedCards, modal, avatarReturnScreen, settings])
+  }), [activeScreen, player, score, xp, lives, coins, destinations, selectedDestination, collectedCards, modal, avatarReturnScreen, profileNeedsSave, settings])
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>
 }
 

@@ -10,14 +10,22 @@ const avatarOptions = [
 ]
 
 export default function AvatarSelection() {
-  const { player, setPlayer, setActiveScreen, avatarReturnScreen, setAvatarReturnScreen, setModal } = useGame()
+  const { player, setPlayer, setActiveScreen, avatarReturnScreen, setAvatarReturnScreen, setModal, setProfileNeedsSave } = useGame()
   const [selectedAvatar, setSelectedAvatar] = useState(player.avatar.startsWith('/') ? player.avatar : avatarOptions[0].image)
 
   const continueToMap = () => {
     setPlayer({ ...player, avatar: selectedAvatar })
     if (avatarReturnScreen === 'profile') {
+      setProfileNeedsSave(true)
       setAvatarReturnScreen(null)
       setModal('profile')
+      setActiveScreen('map')
+      return
+    }
+    if (avatarReturnScreen === 'settings') {
+      setAvatarReturnScreen(null)
+      setActiveScreen('settings')
+      return
     }
     setActiveScreen('map')
   }
@@ -27,6 +35,11 @@ export default function AvatarSelection() {
       setAvatarReturnScreen(null)
       setModal('profile')
       setActiveScreen('map')
+      return
+    }
+    if (avatarReturnScreen === 'settings') {
+      setAvatarReturnScreen(null)
+      setActiveScreen('settings')
       return
     }
     setActiveScreen('create-account')
