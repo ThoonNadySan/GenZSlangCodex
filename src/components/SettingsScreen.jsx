@@ -14,7 +14,7 @@ import {
   UserRoundPen,
   Volume2
 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useGame } from '../context/GameContext'
 import { AvatarDisplay } from './ui'
 
@@ -88,6 +88,7 @@ export default function SettingsScreen() {
     setAvatarReturnScreen
   } = useGame()
   const [infoDialog, setInfoDialog] = useState(null)
+  const [signOutOpen, setSignOutOpen] = useState(false)
   const [saveMessage, setSaveMessage] = useState('')
   const level = Math.floor(xp / 100) + 1
   const musicVolume = settings.musicVolume ?? 70
@@ -109,6 +110,14 @@ export default function SettingsScreen() {
     setAvatarReturnScreen('settings')
     setActiveScreen('avatar')
   }
+  useEffect(() => {
+    if (!signOutOpen) return undefined
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setSignOutOpen(false)
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [signOutOpen])
 
   return (
     <main className="settings-page account-page">
@@ -207,7 +216,7 @@ export default function SettingsScreen() {
             <button type="button" className="settings-save" onClick={saveSettings}>
               SAVE SETTINGS <Check size={14} />
             </button>
-            <button type="button" className="settings-signout" onClick={() => setActiveScreen('welcome')}>
+            <button type="button" className="settings-signout" onClick={() => setSignOutOpen(true)}>
               <LogOut size={14} /> SIGN OUT
             </button>
           </footer>
@@ -230,6 +239,25 @@ export default function SettingsScreen() {
             ) : (
               <p className="settings-privacy-copy">Your adventure profile details are shown only in this game. Settings are saved in this browser, and no account or privacy service is connected yet.</p>
             )}
+          </section>
+        </div>
+      )}
+
+      {signOutOpen && (
+        <div className="settings-signout-backdrop" role="presentation" onMouseDown={(event) => {
+          if (event.target === event.currentTarget) setSignOutOpen(false)
+        }}>
+          <section className="settings-signout-dialog" role="dialog" aria-modal="true" aria-labelledby="settings-signout-title" aria-describedby="settings-signout-description">
+            <p className="settings-signout-kicker">Adventure pause</p>
+            <div className="settings-signout-monkey-frame" aria-hidden="true">
+              <img className="settings-signout-monkey" src="/generated/leaderboard-monkey-sticker.png" alt="" />
+            </div>
+            <h2 id="settings-signout-title">Leaving your adventure?</h2>
+            <p id="settings-signout-description">Are you sure you want to sign out?</p>
+            <div className="settings-signout-actions">
+              <button type="button" className="settings-signout-stay" onClick={() => setSignOutOpen(false)}>STAY HERE</button>
+              <button type="button" className="settings-signout-confirm" onClick={() => setActiveScreen('welcome')}>SIGN OUT</button>
+            </div>
           </section>
         </div>
       )}

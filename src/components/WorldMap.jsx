@@ -21,6 +21,10 @@ export default function WorldMap() {
   const [castlePopped, setCastlePopped] = useState(false)
   const byId = Object.fromEntries(destinations.map((destination) => [destination.id, destination]))
   const castleUnlocked = collectedCards.length === 6
+  const stickerMatchesProgress = collectedCards.length === 2
+    && collectedCards.includes('naypyitaw')
+    && collectedCards.includes('mawlamyine')
+    && destinations.every((destination) => destination.unlocked === ['yangon', 'mawlamyine', 'naypyitaw'].includes(destination.id))
 
   const visit = (destination) => {
     if (!destination.unlocked) {
@@ -53,7 +57,7 @@ export default function WorldMap() {
           <button className="leaderboard-hitbox" onClick={() => setModal('leaderboard')} aria-label="Leaderboard" />
         </header>
 
-        <button className={`castle-sticker ${castleUnlocked ? '' : 'is-locked'} ${castlePopped ? 'is-popped' : ''}`} onClick={() => { setCastlePopped(false); window.setTimeout(() => { setCastlePopped(true); openCastle() }, 20) }} aria-label="Open AI Castle" aria-disabled={!castleUnlocked}><img src="/generated/castle-sticker.png" alt="AI Castle illustration" /></button>
+        <button className={`castle-sticker ${castleUnlocked ? '' : 'is-locked'} ${castlePopped ? 'is-popped' : ''}`} onClick={() => { setCastlePopped(false); window.setTimeout(() => { setCastlePopped(true); openCastle() }, 20) }} aria-label="Open AI Castle" aria-disabled={!castleUnlocked}><img src="/generated/floating-castle-academy-icon.png" alt="AI Castle illustration" /></button>
         <button className={`map-castle-card ${castleUnlocked ? '' : 'is-locked'}`} onClick={openCastle} aria-label="Open AI Castle" aria-disabled={!castleUnlocked}><strong><Lock size={13} />AI Castle</strong><small>Complete all 6 destinations<br />to unlock</small><i><span /><span /><span /><span /><span /><span /></i></button>
         <section className={`map-collection-card ${collectionOpen ? 'is-open' : 'is-closed'}`} aria-label="Slang Collection">
           <button className="collection-toggle" onClick={() => setCollectionOpen((open) => !open)} aria-expanded={collectionOpen}>
@@ -68,14 +72,17 @@ export default function WorldMap() {
           </div>}
         </section>
 
-        <img className="map-route" src="/generated/worldmap-destination-route-reference.png" alt="" aria-hidden="true" />
-        <div className="map-stops">
+        {stickerMatchesProgress
+          ? <img className="map-sticker" src="/Myanmar adventure map.png" alt="Adventure route with completed, current, and locked destination markers" />
+          : <img className="map-route" src="/generated/worldmap-destination-route-reference.png" alt="" aria-hidden="true" />}
+        <div className={`map-stops ${stickerMatchesProgress ? 'map-stops-sticker' : ''}`}>
           {mapStops.map(({ id, number, className }) => {
             const destination = byId[id]
             if (!destination) return null
             const current = id === 'yangon'
             return <button key={id} className={`map-stop ${className} ${current ? 'current' : destination.unlocked ? 'unlocked' : 'locked'} ${poppedStop === id ? 'is-popped' : ''}`} onClick={() => { setPoppedStop(null); window.setTimeout(() => { setPoppedStop(id); visit(destination) }, 20) }} aria-label={`${destination.name}, ${current ? 'current' : destination.unlocked ? 'completed' : 'locked'}`}>
-              <span className="map-stop-number">{number}</span>{current ? <span className="map-stop-status map-stop-play">▶</span> : destination.unlocked ? <Check className="map-stop-status" size={17} /> : <Lock className="map-stop-status" size={16} />}<strong>{destination.name}</strong><small>{current ? 'YOU ARE HERE · START' : destination.unlocked ? 'COMPLETED' : 'LOCKED'}</small>
+              {stickerMatchesProgress && <span className="map-stop-pop" aria-hidden="true" />}
+              {!stickerMatchesProgress && <><span className="map-stop-number">{number}</span>{current ? <span className="map-stop-status map-stop-play">▶</span> : destination.unlocked ? <Check className="map-stop-status" size={17} /> : <Lock className="map-stop-status" size={16} />}<strong>{destination.name}</strong><small>{current ? 'YOU ARE HERE · START' : destination.unlocked ? 'COMPLETED' : 'LOCKED'}</small></>}
             </button>
           })}
         </div>
