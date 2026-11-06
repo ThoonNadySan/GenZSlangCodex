@@ -29,7 +29,7 @@ export default function CreateAccount() {
       return
     }
     setPlayer({ ...player, name: form.name.trim(), email: form.email.trim() })
-    setActiveScreen('avatar')
+    setActiveScreen('account-created')
   }
 
   return (
