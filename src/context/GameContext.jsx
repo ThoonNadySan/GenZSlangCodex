@@ -69,7 +69,7 @@ export function GameProvider({ children }) {
   const openDestination = (destination) => {
     if (!destination.unlocked) return
     setSelectedDestination(destination)
-    setActiveScreen('assembly')
+    setActiveScreen(destination.id === 'naypyitaw' ? 'naypyitaw-intro' : 'assembly')
   }
   const unlockNext = () => {
     setDestinations((items) => {
