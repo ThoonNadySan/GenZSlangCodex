@@ -57,7 +57,104 @@ const spellingQuestions = [
     ],
     spellingOrder: ['consonant', 'vowel', 'tone'],
     initialOrder: ['vowel', 'consonant', 'tone']
+  },
+  {
+    word: 'Car',
+    answer: 'ကား',
+    image: '/CarLogoDes1.png',
+    artClass: 'is-car',
+    parts: [
+      { id: 'consonant', label: 'Consonant', value: 'က', tileValue: 'က' },
+      { id: 'vowel', label: 'Vowel', value: 'ာ', tileValue: '◌ာ' },
+      { id: 'tone', label: 'Tone', value: 'း', tileValue: '◌း' }
+    ],
+    spellingOrder: ['consonant', 'vowel', 'tone'],
+    initialOrder: ['vowel', 'consonant', 'tone']
+  },
+  {
+    word: 'Bamboo',
+    answer: 'ဝါး',
+    image: '/bambooLogoDes1.png',
+    artClass: 'is-bamboo',
+    parts: [
+      { id: 'consonant', label: 'Consonant', value: 'ဝ', tileValue: 'ဝ' },
+      { id: 'vowel', label: 'Vowel', value: 'ာ', tileValue: '◌ာ' },
+      { id: 'tone', label: 'Tone', value: 'း', tileValue: '◌း' }
+    ],
+    spellingOrder: ['consonant', 'vowel', 'tone'],
+    initialOrder: ['vowel', 'consonant', 'tone']
+  },
+  {
+    word: 'Ear',
+    answer: 'နား',
+    image: '/EarLogoDes1.png',
+    artClass: 'is-ear',
+    parts: [
+      { id: 'consonant', label: 'Consonant', value: 'န', tileValue: 'န' },
+      { id: 'vowel', label: 'Vowel', value: 'ာ', tileValue: '◌ာ' },
+      { id: 'tone', label: 'Tone', value: 'း', tileValue: '◌း' }
+    ],
+    spellingOrder: ['consonant', 'vowel', 'tone'],
+    initialOrder: ['vowel', 'consonant', 'tone']
+  },
+  {
+    word: 'Eat',
+    answer: 'စား',
+    image: '/EatLogoDes1.png',
+    artClass: 'is-eat',
+    parts: [
+      { id: 'consonant', label: 'Consonant', value: 'စ', tileValue: 'စ' },
+      { id: 'vowel', label: 'Vowel', value: 'ာ', tileValue: '◌ာ' },
+      { id: 'tone', label: 'Tone', value: 'း', tileValue: '◌း' }
+    ],
+    spellingOrder: ['consonant', 'vowel', 'tone'],
+    initialOrder: ['vowel', 'consonant', 'tone']
+  },
+  {
+    word: 'Son',
+    answer: 'သား',
+    image: '/SonLogoDes1.png',
+    artClass: 'is-son',
+    parts: [
+      { id: 'consonant', label: 'Consonant', value: 'သ', tileValue: 'သ' },
+      { id: 'vowel', label: 'Vowel', value: 'ာ', tileValue: '◌ာ' },
+      { id: 'tone', label: 'Tone', value: 'း', tileValue: '◌း' }
+    ],
+    spellingOrder: ['consonant', 'vowel', 'tone'],
+    initialOrder: ['vowel', 'consonant', 'tone']
+  },
+  {
+    word: 'Dragon',
+    answer: 'နဂါး',
+    image: '/DragonLogoDes1.png',
+    artClass: 'is-dragon',
+    parts: [
+      { id: 'consonant-na', label: 'Consonant', value: 'န', tileValue: 'န' },
+      { id: 'consonant-ga', label: 'Consonant', value: 'ဂ', tileValue: 'ဂ' },
+      { id: 'vowel', label: 'Vowel', value: 'ာ', tileValue: '◌ာ' },
+      { id: 'tone', label: 'Tone', value: 'း', tileValue: '◌း' }
+    ],
+    spellingOrder: ['consonant-na', 'consonant-ga', 'vowel', 'tone'],
+    initialOrder: ['consonant-ga', 'consonant-na', 'vowel', 'tone']
   }
+]
+const successConfettiPieces = [
+  [-46, 74, -120, 0, '#f15b43'],
+  [-40, 108, 95, 35, '#f4b942'],
+  [-34, 88, 185, 70, '#50a876'],
+  [-28, 122, 265, 105, '#52b9ca'],
+  [-22, 96, 345, 140, '#d76bb3'],
+  [-16, 116, 140, 20, '#f4b942'],
+  [-10, 82, 230, 55, '#f15b43'],
+  [-4, 104, 320, 90, '#50a876'],
+  [4, 92, 40, 125, '#52b9ca'],
+  [10, 118, 130, 15, '#d76bb3'],
+  [16, 78, 220, 50, '#f4b942'],
+  [22, 112, 310, 85, '#f15b43'],
+  [28, 90, 30, 120, '#50a876'],
+  [34, 124, 120, 10, '#52b9ca'],
+  [40, 84, 210, 45, '#d76bb3'],
+  [46, 106, 300, 80, '#f4b942']
 ]
 
 export default function AssemblyChallenge() {
@@ -186,7 +283,7 @@ function NaypyitawSpellingBuilder() {
               <b className="spelling-swap-count">{swapCount} {swapCount === 1 ? 'swap' : 'swaps'}</b>
             </div>
             <button type="button" className="spelling-shuffle" onClick={readyToCheck ? resetTiles : shuffleTiles} disabled={showSuccess}><RotateCcw size={12} /> {readyToCheck ? 'Reset' : 'Shuffle'}</button>
-            <div className="spelling-tiles">
+            <div className={`spelling-tiles ${question.parts.length === 4 ? 'is-four-part' : ''}`}>
               {tileOrder.map((id, index) => {
                 const part = question.parts.find((item) => item.id === id)
                 return <button
@@ -210,7 +307,22 @@ function NaypyitawSpellingBuilder() {
         <footer className={`spelling-card-footer ${showSuccess ? 'has-success' : ''}`}>
           {showSuccess ? (
             <div className="spelling-success-panel" role="status">
-              <div className="spelling-success-monkey spelling-monkey"><img src="/MonkeyDes1.png" alt="" /></div>
+              <div className="spelling-celebration-confetti" aria-hidden="true">
+                {successConfettiPieces.map(([x, rise, rotation, delay, color], index) => (
+                  <span
+                    className="spelling-confetti-piece"
+                    key={index}
+                    style={{
+                      '--confetti-x': `${x}%`,
+                      '--confetti-rise': `${rise}px`,
+                      '--confetti-rotation': `${rotation}deg`,
+                      '--confetti-delay': `${delay}ms`,
+                      '--confetti-color': color
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="spelling-success-monkey spelling-monkey"><img src="/MonkeyDes1-success-sticker.png" alt="" /></div>
               <div className="spelling-success-copy">
                 <small>SLANG BUDDY · ✓ CORRECT</small>
                 <p>Great build! 🎉 You spelled <strong lang="my">{question.answer}</strong> correctly!</p>
