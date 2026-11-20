@@ -69,11 +69,11 @@ export function GameProvider({ children }) {
   const openDestination = (destination) => {
     if (!destination.unlocked) return
     setSelectedDestination(destination)
-<<<<<<< HEAD
-    setActiveScreen(destination.id === 'bagan' ? 'bagan-intro' : 'assembly')
-=======
-    setActiveScreen(destination.id === 'naypyitaw' ? 'naypyitaw-intro' : 'assembly')
->>>>>>> 93796c5c8d46e2aae9df61f2b758d1eccd64d133
+    const destinationIntro = {
+      bagan: 'bagan-intro',
+      naypyitaw: 'naypyitaw-intro'
+    }
+    setActiveScreen(destinationIntro[destination.id] || 'assembly')
   }
   const unlockNext = () => {
     setDestinations((items) => {
