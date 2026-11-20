@@ -82,7 +82,7 @@ export default function CollectionBook() {
   return (
     <main className="world-map-screen slang-book-screen">
       <section className={`world-map-stage slang-book-stage ${bookOpen ? 'is-open' : 'is-closed'}`} aria-label="Slang book">
-        <img className="world-map-background" src="/continuous-myanmar-storybook-world.png" alt="" />
+        <img className="world-map-background" src="/Continuous Myanmar fantasy world · Seven cities and separate AI Castle 1.png" alt="" />
         <div className="slang-book-canvas">
           <div className="world-map-brand"><img src="/generated/codex-logo.png" alt="GenZ Slang Codex" /></div>
 

@@ -137,7 +137,7 @@ export default function Leaderboard() {
           })}
         </section>
 
-        <section className="leaderboard-list" aria-labelledby="leaderboard-list-title">
+        <section className="leaderboard-list" aria-labelledby="leaderboard-list-title" tabIndex={0}>
           <div className="leaderboard-list-heading">
             <h2 id="leaderboard-list-title">Top explorers <Trophy size={14} /></h2>
             <span>{periods.find((item) => item.id === period)?.label}</span>

@@ -47,7 +47,7 @@ export default function WorldMap() {
   return (
     <main className="world-map-screen">
       <section className="world-map-stage" aria-label="GenZ Slang Codex world map">
-        <img className="world-map-background" src="/continuous-myanmar-storybook-world.png" alt="Illustrated Myanmar jungle world map" />
+        <img className="world-map-background" src="/Continuous Myanmar fantasy world · Seven cities and separate AI Castle 1.png" alt="Illustrated Myanmar jungle world map" />
         <div className="world-map-brand"><img src="/generated/codex-logo.png" alt="GenZ Slang Codex" /></div>
 
         <header className="world-map-profile">

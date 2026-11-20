@@ -31,7 +31,7 @@ export default function WelcomeScreen() {
         </header>
 
         <div className="welcome-map">
-          <img src="/continuous-myanmar-storybook-world.png" alt="Illustrated Myanmar world map" />
+          <img src="/Continuous Myanmar fantasy world · Seven cities and separate AI Castle 1.png" alt="Illustrated Myanmar world map" />
           <div className="welcome-monkey-frame">
             <img className="welcome-monkey" src="/welcome-monkey.png" alt="Friendly monkey guide" />
           </div>

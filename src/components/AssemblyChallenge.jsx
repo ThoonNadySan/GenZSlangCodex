@@ -1,10 +1,155 @@
 import { useState } from 'react'
-import { Check, HelpCircle, RotateCcw } from 'lucide-react'
+import { ArrowLeft, Check, HelpCircle, RotateCcw } from 'lucide-react'
 import { useGame } from '../context/GameContext'
 import { Button, Modal, TopBar } from './ui'
 
-const parts = [{ id: 'consonant', label: 'Consonant', value: 'မ' }, { id: 'vowel', label: 'Vowel', value: 'ို' }, { id: 'tone', label: 'Tone mark', value: 'က်' }]
+const parts = [
+  { id: 'consonant', label: 'Consonant', value: 'မ', tileValue: 'မ' },
+  { id: 'vowel', label: 'Vowel', value: 'ီ', tileValue: '◌ီ' },
+  { id: 'tone', label: 'Tone', value: 'း', tileValue: '◌း' }
+]
+const spellingOrder = ['consonant', 'vowel', 'tone']
+const initialSpellingOrder = ['vowel', 'consonant', 'tone']
+
 export default function AssemblyChallenge() {
+  const { selectedDestination } = useGame()
+  return selectedDestination.id === 'naypyitaw'
+    ? <NaypyitawSpellingBuilder />
+    : <LegacyAssemblyChallenge />
+}
+
+function NaypyitawSpellingBuilder() {
+  const { setModal, setActiveScreen: navigate } = useGame()
+  const [tileOrder, setTileOrder] = useState(initialSpellingOrder)
+  const [selectedTile, setSelectedTile] = useState(null)
+  const [swapCount, setSwapCount] = useState(0)
+  const [feedback, setFeedback] = useState('')
+  const [showHint, setShowHint] = useState(false)
+  const readyToCheck = tileOrder.every((part, index) => part === spellingOrder[index])
+
+  const swapTiles = (index) => {
+    if (selectedTile === null) {
+      setSelectedTile(index)
+      return
+    }
+    if (selectedTile === index) {
+      setSelectedTile(null)
+      return
+    }
+    setTileOrder((current) => {
+      const next = [...current]
+      ;[next[selectedTile], next[index]] = [next[index], next[selectedTile]]
+      return next
+    })
+    setSwapCount((count) => count + 1)
+    setSelectedTile(null)
+    setFeedback('')
+  }
+
+  const shuffleTiles = () => {
+    const shuffled = [...spellingOrder]
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+      const other = Math.floor(Math.random() * (index + 1))
+      ;[shuffled[index], shuffled[other]] = [shuffled[other], shuffled[index]]
+    }
+    if (shuffled.every((part, index) => part === spellingOrder[index])) {
+      ;[shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]]
+    }
+    setTileOrder(shuffled)
+    setSelectedTile(null)
+    setFeedback('')
+  }
+
+  const resetTiles = () => {
+    setTileOrder(initialSpellingOrder)
+    setSelectedTile(null)
+    setSwapCount(0)
+    setFeedback('')
+  }
+
+  const checkAnswer = () => {
+    setFeedback(readyToCheck ? 'Correct! မီး (mee) — Fire!' : 'Not quite yet. Swap the tiles into the target order.')
+  }
+
+  return <main className="spelling-page">
+    <section className="spelling-scene" aria-label="Naypyitaw spelling builder">
+      <img className="spelling-world-background" src="/Continuous Myanmar fantasy world · Seven cities and separate AI Castle 1.png" alt="" aria-hidden="true" />
+      <img className="spelling-brand" src="/generated/codex-logo.png" alt="GenZ Slang Codex" />
+      <button type="button" className="spelling-scene-back" onClick={() => navigate('map')} aria-label="Back to world map"><ArrowLeft size={18} /></button>
+      <div className="spelling-timer" aria-label="Timer">00:00</div>
+      <header className="world-map-profile spelling-player-bar">
+        <img src="/generated/setting-bar-transparent.png" alt="Player profile, XP, settings and leaderboard" />
+        <button className="profile-hitbox" type="button" onClick={() => setModal('profile')} aria-label="Open profile" />
+        <button className="settings-hitbox" type="button" onClick={() => navigate('settings')} aria-label="Settings" />
+        <button className="leaderboard-hitbox" type="button" onClick={() => setModal('leaderboard')} aria-label="Leaderboard" />
+      </header>
+
+      <section className="spelling-card">
+        <header className="spelling-card-heading">
+          <p>NAYPYITAW · 1 / 10</p>
+          <div className="spelling-heading-row">
+            <h1>Spelling Builder</h1>
+            <div className="spelling-monkey" aria-hidden="true"><img src="/MonkeyDes1.png" alt="" /></div>
+          </div>
+          <div className="spelling-progress" aria-label="Question 1 of 10">
+            {Array.from({ length: 10 }, (_, step) => <span className={step === 0 ? 'is-current' : ''} key={step} />)}
+          </div>
+        </header>
+
+        <div className="spelling-main">
+          <section className="spelling-word-card" aria-label="Word to spell">
+            <p>SPELL IT IN BURMESE</p>
+            <h2>Fire</h2>
+            <div className="spelling-flame-art"><img src="/firelogoDes1.png" alt="Flame illustration" /></div>
+            <span>3 spelling parts · 1 word</span>
+          </section>
+
+          <section className="spelling-board" aria-label="Arrange the Burmese spelling parts">
+            <div className="spelling-board-top">
+              <div>
+                <p>{readyToCheck ? 'READY TO CHECK' : 'TAP TO SWAP'}</p>
+                <span>{readyToCheck ? 'The tiles are arranged. Check your spelling.' : 'Tap one tile, then another to swap their positions.'}</span>
+              </div>
+              <b className="spelling-swap-count">{swapCount} {swapCount === 1 ? 'swap' : 'swaps'}</b>
+            </div>
+            <button type="button" className="spelling-shuffle" onClick={readyToCheck ? resetTiles : shuffleTiles}><RotateCcw size={12} /> {readyToCheck ? 'Reset' : 'Shuffle'}</button>
+            <div className="spelling-tiles">
+              {tileOrder.map((id, index) => {
+                const part = parts.find((item) => item.id === id)
+                return <button
+                  type="button"
+                  key={id}
+                  className={`spelling-tile spelling-tile-${id} ${selectedTile === index ? 'is-selected' : ''}`}
+                  onClick={() => swapTiles(index)}
+                  aria-pressed={selectedTile === index}
+                  aria-label={`${part.label}: ${part.value}`}
+                >
+                  <strong lang="my">{part.tileValue}</strong>
+                  <small>{part.label === 'Tone mark' ? 'TONE' : part.label.toUpperCase()}</small>
+                </button>
+              })}
+            </div>
+            {feedback && <p className={`spelling-feedback ${feedback.startsWith('Correct') ? 'is-correct' : ''}`} role="status">{feedback}</p>}
+          </section>
+        </div>
+
+        <footer className="spelling-card-footer">
+          <button type="button" className="spelling-hint" onClick={() => setShowHint((visible) => !visible)}>{showHint ? 'Hide hint' : 'Get a hint'}</button>
+          <div className="spelling-target-order">
+            <small>{readyToCheck ? 'YOUR SPELLING' : 'TARGET ORDER'}</small>
+            {readyToCheck
+              ? <strong lang="my">မီး</strong>
+              : <span>Consonant <b>→</b> vowel <b>→</b> tone</span>}
+            {showHint && !readyToCheck && <strong lang="my">မ → ီ → ◌း</strong>}
+          </div>
+          <button type="button" className="spelling-check" onClick={checkAnswer}><span>Check answer</span><Check size={15} /></button>
+        </footer>
+      </section>
+    </section>
+  </main>
+}
+
+function LegacyAssemblyChallenge() {
   const { selectedDestination, setActiveScreen, reward, settings } = useGame()
   const [selected, setSelected] = useState({ consonant: '', vowel: '', tone: '' })
   const [feedback, setFeedback] = useState(null)
