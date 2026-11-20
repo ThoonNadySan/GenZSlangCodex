@@ -2,6 +2,8 @@ import { useGame } from './context/GameContext'
 import WelcomeScreen from './components/WelcomeScreen'
 import WorldMap from './components/WorldMap'
 import AssemblyChallenge from './components/AssemblyChallenge'
+import Destination5Bagan from './components/Destination5Bagan'
+import BaganIntroduction from './components/BaganIntroduction'
 import CastleChat from './components/CastleChat'
 import CollectionBook from './components/CollectionBook'
 import SettingsScreen from './components/SettingsScreen'
@@ -15,7 +17,7 @@ import AccountCreated from './components/AccountCreated'
 
 export default function App() {
   const { activeScreen, modal } = useGame()
-  const screens = { welcome: <WelcomeScreen />, signin: <SignInScreen />, 'create-account': <CreateAccount />, 'account-created': <AccountCreated />, avatar: <AvatarSelection />, map: <WorldMap />, settings: <SettingsScreen />, assembly: <AssemblyChallenge />, castle: <CastleChat />, collection: <CollectionBook /> }
+  const screens = { welcome: <WelcomeScreen />, signin: <SignInScreen />, 'create-account': <CreateAccount />, 'account-created': <AccountCreated />, avatar: <AvatarSelection />, map: <WorldMap />, settings: <SettingsScreen />, assembly: <AssemblyChallenge />, 'bagan-intro': <BaganIntroduction />, bagan: <Destination5Bagan />, castle: <CastleChat />, collection: <CollectionBook /> }
   const modals = { leaderboard: <Leaderboard />, certificate: <CertificateView />, profile: <UserProfile /> }
   return <div className="min-h-screen">{screens[activeScreen] || screens.welcome}{modal && modals[modal]}</div>
 }
