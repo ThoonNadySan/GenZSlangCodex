@@ -10,6 +10,28 @@ const parts = [
 ]
 const spellingOrder = ['consonant', 'vowel', 'tone']
 const initialSpellingOrder = ['vowel', 'consonant', 'tone']
+const spellingQuestions = [
+  {
+    word: 'Fire',
+    answer: 'မီး',
+    image: '/firelogoDes1.png',
+    parts,
+    spellingOrder,
+    initialOrder: initialSpellingOrder
+  },
+  {
+    word: 'Umbrella',
+    answer: 'ထီး',
+    image: '/UmbrellaLogoDes1.png',
+    parts: [
+      { id: 'consonant', label: 'Consonant', value: 'ထ', tileValue: 'ထ' },
+      { id: 'vowel', label: 'Vowel', value: 'ီ', tileValue: '◌ီ' },
+      { id: 'tone', label: 'Tone', value: 'း', tileValue: '◌း' }
+    ],
+    spellingOrder: ['consonant', 'vowel', 'tone'],
+    initialOrder: ['vowel', 'consonant', 'tone']
+  }
+]
 
 export default function AssemblyChallenge() {
   const { selectedDestination } = useGame()
@@ -20,14 +42,18 @@ export default function AssemblyChallenge() {
 
 function NaypyitawSpellingBuilder() {
   const { setModal, setActiveScreen: navigate } = useGame()
+  const [questionIndex, setQuestionIndex] = useState(0)
   const [tileOrder, setTileOrder] = useState(initialSpellingOrder)
   const [selectedTile, setSelectedTile] = useState(null)
   const [swapCount, setSwapCount] = useState(0)
   const [feedback, setFeedback] = useState('')
   const [showHint, setShowHint] = useState(false)
-  const readyToCheck = tileOrder.every((part, index) => part === spellingOrder[index])
+  const [showSuccess, setShowSuccess] = useState(false)
+  const question = spellingQuestions[questionIndex]
+  const readyToCheck = tileOrder.every((part, index) => part === question.spellingOrder[index])
 
   const swapTiles = (index) => {
+    if (showSuccess) return
     if (selectedTile === null) {
       setSelectedTile(index)
       return
@@ -47,12 +73,13 @@ function NaypyitawSpellingBuilder() {
   }
 
   const shuffleTiles = () => {
-    const shuffled = [...spellingOrder]
+    if (showSuccess) return
+    const shuffled = [...question.spellingOrder]
     for (let index = shuffled.length - 1; index > 0; index -= 1) {
       const other = Math.floor(Math.random() * (index + 1))
       ;[shuffled[index], shuffled[other]] = [shuffled[other], shuffled[index]]
     }
-    if (shuffled.every((part, index) => part === spellingOrder[index])) {
+    if (shuffled.every((part, index) => part === question.spellingOrder[index])) {
       ;[shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]]
     }
     setTileOrder(shuffled)
@@ -61,14 +88,32 @@ function NaypyitawSpellingBuilder() {
   }
 
   const resetTiles = () => {
-    setTileOrder(initialSpellingOrder)
+    if (showSuccess) return
+    setTileOrder(question.initialOrder)
     setSelectedTile(null)
     setSwapCount(0)
     setFeedback('')
   }
 
   const checkAnswer = () => {
-    setFeedback(readyToCheck ? 'Correct! မီး (mee) — Fire!' : 'Not quite yet. Swap the tiles into the target order.')
+    if (showSuccess) return
+    if (!readyToCheck) {
+      setFeedback('Not quite yet. Swap the tiles into the target order.')
+      return
+    }
+    setFeedback('')
+    setShowSuccess(true)
+  }
+
+  const continueChallenge = () => {
+    if (questionIndex !== 0 || !showSuccess) return
+    setQuestionIndex(1)
+    setTileOrder(spellingQuestions[1].initialOrder)
+    setSelectedTile(null)
+    setSwapCount(0)
+    setFeedback('')
+    setShowHint(false)
+    setShowSuccess(false)
   }
 
   return <main className="spelling-page">
@@ -84,24 +129,24 @@ function NaypyitawSpellingBuilder() {
         <button className="leaderboard-hitbox" type="button" onClick={() => setModal('leaderboard')} aria-label="Leaderboard" />
       </header>
 
-      <section className="spelling-card">
+      <section className={`spelling-card ${showSuccess ? 'has-success' : ''}`}>
         <header className="spelling-card-heading">
-          <p>NAYPYITAW · 1 / 10</p>
+        <p>NAYPYITAW · {questionIndex + 1} / 10</p>
           <div className="spelling-heading-row">
             <h1>Spelling Builder</h1>
             <div className="spelling-monkey" aria-hidden="true"><img src="/MonkeyDes1.png" alt="" /></div>
           </div>
-          <div className="spelling-progress" aria-label="Question 1 of 10">
-            {Array.from({ length: 10 }, (_, step) => <span className={step === 0 ? 'is-current' : ''} key={step} />)}
+        <div className="spelling-progress" aria-label={`Question ${questionIndex + 1} of 10`}>
+          {Array.from({ length: 10 }, (_, step) => <span className={step === questionIndex ? 'is-current' : step < questionIndex ? 'is-complete' : ''} key={step} />)}
           </div>
         </header>
 
         <div className="spelling-main">
           <section className="spelling-word-card" aria-label="Word to spell">
             <p>SPELL IT IN BURMESE</p>
-            <h2>Fire</h2>
-            <div className="spelling-flame-art"><img src="/firelogoDes1.png" alt="Flame illustration" /></div>
-            <span>3 spelling parts · 1 word</span>
+            <h2>{question.word}</h2>
+            <div className={`spelling-art ${questionIndex === 1 ? 'is-umbrella' : ''}`}><img src={question.image} alt={`${question.word} illustration`} /></div>
+            <span>{question.parts.length} spelling parts · 1 word</span>
           </section>
 
           <section className="spelling-board" aria-label="Arrange the Burmese spelling parts">
@@ -112,15 +157,16 @@ function NaypyitawSpellingBuilder() {
               </div>
               <b className="spelling-swap-count">{swapCount} {swapCount === 1 ? 'swap' : 'swaps'}</b>
             </div>
-            <button type="button" className="spelling-shuffle" onClick={readyToCheck ? resetTiles : shuffleTiles}><RotateCcw size={12} /> {readyToCheck ? 'Reset' : 'Shuffle'}</button>
+            <button type="button" className="spelling-shuffle" onClick={readyToCheck ? resetTiles : shuffleTiles} disabled={showSuccess}><RotateCcw size={12} /> {readyToCheck ? 'Reset' : 'Shuffle'}</button>
             <div className="spelling-tiles">
               {tileOrder.map((id, index) => {
-                const part = parts.find((item) => item.id === id)
+                const part = question.parts.find((item) => item.id === id)
                 return <button
                   type="button"
                   key={id}
                   className={`spelling-tile spelling-tile-${id} ${selectedTile === index ? 'is-selected' : ''}`}
                   onClick={() => swapTiles(index)}
+                  disabled={showSuccess}
                   aria-pressed={selectedTile === index}
                   aria-label={`${part.label}: ${part.value}`}
                 >
@@ -133,16 +179,29 @@ function NaypyitawSpellingBuilder() {
           </section>
         </div>
 
-        <footer className="spelling-card-footer">
-          <button type="button" className="spelling-hint" onClick={() => setShowHint((visible) => !visible)}>{showHint ? 'Hide hint' : 'Get a hint'}</button>
-          <div className="spelling-target-order">
-            <small>{readyToCheck ? 'YOUR SPELLING' : 'TARGET ORDER'}</small>
-            {readyToCheck
-              ? <strong lang="my">မီး</strong>
-              : <span>Consonant <b>→</b> vowel <b>→</b> tone</span>}
-            {showHint && !readyToCheck && <strong lang="my">မ → ီ → ◌း</strong>}
-          </div>
-          <button type="button" className="spelling-check" onClick={checkAnswer}><span>Check answer</span><Check size={15} /></button>
+        <footer className={`spelling-card-footer ${showSuccess ? 'has-success' : ''}`}>
+          {showSuccess ? (
+            <div className="spelling-success-panel" role="status">
+              <div className="spelling-success-monkey spelling-monkey"><img src="/MonkeyDes1.png" alt="" /></div>
+              <div className="spelling-success-copy">
+                <small>SLANG BUDDY · ✓ CORRECT</small>
+                <p>Great build! 🎉 You spelled <strong lang="my">{question.answer}</strong> correctly!</p>
+              </div>
+              <button type="button" className="spelling-continue" onClick={continueChallenge} disabled={questionIndex !== 0} title={questionIndex !== 0 ? 'More questions are coming soon.' : undefined}>Continue</button>
+            </div>
+          ) : (
+            <>
+              <button type="button" className="spelling-hint" onClick={() => setShowHint((visible) => !visible)}>{showHint ? 'Hide hint' : 'Get a hint'}</button>
+              <div className="spelling-target-order">
+                <small>{readyToCheck ? 'YOUR SPELLING' : 'TARGET ORDER'}</small>
+                {readyToCheck
+                  ? <strong lang="my">{question.answer}</strong>
+                  : <span>{question.spellingOrder.map((id) => question.parts.find((part) => part.id === id).label).join(' → ')}</span>}
+                {showHint && !readyToCheck && <strong lang="my">{question.spellingOrder.map((id) => question.parts.find((part) => part.id === id).tileValue).join(' → ')}</strong>}
+              </div>
+              <button type="button" className="spelling-check" onClick={checkAnswer}><span>Check answer</span><Check size={15} /></button>
+            </>
+          )}
         </footer>
       </section>
     </section>

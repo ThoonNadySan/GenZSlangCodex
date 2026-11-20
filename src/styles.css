@@ -2077,6 +2077,7 @@ button { cursor: pointer; }
 }
 .spelling-progress span { height: 5px; flex: 1; border-radius: 5px; background: #e8dfc0; }
 .spelling-progress span.is-current { background: #efa83d; }
+.spelling-progress span.is-complete { background: #3a9a69; }
 .spelling-main {
   display: grid;
   min-height: 0;
@@ -2109,7 +2110,7 @@ button { cursor: pointer; }
   font-size: clamp(15px, 1.8vw, 23px);
   font-weight: 1000;
 }
-.spelling-flame-art {
+.spelling-art {
   position: relative;
   display: block;
   width: 75%;
@@ -2120,7 +2121,7 @@ button { cursor: pointer; }
   justify-self: center;
   overflow: hidden;
 }
-.spelling-flame-art img {
+.spelling-art img {
   position: absolute;
   top: -65%;
   left: -110%;
@@ -2129,6 +2130,12 @@ button { cursor: pointer; }
   height: 432%;
   mix-blend-mode: multiply;
   object-fit: fill;
+}
+.spelling-art.is-umbrella img {
+  top: -28%;
+  left: -61%;
+  width: 305%;
+  height: 264%;
 }
 .spelling-word-card > span {
   width: 100%;
@@ -2248,6 +2255,38 @@ button { cursor: pointer; }
   grid-template-columns: 13% minmax(0, 1fr) 18%;
   gap: 1.4%;
 }
+.spelling-card-footer.has-success { display: block; }
+.spelling-card.has-success { grid-template-rows: 13% minmax(0, 1fr) 16%; }
+.spelling-success-panel {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: clamp(42px, 5vw, 58px) minmax(0, 1fr) clamp(90px, 18%, 170px);
+  align-items: center;
+  gap: 1.5%;
+  padding: .5% 2%;
+  border: 1px solid #e5aa35;
+  border-radius: 12px;
+  background: #ffedbd;
+}
+.spelling-success-monkey.spelling-monkey { width: clamp(42px, 5vw, 58px); height: clamp(42px, 5vw, 58px); }
+.spelling-success-copy { min-width: 0; }
+.spelling-success-copy small { color: #a45627; font-size: clamp(6px, .55vw, 8px); font-weight: 1000; letter-spacing: .04em; }
+.spelling-success-copy p { margin: 2px 0 0; color: #593f2b; font-size: clamp(10px, 1.2vw, 16px); font-weight: 800; }
+.spelling-success-copy p strong { font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif; }
+.spelling-continue {
+  min-height: 34px;
+  border: 1px solid #164d3a;
+  border-radius: 9px;
+  color: #fff9e8;
+  background: #206344;
+  box-shadow: 0 3px 0 #b88932;
+  font-size: clamp(9px, .9vw, 12px);
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+.spelling-continue:hover:not(:disabled) { background: #287c54; }
+.spelling-continue:disabled { cursor: not-allowed; opacity: .58; }
 .spelling-hint, .spelling-check {
   display: flex;
   min-width: 0;
@@ -2322,8 +2361,8 @@ button { cursor: pointer; }
   }
   .spelling-word-card p { grid-column: 2; align-self: end; font-size: 7px; }
   .spelling-word-card h2 { grid-column: 2; align-self: start; font-size: 18px; }
-  .spelling-flame-art { width: 100%; height: auto; grid-column: 1; grid-row: 1 / 3; }
-  .spelling-flame-art img { top: -65%; left: -110%; }
+  .spelling-art { width: 100%; height: auto; grid-column: 1; grid-row: 1 / 3; }
+  .spelling-art img { top: -65%; left: -110%; }
   .spelling-word-card > span { width: auto; grid-column: 3; grid-row: 1 / 3; justify-self: end; align-self: center; padding: 5px; font-size: 6px; }
   .spelling-board { padding: 3%; }
   .spelling-board-top { min-height: 20%; }
@@ -2337,6 +2376,12 @@ button { cursor: pointer; }
   .spelling-tile small { font-size: 7px; }
   .spelling-feedback { bottom: 2%; font-size: 8px; }
   .spelling-card-footer { grid-template-columns: 1fr 1.4fr; grid-template-rows: 1fr 1fr; gap: 5px; }
+  .spelling-card-footer.has-success { display: block; }
+  .spelling-success-panel { grid-template-columns: 38px minmax(0, 1fr) min(74px, 20%); gap: 5px; padding: 3px 6px; border-radius: 8px; }
+  .spelling-success-monkey.spelling-monkey { width: 38px; height: 38px; }
+  .spelling-success-copy small { font-size: 5px; }
+  .spelling-success-copy p { font-size: clamp(8px, 2.4vw, 11px); line-height: 1.1; }
+  .spelling-continue { min-height: 28px; border-radius: 7px; font-size: 8px; }
   .spelling-hint, .spelling-check { font-size: 9px; }
   .spelling-check { grid-column: 2; grid-row: 1; }
   .spelling-target-order { grid-column: 1 / 3; grid-row: 2; justify-content: center; gap: 5%; }
