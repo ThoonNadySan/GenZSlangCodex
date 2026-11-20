@@ -2131,11 +2131,24 @@ button { cursor: pointer; }
   mix-blend-mode: multiply;
   object-fit: fill;
 }
+.spelling-art.is-fire { transform: translateY(-5%); }
 .spelling-art.is-umbrella img {
   top: -28%;
   left: -61%;
   width: 305%;
   height: 264%;
+}
+.spelling-art.is-oil img {
+  top: -30%;
+  left: -76%;
+  width: 218%;
+  height: 190%;
+}
+.spelling-art.is-play img {
+  top: -49.3%;
+  left: -72%;
+  width: 239%;
+  height: 206.5%;
 }
 .spelling-word-card > span {
   width: 100%;

@@ -14,7 +14,8 @@ const spellingQuestions = [
   {
     word: 'Fire',
     answer: 'မီး',
-    image: '/firelogoDes1.png',
+    image: '/firelogoDes1-sticker.png',
+    artClass: 'is-fire',
     parts,
     spellingOrder,
     initialOrder: initialSpellingOrder
@@ -23,8 +24,34 @@ const spellingQuestions = [
     word: 'Umbrella',
     answer: 'ထီး',
     image: '/UmbrellaLogoDes1.png',
+    artClass: 'is-umbrella',
     parts: [
       { id: 'consonant', label: 'Consonant', value: 'ထ', tileValue: 'ထ' },
+      { id: 'vowel', label: 'Vowel', value: 'ီ', tileValue: '◌ီ' },
+      { id: 'tone', label: 'Tone', value: 'း', tileValue: '◌း' }
+    ],
+    spellingOrder: ['consonant', 'vowel', 'tone'],
+    initialOrder: ['vowel', 'consonant', 'tone']
+  },
+  {
+    word: 'Oil',
+    answer: 'ဆီ',
+    image: '/OilLogoDes1.png',
+    artClass: 'is-oil',
+    parts: [
+      { id: 'consonant', label: 'Consonant', value: 'ဆ', tileValue: 'ဆ' },
+      { id: 'vowel', label: 'Vowel', value: 'ီ', tileValue: '◌ီ' }
+    ],
+    spellingOrder: ['consonant', 'vowel'],
+    initialOrder: ['vowel', 'consonant']
+  },
+  {
+    word: 'Play the instrument',
+    answer: 'တီး',
+    image: '/PlayLogoDes1-sticker.png',
+    artClass: 'is-play',
+    parts: [
+      { id: 'consonant', label: 'Consonant', value: 'တ', tileValue: 'တ' },
       { id: 'vowel', label: 'Vowel', value: 'ီ', tileValue: '◌ီ' },
       { id: 'tone', label: 'Tone', value: 'း', tileValue: '◌း' }
     ],
@@ -106,9 +133,10 @@ function NaypyitawSpellingBuilder() {
   }
 
   const continueChallenge = () => {
-    if (questionIndex !== 0 || !showSuccess) return
-    setQuestionIndex(1)
-    setTileOrder(spellingQuestions[1].initialOrder)
+    if (!showSuccess || questionIndex >= spellingQuestions.length - 1) return
+    const nextQuestionIndex = questionIndex + 1
+    setQuestionIndex(nextQuestionIndex)
+    setTileOrder(spellingQuestions[nextQuestionIndex].initialOrder)
     setSelectedTile(null)
     setSwapCount(0)
     setFeedback('')
@@ -145,7 +173,7 @@ function NaypyitawSpellingBuilder() {
           <section className="spelling-word-card" aria-label="Word to spell">
             <p>SPELL IT IN BURMESE</p>
             <h2>{question.word}</h2>
-            <div className={`spelling-art ${questionIndex === 1 ? 'is-umbrella' : ''}`}><img src={question.image} alt={`${question.word} illustration`} /></div>
+            <div className={`spelling-art ${question.artClass}`}><img src={question.image} alt={`${question.word} illustration`} /></div>
             <span>{question.parts.length} spelling parts · 1 word</span>
           </section>
 
@@ -187,7 +215,7 @@ function NaypyitawSpellingBuilder() {
                 <small>SLANG BUDDY · ✓ CORRECT</small>
                 <p>Great build! 🎉 You spelled <strong lang="my">{question.answer}</strong> correctly!</p>
               </div>
-              <button type="button" className="spelling-continue" onClick={continueChallenge} disabled={questionIndex !== 0} title={questionIndex !== 0 ? 'More questions are coming soon.' : undefined}>Continue</button>
+              <button type="button" className="spelling-continue" onClick={continueChallenge} disabled={questionIndex >= spellingQuestions.length - 1} title={questionIndex >= spellingQuestions.length - 1 ? 'More questions are coming soon.' : undefined}>Continue</button>
             </div>
           ) : (
             <>
