@@ -156,6 +156,15 @@ const successConfettiPieces = [
   [40, 84, 210, 45, '#d76bb3'],
   [46, 106, 300, 80, '#f4b942']
 ]
+const successScreenConfettiPieces = Array.from({ length: 48 }, (_, index) => ({
+  id: index,
+  x: (index * 37 + 11) % 101,
+  delay: (index * 53) % 520,
+  duration: 2200 + ((index * 101) % 1000),
+  drift: -140 + ((index * 71) % 280),
+  rotation: 180 + ((index * 113) % 720),
+  color: ['#f15b43', '#f4b942', '#50a876', '#52b9ca', '#d76bb3', '#8e79e8'][index % 6]
+}))
 
 export default function AssemblyChallenge() {
   const { selectedDestination } = useGame()
@@ -248,6 +257,24 @@ function NaypyitawSpellingBuilder() {
 
   return <main className="spelling-page">
     <section className="spelling-scene" aria-label="Naypyitaw spelling builder">
+      {showSuccess && (
+        <div className="spelling-screen-confetti" aria-hidden="true">
+          {successScreenConfettiPieces.map((piece) => (
+            <span
+              className="spelling-screen-confetti-piece"
+              key={piece.id}
+              style={{
+                '--screen-confetti-start': `${piece.x}vw`,
+                '--screen-confetti-drift': `${piece.drift}px`,
+                '--screen-confetti-rotation': `${piece.rotation}deg`,
+                '--screen-confetti-delay': `${piece.delay}ms`,
+                '--screen-confetti-duration': `${piece.duration}ms`,
+                '--screen-confetti-color': piece.color
+              }}
+            />
+          ))}
+        </div>
+      )}
       <img className="spelling-world-background" src="/Continuous Myanmar fantasy world · Seven cities and separate AI Castle 1.png" alt="" aria-hidden="true" />
       <img className="spelling-brand" src="/generated/codex-logo.png" alt="GenZ Slang Codex" />
       <button type="button" className="spelling-scene-back" onClick={() => navigate('map')} aria-label="Back to world map"><ArrowLeft size={18} /></button>
@@ -327,7 +354,7 @@ function NaypyitawSpellingBuilder() {
                   />
                 ))}
               </div>
-              <div className="spelling-success-monkey spelling-monkey"><img src="/MonkeyDes1-success-sticker.png" alt="" /></div>
+              <div className="spelling-success-monkey"><img src="/generated/naypyitaw-success-monkey.png" alt="" /></div>
               <div className="spelling-success-copy">
                 <small>SLANG BUDDY · ✓ CORRECT</small>
                 <p>Great build! 🎉 You spelled <strong lang="my">{question.answer}</strong> correctly!</p>

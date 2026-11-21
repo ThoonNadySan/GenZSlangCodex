@@ -91,6 +91,16 @@ const questions = [
 ]
 
 const normalized = (tile) => tile.replaceAll(DOT, '')
+const completionConfettiColors = ['#f15b43', '#f4b942', '#50a876', '#52b9ca', '#d76bb3', '#8e79e8']
+const completionConfettiPieces = Array.from({ length: 56 }, (_, index) => ({
+  id: index,
+  x: (index * 37 + 11) % 101,
+  delay: (index * 47) % 560,
+  duration: 2100 + ((index * 97) % 1200),
+  drift: -160 + ((index * 71) % 320),
+  rotation: 180 + ((index * 113) % 720),
+  color: completionConfettiColors[index % completionConfettiColors.length]
+}))
 
 export default function Destination5Bagan() {
   const { xp, player, setActiveScreen, setModal, reward } = useGame()
@@ -211,6 +221,23 @@ export default function Destination5Bagan() {
 
   return (
     <main className="assembly-page">
+      {((checked && correct) || complete) && (
+        <div className="assembly-success-confetti" key={complete ? 'complete' : questionIndex} aria-hidden="true">
+          {completionConfettiPieces.map((piece) => (
+            <span
+              key={piece.id}
+              style={{
+                '--assembly-confetti-start': `${piece.x}vw`,
+                '--assembly-confetti-drift': `${piece.drift}px`,
+                '--assembly-confetti-rotation': `${piece.rotation}deg`,
+                '--assembly-confetti-delay': `${piece.delay}ms`,
+                '--assembly-confetti-duration': `${piece.duration}ms`,
+                '--assembly-confetti-color': piece.color
+              }}
+            />
+          ))}
+        </div>
+      )}
       <img className="assembly-background" src="/Continuous Myanmar fantasy world · Seven cities and separate AI Castle 1.png" alt="" />
       <button className="assembly-back" type="button" onClick={() => setActiveScreen('map')} aria-label="Back to world map"><ArrowLeft size={18} /></button>
       <div className="assembly-brand"><img src="/generated/codex-logo.png" alt="GenZ Slang Codex" /></div>
@@ -291,7 +318,7 @@ export default function Destination5Bagan() {
         <footer className="assembly-footer">
           {checked ? (
             <div className={`assembly-feedback ${correct ? 'is-correct' : 'is-wrong'}`}>
-              <img src="/Monkey explorer.png" alt="" />
+              <img src="/happy-slang-buddy-transparent.png" alt="" />
               <div><small>SLANG BUDDY · {correct ? '✓ CORRECT' : '! TRY AGAIN'}</small><strong>{correct ? 'Great build! 🎉 You got it right!' : 'Not quite. Check the consonant, final, and tone marks.'}</strong></div>
             </div>
           ) : hintText ? (
