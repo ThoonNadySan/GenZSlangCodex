@@ -256,10 +256,8 @@ export default function YangonQuiz() {
   }
   const alignedVowels = expectedVowels.filter(({ value, position }) =>
     alignedMarks[position] === value)
-  const alignedTone = positionedTones.some((tile) =>
-    tile.value === expectedOrbitMarks?.tone && tile.currentPosition === 'right')
-    ? expectedOrbitMarks.tone
-    : null
+  const selectedTone = positionedTones.find((tile) => tile.currentPosition === 'right')?.value ?? emptyMark
+  const alignedTone = selectedTone
   const assembledAnswer = isOrbit ? assembleSyllable(question.base, alignedMarks, alignedTone) : ''
   const orbitAnswerCorrect = isOrbit
     && alignedVowels.length === expectedVowels.length
@@ -268,7 +266,7 @@ export default function YangonQuiz() {
     ? [
         alignedMarks.left !== emptyMark ? alignedMarks.left : null,
         alignedMarks.right !== emptyMark ? alignedMarks.right : null,
-        alignedTone !== null ? alignedTone : null
+        selectedTone !== null ? selectedTone : null
       ].filter(Boolean)
     : []
   const defaultStatus = isOrbit
