@@ -15,10 +15,11 @@ import CreateAccount from './components/CreateAccount'
 import AvatarSelection from './components/AvatarSelection'
 import AccountCreated from './components/AccountCreated'
 import NaypyitawIntro from './components/NaypyitawIntro'
+import NaypyitawClear from './components/NaypyitawClear'
 
 export default function App() {
   const { activeScreen, modal } = useGame()
-  const screens = { welcome: <WelcomeScreen />, signin: <SignInScreen />, 'create-account': <CreateAccount />, 'account-created': <AccountCreated />, avatar: <AvatarSelection />, map: <WorldMap />, settings: <SettingsScreen />, assembly: <AssemblyChallenge />, 'bagan-intro': <BaganIntroduction />, bagan: <Destination5Bagan />, 'naypyitaw-intro': <NaypyitawIntro />, castle: <CastleChat />, collection: <CollectionBook /> }
+  const screens = { welcome: <WelcomeScreen />, signin: <SignInScreen />, 'create-account': <CreateAccount />, 'account-created': <AccountCreated />, avatar: <AvatarSelection />, map: <WorldMap />, settings: <SettingsScreen />, assembly: <AssemblyChallenge />, 'bagan-intro': <BaganIntroduction />, bagan: <Destination5Bagan />, 'naypyitaw-intro': <NaypyitawIntro />, 'naypyitaw-clear': <NaypyitawClear />, castle: <CastleChat />, collection: <CollectionBook /> }
   const modals = { leaderboard: <Leaderboard />, certificate: <CertificateView />, profile: <UserProfile /> }
   return <div className="min-h-screen">{screens[activeScreen] || screens.welcome}{modal && modals[modal]}</div>
 }

@@ -165,7 +165,7 @@ export default function AssemblyChallenge() {
 }
 
 function NaypyitawSpellingBuilder() {
-  const { setModal, setActiveScreen: navigate } = useGame()
+  const { setModal, setActiveScreen: navigate, reward } = useGame()
   const [questionIndex, setQuestionIndex] = useState(0)
   const [tileOrder, setTileOrder] = useState(initialSpellingOrder)
   const [selectedTile, setSelectedTile] = useState(null)
@@ -230,7 +230,12 @@ function NaypyitawSpellingBuilder() {
   }
 
   const continueChallenge = () => {
-    if (!showSuccess || questionIndex >= spellingQuestions.length - 1) return
+    if (!showSuccess) return
+    if (questionIndex >= spellingQuestions.length - 1) {
+      reward(80)
+      navigate('naypyitaw-clear')
+      return
+    }
     const nextQuestionIndex = questionIndex + 1
     setQuestionIndex(nextQuestionIndex)
     setTileOrder(spellingQuestions[nextQuestionIndex].initialOrder)
@@ -327,7 +332,9 @@ function NaypyitawSpellingBuilder() {
                 <small>SLANG BUDDY · ✓ CORRECT</small>
                 <p>Great build! 🎉 You spelled <strong lang="my">{question.answer}</strong> correctly!</p>
               </div>
-              <button type="button" className="spelling-continue" onClick={continueChallenge} disabled={questionIndex >= spellingQuestions.length - 1} title={questionIndex >= spellingQuestions.length - 1 ? 'More questions are coming soon.' : undefined}>Continue</button>
+              <button type="button" className="spelling-continue" onClick={continueChallenge}>
+                {questionIndex >= spellingQuestions.length - 1 ? 'Complete destination' : 'Continue'}
+              </button>
             </div>
           ) : (
             <>
