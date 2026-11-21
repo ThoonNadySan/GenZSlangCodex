@@ -452,7 +452,7 @@ button { cursor: pointer; }
 .slang-book-stamp-page h2 { margin: 2.5% 0 0; color: #5a3925; font-size: clamp(11px, 1.75vw, 22px); line-height: 1.1; }
 .slang-book-status { margin: 1.5% 0 0; color: #38764c; font-size: clamp(6px, .72vw, 10px); font-weight: 900; line-height: 1.1; text-transform: uppercase; }
 .slang-book-status.is-available { color: #946c36; }
-.slang-book-progress { margin: 2.5% 0 0; padding: 0 1.5% .35%; border-bottom: 1px dashed rgba(102, 69, 37, .56); color: #563a22; font-size: clamp(8px, .82cqw, 13px); font-weight: 900; line-height: 1.2; text-shadow: 0 .25px currentColor; }
+.slang-book-progress { margin: auto 0 7%; padding: 1.2% 2% .7%; border-bottom: 1px dashed rgba(102, 69, 37, .56); border-radius: 3px; color: #563a22; background: rgba(235, 204, 120, .16); font-size: clamp(8px, .82cqw, 13px); font-weight: 900; line-height: 1.2; text-shadow: 0 .25px currentColor; }
 .slang-book-detail-page { padding: 3% 6.9% 0 10.9%; }
 .slang-book-detail-heading { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
 .slang-book-detail-heading > span { overflow: hidden; color: #386348; font-size: clamp(6px, .75vw, 10px); font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
@@ -582,6 +582,114 @@ button { cursor: pointer; }
 @keyframes save-ready-pulse { 0%, 100% { filter: saturate(1); } 50% { filter: saturate(1.25) brightness(1.04); } }
 @keyframes avatar-image-shine { 0%, 35% { transform: translateX(-120%); } 58%, 100% { transform: translateX(120%); } }
 @keyframes avatar-card-selected { 0%, 100% { box-shadow: 0 4px 0 #a85d22, 0 0 0 3px #d07829, 0 6px 12px rgba(76, 50, 31, .2); } 50% { box-shadow: 0 4px 0 #a85d22, 0 0 0 3px #d07829, 0 0 20px rgba(255, 190, 65, .48); } }
+
+.stamp-collection-screen { display: grid; width: 100%; height: 100vh; height: 100dvh; place-items: center; overflow: hidden; background: #1d1d1d; }
+.stamp-collection-canvas { position: relative; width: 100vw; height: 100dvh; overflow: hidden; container-type: size; }
+.stamp-collection-background { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+.stamp-collection-shade { position: absolute; inset: 0; background: rgba(32, 48, 34, .12); pointer-events: none; }
+.stamp-collection-canvas > .world-map-brand { z-index: 4; }
+.stamp-collection-canvas > .world-map-profile { z-index: 5; }
+.stamp-collection-panel { position: absolute; z-index: 2; top: 14%; left: 13%; display: flex; width: 74%; height: 70%; flex-direction: column; padding: 1.4% 2.2% 1.1%; border: clamp(2px, .26cqw, 4px) solid #d6aa59; border-radius: clamp(14px, 1.8cqw, 28px); color: #563a22; background: linear-gradient(135deg, rgba(255, 248, 220, .98), rgba(247, 226, 176, .97)); box-shadow: 0 9px 26px rgba(47, 31, 13, .32), inset 0 0 0 3px rgba(255, 255, 255, .46); }
+.stamp-collection-heading { position: relative; display: flex; min-height: 16%; flex: 0 0 auto; align-items: center; justify-content: center; text-align: center; }
+.stamp-collection-heading h1 { margin: 0; color: #75411f; font-size: clamp(18px, 2.15cqw, 34px); font-weight: 900; line-height: 1; text-shadow: 0 1px #fff3d4; text-transform: uppercase; }
+.stamp-collection-heading p { margin: .35em 0 0; color: #806344; font-size: clamp(9px, .85cqw, 14px); font-weight: 700; }
+.stamp-collection-heading .stamp-collection-count { margin: 0 0 .45em; color: #368252; font-size: clamp(8px, .78cqw, 12px); font-weight: 900; text-transform: uppercase; }
+.stamp-collection-star { position: absolute; top: 36%; width: clamp(14px, 1.5cqw, 24px); height: auto; color: #e1ad42; fill: #f4d781; }
+.stamp-collection-star-left { left: 22%; transform: rotate(-15deg); }
+.stamp-collection-star-right { right: 22%; transform: rotate(15deg); }
+.stamp-collection-grid { display: grid; min-height: 0; flex: 1; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 2.4% 2%; }
+.stamp-collection-card { position: relative; display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: flex-start; overflow: hidden; padding: 3% 4% 2%; border: 1px solid #e3c782; border-radius: clamp(8px, 1.05cqw, 17px); background: rgba(255, 253, 238, .84); box-shadow: 0 3px 8px rgba(91, 61, 24, .12), inset 0 0 0 1px rgba(255, 255, 255, .7); text-align: center; transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease, border-color .22s ease; animation: stamp-card-enter .45s cubic-bezier(.2,.8,.2,1) both; animation-delay: var(--stamp-delay); }
+.stamp-collection-card:hover { z-index: 1; transform: translateY(-5px) scale(1.015); border-color: #d3a23f; box-shadow: 0 9px 16px rgba(91, 61, 24, .21), inset 0 0 0 1px rgba(255, 255, 255, .76); }
+.stamp-collection-art { display: grid; width: 38%; aspect-ratio: 1; flex: 0 0 auto; place-items: center; }
+.stamp-collection-art img { display: block; width: 100%; height: 100%; max-width: none; object-fit: contain; transition: transform .22s ease, filter .22s ease; }
+.stamp-collection-stamp-button { display: block; width: 100%; height: 100%; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; }
+.stamp-collection-stamp-button:focus-visible { outline: 3px solid #347a50; outline-offset: 3px; }
+.stamp-collection-stamp-button:disabled { cursor: not-allowed; }
+.stamp-collection-stamp-button img { display: block; width: 100%; height: 100%; max-width: none; object-fit: contain; transition: transform .22s ease, filter .22s ease; }
+.stamp-collection-card:not(.is-locked):hover .stamp-collection-stamp-button img { animation: stamp-hover-shake .48s ease-in-out; filter: drop-shadow(0 4px 3px rgba(92, 63, 24, .2)); transform: translateY(-4px) rotate(2deg) scale(1.08); }
+.stamp-collection-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.stamp-collection-slang { min-height: 1.3em; margin: 1.4% 0 0; color: #2f7951; font-family: 'Padauk', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif; font-size: clamp(10px, 1.05cqw, 17px); line-height: 1.25; }
+.stamp-collection-meaning, .stamp-collection-hint { display: -webkit-box; max-width: 95%; overflow: hidden; margin: 1% 0 0; color: #806344; font-size: clamp(7px, .72cqw, 12px); font-style: italic; line-height: 1.2; text-overflow: ellipsis; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.stamp-collection-status { margin: 2% 0 0; color: #a47c48; font-size: clamp(8px, .78cqw, 12px); font-weight: 900; text-transform: uppercase; }
+.stamp-collection-hint { margin-top: 1%; }
+.stamp-collection-check, .stamp-collection-lock { position: absolute; top: 4%; right: 4%; display: grid; width: clamp(18px, 1.65cqw, 27px); height: clamp(18px, 1.65cqw, 27px); place-items: center; border: 1px solid rgba(255,255,255,.82); border-radius: 50%; color: #fff; background: #398550; box-shadow: 0 2px 4px rgba(45,42,19,.2); }
+.stamp-collection-lock { color: #fff4d8; background: #9c8058; }
+.stamp-collection-card.is-locked { border-color: #d5c6a5; background: rgba(235, 229, 208, .86); }
+.stamp-collection-card.is-locked .stamp-collection-art { opacity: .43; filter: grayscale(.85); }
+.stamp-collection-card.is-locked h2, .stamp-collection-card.is-locked .stamp-collection-status, .stamp-collection-card.is-locked .stamp-collection-hint { color: #8d826c; }
+.stamp-collection-view { min-height: 11%; margin-top: auto; padding: .5% 7%; border: 1px solid #ae7737; border-radius: 999px; color: #fff8df; background: linear-gradient(#a56a35, #89502a); box-shadow: 0 2px 0 rgba(71,43,22,.35); font-size: clamp(7px, .72cqw, 12px); font-weight: 900; line-height: 1; text-transform: uppercase; transition: transform .15s ease, background .15s ease, box-shadow .15s ease; }
+.stamp-collection-view:hover:not(:disabled) { transform: translateY(-2px); background: #a96d37; box-shadow: 0 4px 0 rgba(71,43,22,.35), 0 4px 8px rgba(53,34,17,.18); }
+.stamp-collection-view:active:not(:disabled) { transform: translateY(1px) scale(.97); background: #704526; box-shadow: 0 1px 0 rgba(71,43,22,.5), inset 0 2px 4px rgba(48,27,13,.25); }
+.stamp-collection-view:focus-visible { outline: 3px solid #347a50; outline-offset: 2px; }
+.stamp-collection-view:disabled { border-color: #c8bda2; color: #837b68; background: #ddd4bd; box-shadow: none; cursor: not-allowed; }
+.stamp-collection-total { flex: 0 0 auto; margin: 1.1% 0 0; color: #537751; font-size: clamp(8px, .8cqw, 13px); font-weight: 900; text-align: center; text-transform: uppercase; }
+.stamp-collection-back { left: 13%; width: 19%; }
+.stamp-collection-spark { position: absolute; z-index: 1; width: 5px; height: 5px; border-radius: 50%; background: #e5bf61; opacity: 0; pointer-events: none; }
+.stamp-collection-spark-one { top: 18%; left: 16%; }
+.stamp-collection-spark-two { top: 30%; right: 15%; }
+.stamp-collection-card:hover .stamp-collection-spark { animation: stamp-sparkle .6s ease-out; }
+.stamp-detail-overlay { position: absolute; z-index: 20; inset: 0; display: grid; place-items: center; overflow-y: auto; padding: 24px; background: rgba(25, 34, 26, .55); animation: stamp-detail-fade .2s ease-out both; }
+.stamp-detail-dialog { position: relative; display: flex; width: min(42%, 560px); max-height: calc(100% - 24px); flex-direction: column; align-items: center; overflow-y: auto; padding: 2.2% 2.8% 2%; border: 2px solid #bb8b3e; border-radius: clamp(14px, 1.5cqw, 24px); color: #543923; background: #fff9e3; box-shadow: 0 8px 0 rgba(92, 59, 22, .22), 0 16px 38px rgba(20, 26, 18, .4), inset 0 0 0 3px rgba(255,255,255,.62); text-align: center; animation: stamp-detail-pop .3s cubic-bezier(.2,.8,.2,1) both; }
+.stamp-detail-status { display: flex; width: 100%; align-items: center; gap: 5px; margin: 0; color: #39784e; font-size: clamp(8px, .7cqw, 12px); font-weight: 900; text-align: left; text-transform: uppercase; }
+.stamp-detail-close { position: absolute; top: 3.2%; right: 3.2%; display: grid; width: clamp(24px, 2cqw, 32px); height: clamp(24px, 2cqw, 32px); place-items: center; border: 1px solid #d5b55d; border-radius: 50%; color: #77512b; background: #fbefbf; transition: transform .16s ease, background .16s ease; }
+.stamp-detail-close:hover { transform: rotate(90deg); background: #f5df99; }
+.stamp-detail-close:focus-visible, .stamp-detail-view:focus-visible { outline: 3px solid #347a50; outline-offset: 2px; }
+.stamp-detail-art { display: block; width: 35%; max-width: 180px; height: auto; margin: 2% auto 0; object-fit: contain; }
+.stamp-detail-spark { position: absolute; width: clamp(13px, 1.4cqw, 22px); height: auto; color: #e2b84f; fill: #f5dc8c; }
+.stamp-detail-spark-left { top: 17%; left: 22%; transform: rotate(-12deg); }
+.stamp-detail-spark-right { top: 46%; right: 20%; transform: rotate(12deg); }
+.stamp-detail-dialog h2 { margin: 2% 0 0; color: #563a22; font-size: clamp(16px, 1.35cqw, 23px); font-weight: 900; line-height: 1.1; }
+.stamp-detail-slang { margin: 1.6% 0 0; color: #2f7951; font-family: 'Padauk', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif; font-size: clamp(14px, 1.3cqw, 22px); line-height: 1.3; }
+.stamp-detail-meaning { margin: 1% 0 2%; color: #634b34; font-size: clamp(10px, .85cqw, 14px); font-weight: 700; }
+.stamp-detail-example { width: 100%; margin-top: 1%; padding: 2.5% 3%; border: 1px solid #ecdca7; border-radius: 12px; background: #f7edc9; text-align: left; }
+.stamp-detail-example p { margin: 1% 0; color: #674d31; font-size: clamp(9px, .75cqw, 12px); line-height: 1.35; }
+.stamp-detail-example p:first-child { margin-top: 0; color: #886b43; font-size: clamp(7px, .59cqw, 10px); font-weight: 900; text-transform: uppercase; }
+.stamp-detail-example p[lang="my"] { color: #416247; font-family: 'Padauk', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif; font-size: clamp(11px, .9cqw, 15px); line-height: 1.55; }
+.stamp-detail-example p:last-child { margin-bottom: 0; font-style: italic; }
+.stamp-detail-view { min-width: 48%; min-height: 38px; margin-top: 2%; padding: 1.2% 5%; border: 2px solid #d0a246; border-radius: 10px; color: #fff7dd; background: linear-gradient(#965e31, #81502e); box-shadow: 0 3px 0 #b88a37, inset 0 1px rgba(255,255,255,.2); font-size: clamp(9px, .78cqw, 13px); font-weight: 900; text-transform: uppercase; transition: transform .15s ease, background .15s ease, box-shadow .15s ease; }
+.stamp-detail-view:hover { transform: translateY(-2px); background: #a76d38; box-shadow: 0 5px 0 #b88a37, 0 6px 12px rgba(53,34,17,.2); }
+.stamp-detail-view:active { transform: translateY(2px); background: #704526; box-shadow: 0 1px 0 #b88a37, inset 0 2px 4px rgba(48,27,13,.25); }
+@keyframes stamp-detail-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes stamp-detail-pop { from { opacity: .7; transform: translateY(10px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes stamp-card-enter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes stamp-hover-shake { 0%, 100% { rotate: 0deg; } 25% { rotate: -3deg; } 50% { rotate: 3deg; } 75% { rotate: -1.5deg; } }
+@keyframes stamp-sparkle { 0% { opacity: 0; transform: scale(.3); } 35% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0; transform: scale(.5) translateY(-7px); } }
+@media (max-width: 600px) {
+  .stamp-collection-panel { left: 7%; width: 86%; padding-inline: 1.5%; }
+  .stamp-collection-star-left { left: 15%; }
+  .stamp-collection-star-right { right: 15%; }
+  .stamp-collection-grid { gap: 2% 1.2%; }
+  .stamp-collection-card { padding-inline: 2%; }
+  .stamp-collection-art { width: 43%; }
+  .stamp-collection-meaning, .stamp-collection-hint { font-size: clamp(6px, .85cqw, 10px); }
+  .stamp-collection-view { font-size: clamp(6px, .78cqw, 10px); }
+  .stamp-collection-back { left: 7%; width: 24%; }
+}
+@media (max-height: 560px) {
+  .stamp-collection-panel { top: 12%; height: 73%; }
+  .stamp-collection-heading { min-height: 14%; }
+  .stamp-collection-art { width: 34%; }
+  .stamp-detail-dialog { padding-block: 1.2%; }
+  .stamp-detail-art { width: 27%; max-width: 130px; }
+}
+@media (max-width: 700px) {
+  .stamp-detail-overlay { padding: 16px; }
+  .stamp-detail-dialog { width: min(92%, 480px); max-height: calc(100% - 20px); padding: 18px 20px 16px; }
+  .stamp-detail-status { font-size: 10px; }
+  .stamp-detail-close { top: 12px; right: 12px; width: 28px; height: 28px; }
+  .stamp-detail-art { width: 32%; max-width: 150px; margin-top: 9px; }
+  .stamp-detail-dialog h2 { margin-top: 8px; font-size: 20px; }
+  .stamp-detail-slang { margin-top: 6px; font-size: 19px; }
+  .stamp-detail-meaning { margin: 5px 0 10px; font-size: 12px; }
+  .stamp-detail-example { margin-top: 4px; padding: 10px 12px; }
+  .stamp-detail-example p { margin: 4px 0; font-size: 11px; }
+  .stamp-detail-example p:first-child { font-size: 9px; }
+  .stamp-detail-example p[lang="my"] { font-size: 15px; }
+  .stamp-detail-view { min-height: 40px; margin-top: 12px; font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stamp-collection-card, .stamp-collection-card:hover, .stamp-collection-card:hover .stamp-collection-stamp-button img, .stamp-collection-card:hover .stamp-collection-spark, .stamp-collection-view:hover:not(:disabled), .stamp-collection-view:active:not(:disabled), .stamp-detail-overlay, .stamp-detail-dialog, .stamp-detail-close, .stamp-detail-view { animation: none; transition: none; transform: none; rotate: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .profile-page, .profile-card, .profile-avatar-frame, .profile-avatar-frame .avatar-art, .profile-avatar-frame::after, .profile-collection-card, .profile-action-buttons .profile-save.has-changes, .avatar-brand, .avatar-panel, .avatar-heading h1, .avatar-option, .avatar-option > .avatar-image-frame img, .avatar-option > .avatar-image-frame::after { animation: none; }
 }
@@ -2755,6 +2863,75 @@ button { cursor: pointer; }
 .destination-intro-position-base { grid-area: base; }
 .destination-intro-position-postbase { grid-area: postbase; }
 .destination-intro-position-medial { grid-area: medial; }
+.destination-intro-spelling-map-yangon {
+  min-height: 150px;
+  grid-template-columns: clamp(96px, 9.2vw, 132px) clamp(18px, 2vw, 28px) clamp(124px, 10.5vw, 174px) clamp(18px, 2vw, 28px) clamp(120px, 9.2vw, 148px) clamp(18px, 2vw, 28px) clamp(130px, 10vw, 167px);
+  grid-template-rows: 56px 34px;
+  grid-template-areas:
+    "prebase arrow1 base arrow2 postbase arrow3 tone"
+    "example example example example example example example";
+  align-content: start;
+  justify-items: center;
+  gap: 0 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.destination-intro-spelling-map-yangon .destination-intro-position {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.destination-intro-spelling-map-yangon .destination-intro-position-prebase { grid-area: prebase; }
+.destination-intro-spelling-map-yangon .destination-intro-position-base { grid-area: base; }
+.destination-intro-spelling-map-yangon .destination-intro-position-postbase { grid-area: postbase; }
+.destination-intro-spelling-map-yangon .destination-intro-position-tone { grid-area: tone; }
+.destination-intro-spelling-map-yangon .destination-intro-position small {
+  color: #45684f;
+  font-size: clamp(6px, .58vw, 8px);
+}
+.destination-intro-yangon-value {
+  display: grid;
+  width: 100%;
+  min-height: 34px;
+  place-items: center;
+  padding: 3px 6px;
+  border: 1px solid #a9ccca;
+  border-radius: 10px;
+  background: #e4f3f2;
+}
+.destination-intro-spelling-map-yangon .destination-intro-position-prebase .destination-intro-yangon-value { width: clamp(96px, 9.2vw, 132px); min-height: 39px; }
+.destination-intro-spelling-map-yangon .destination-intro-position-base .destination-intro-yangon-value {
+  width: clamp(124px, 10.5vw, 174px);
+  min-height: 39px;
+  border-width: 2px;
+}
+.destination-intro-spelling-map-yangon .destination-intro-position-postbase .destination-intro-yangon-value { width: clamp(120px, 9.2vw, 148px); }
+.destination-intro-spelling-map-yangon .destination-intro-position-tone .destination-intro-yangon-value { width: clamp(130px, 10vw, 167px); min-height: 39px; }
+.destination-intro-yangon-value strong { color: #4c321f; }
+.destination-intro-spelling-map-yangon .destination-intro-arrow-pre-base { grid-area: arrow1; }
+.destination-intro-spelling-map-yangon .destination-intro-arrow-post-base { grid-area: arrow2; }
+.destination-intro-spelling-map-yangon .destination-intro-arrow-tone { grid-area: arrow3; }
+.destination-intro-spelling-example {
+  grid-area: example;
+  align-self: end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #4c321f;
+  font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif;
+  font-size: clamp(13px, 1.2vw, 18px);
+  line-height: 1;
+  white-space: nowrap;
+}
 .destination-intro-position small { color: #547768; font-size: clamp(5px, .55vw, 8px); font-weight: 1000; line-height: 1.1; }
 .destination-intro-position strong { color: #36704e; font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif; font-size: clamp(13px, 1.4vw, 19px); line-height: 1.1; white-space: nowrap; }
 .destination-intro-diagram-arrow { display: grid; place-items: center; color: #57958b; font-size: clamp(10px, 1vw, 14px); font-weight: 1000; line-height: 1; }
@@ -2823,6 +3000,20 @@ button { cursor: pointer; }
     gap: 0 1%;
     padding: 7px;
   }
+  .destination-intro-spelling-map-yangon {
+    min-height: 118px;
+    grid-template-columns: minmax(0, 1.7fr) 60px 10px 68px minmax(0, 1fr);
+    grid-template-rows: 34px 12px 46px;
+    grid-template-areas:
+      ". upper . . ."
+      ". down . . ."
+      ". base left postbase .";
+    gap: 0;
+    padding: 0;
+  }
+  .destination-intro-yangon-value { min-height: 31px; padding: 2px 4px; }
+  .destination-intro-spelling-map-yangon .destination-intro-position-base .destination-intro-yangon-value { width: 60px; min-height: 34px; }
+  .destination-intro-spelling-map-yangon .destination-intro-position-postbase .destination-intro-yangon-value { width: 68px; }
   .destination-intro-position small { font-size: 6px; }
   .destination-intro-position strong { font-size: clamp(11px, 3vw, 15px); }
   .destination-intro-diagram-arrow { font-size: 10px; }
@@ -2836,6 +3027,473 @@ button { cursor: pointer; }
   .destination-intro-monkey { animation: none; }
 }
 
+.destination-quiz-page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  color: #4c321f;
+  background: #1f1f1f;
+  font-family: 'Nunito', 'Fredoka', sans-serif;
+}
+.destination-quiz-scene { position: relative; width: 100%; height: 100%; overflow: hidden; }
+.destination-quiz-background { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
+.destination-quiz-brand { position: absolute; z-index: 3; top: 2.5%; left: 5.5%; width: 15%; height: 10%; object-fit: contain; object-position: left center; mix-blend-mode: multiply; }
+.destination-quiz-profile { top: 3%; right: 4%; width: 38%; }
+.destination-quiz-card {
+  position: absolute;
+  z-index: 4;
+  inset: 18% 10% 5%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: clamp(12px, 1.7vw, 23px);
+  overflow: auto;
+  border: 2px solid #e4b54e;
+  border-radius: clamp(16px, 2vw, 24px);
+  background: #fdf8e7;
+  box-shadow: 0 8px 22px rgba(55, 37, 17, .24);
+  overscroll-behavior: contain;
+}
+.destination-quiz-heading { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 12px; }
+.destination-quiz-heading-title { display: flex; min-width: 0; align-items: center; gap: 12px; }
+.destination-quiz-heading-title > div { min-width: 0; }
+.destination-quiz-heading-title p { margin: 0 0 2px; color: #a84c2a; font-size: clamp(7px, .7vw, 10px); font-weight: 1000; letter-spacing: .08em; }
+.destination-quiz-heading-title h1 { margin: 0; color: #4c321f; font-family: Fredoka, 'Nunito', sans-serif; font-size: clamp(22px, 2.6vw, 36px); font-weight: 700; line-height: 1.1; }
+.destination-quiz-heading-title img { width: clamp(28px, 4vw, 46px); height: clamp(34px, 5vw, 52px); object-fit: contain; object-position: center bottom; animation: destination-intro-float 3.2s ease-in-out infinite; }
+.destination-quiz-exit {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #d5bc82;
+  border-radius: 50%;
+  color: #62472d;
+  background: #fffdf5;
+}
+.destination-quiz-exit:hover { background: #f5e9c6; }
+.destination-quiz-progress { display: grid; flex: 0 0 auto; justify-items: end; gap: 7px; color: #765f40; font-size: clamp(7px, .65vw, 9px); font-weight: 1000; white-space: nowrap; }
+.destination-quiz-progress b { color: #2f5233; }
+.destination-quiz-progress i { padding: 0 3px; color: #c2aa73; font-style: normal; }
+.destination-quiz-dots { display: flex; gap: 5px; }
+.destination-quiz-dots span { width: clamp(11px, 1.4vw, 19px); height: 8px; border-radius: 4px; background: #e8e2c8; }
+.destination-quiz-dots span.is-done { background: #84ad72; }
+.destination-quiz-dots span.is-current { background: #dfa94c; box-shadow: 0 0 0 1px #bd802b; }
+.destination-quiz-layout { display: grid; min-height: 0; grid-template-columns: minmax(190px, 29%) minmax(0, 1fr); gap: 12px; }
+.destination-quiz-prompt {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 12px 10px;
+  border: 1px solid #e4d8ac;
+  border-radius: 15px;
+  background: #fffdf3;
+  text-align: center;
+}
+.destination-quiz-kicker { margin: 0; color: #a84c2a; font-size: clamp(7px, .7vw, 9px); font-weight: 1000; }
+.destination-quiz-prompt h2 { margin: 6px 0 0; color: #4c321f; font-family: Fredoka, 'Nunito', sans-serif; font-size: clamp(19px, 2.1vw, 29px); font-weight: 700; line-height: 1.1; }
+.destination-quiz-art {
+  display: grid;
+  width: min(19vw, 22vh, 215px);
+  min-width: 118px;
+  aspect-ratio: 1;
+  flex: 0 1 auto;
+  place-items: center;
+  margin: 12px 0;
+  border-radius: 50%;
+  color: #4b7f81;
+  background: #e3f1f2;
+  font-size: clamp(48px, 7vw, 94px);
+}
+.destination-quiz-reveal { display: grid; gap: 2px; margin: -4px 0 8px; }
+.destination-quiz-reveal small { color: #8b7050; font-size: 8px; font-weight: 1000; }
+.destination-quiz-reveal strong { color: #2f5233; font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif; font-size: 22px; }
+.destination-quiz-status {
+  display: flex;
+  width: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: auto;
+  padding: 5px 7px;
+  border-radius: 7px;
+  color: #476342;
+  background: #e5ecd2;
+  font-size: clamp(7px, .68vw, 9px);
+  font-weight: 800;
+}
+.destination-quiz-status.is-correct { color: #286144; background: #dcebd4; }
+.destination-quiz-game-panel {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: 1px solid #e4d8ac;
+  border-radius: 15px;
+  background: #f2eed2;
+}
+.yangon-orbit-workspace { display: grid; width: 100%; height: 100%; min-height: 300px; grid-template-columns: minmax(115px, 145px) minmax(0, 1fr); align-items: center; gap: 10px; }
+.yangon-orbit-tools { display: flex; flex-direction: column; align-items: stretch; gap: 11px; }
+.yangon-game-instructions { display: grid; gap: 5px; margin-bottom: 12px; color: #3d634b; font-size: 9px; font-weight: 1000; }
+.yangon-game-instructions span { color: #725e43; font-size: 9px; font-weight: 700; }
+.yangon-orbit-control {
+  display: flex;
+  min-height: 43px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 6px;
+  border: 1px solid #d5c899;
+  border-radius: 12px;
+  background: #fffaf0;
+  box-shadow: 0 3px 0 rgba(132, 108, 57, .2);
+  color: #466548;
+  font-size: 9px;
+  font-weight: 1000;
+}
+.yangon-orbit-control button { display: grid; width: 25px; height: 27px; place-items: center; border-radius: 7px; color: #356b4b; }
+.yangon-orbit-control button:hover:not(:disabled) { background: #e5f1ed; }
+.yangon-orbit-control button:disabled { opacity: .48; }
+.yangon-orbit-direction { display: grid; gap: 5px; margin: 17px 5px 0; color: #705d43; font-size: 9px; font-weight: 700; }
+.yangon-orbit-board,
+.yangon-trail-board {
+  position: relative;
+  width: min(40vw, 46vh, 390px);
+  min-width: 265px;
+  aspect-ratio: 1;
+  justify-self: center;
+  border-radius: 50%;
+}
+.yangon-orbit-board { pointer-events: none; }
+.yangon-orbit-ring,
+.yangon-trail-ring { position: absolute; inset: 4%; border: 1.5px solid #c9c399; border-radius: 50%; pointer-events: none; }
+.yangon-orbit-rotor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform-origin: center;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.yangon-orbit-rotor-outer { z-index: 3; }
+.yangon-orbit-rotor-inner { z-index: 2; }
+.yangon-orbit-ring-outer { inset: -2%; }
+.yangon-orbit-ring-inner { inset: 20%; background: rgba(226, 218, 172, .36); }
+.yangon-orbit-ring::before {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  transform: translateX(-50%);
+  border: 1px solid #b7ad7b;
+  border-radius: 50%;
+  background: #f7efcf;
+  content: '';
+}
+.yangon-orbit-position-slot,
+.yangon-orbit-tone-slot {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  width: clamp(44px, 4.5vw, 54px);
+  height: clamp(48px, 4.7vw, 58px);
+  place-items: center;
+  padding: 4px;
+  border: 1px solid #cbb97e;
+  border-radius: 14px;
+  color: #493927;
+  background: #fffdf1;
+  box-shadow: 0 3px 0 rgba(132, 108, 57, .25);
+  font-size: clamp(19px, 2.2vw, 27px);
+  font-weight: 800;
+  transform: translate(-50%, -50%) rotate(var(--counter-rotation, 0deg));
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), background .16s ease, box-shadow .16s ease;
+}
+.yangon-orbit-position-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+.yangon-orbit-position-slot { width: clamp(30px, 3vw, 36px); height: clamp(34px, 3.2vw, 40px); font-size: clamp(15px, 1.5vw, 19px); }
+.yangon-orbit-position-slot.is-compound { width: clamp(36px, 3.7vw, 44px); }
+.yangon-orbit-position-slot.is-outer-vowel { width: clamp(30px, 3vw, 36px); }
+.yangon-orbit-position-slot.is-in-target,
+.yangon-orbit-tone-slot.is-in-target { opacity: 0; }
+.yangon-orbit-target-glyph {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #493927;
+  font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif;
+  font-size: clamp(17px, 1.8vw, 22px);
+  line-height: 1;
+}
+.yangon-orbit-target-slot {
+  position: absolute;
+  z-index: 4;
+  display: block;
+  transform: translate(-50%, -50%);
+  border: 2px solid #7093bd;
+  border-radius: 14px;
+  background: rgba(183, 201, 232, .62);
+  box-shadow: 0 0 0 3px rgba(112, 147, 189, .28), 0 4px 0 rgba(84, 112, 149, .34);
+  pointer-events: none;
+}
+.yangon-orbit-target-slot-vowel { width: clamp(30px, 3vw, 36px); height: clamp(34px, 3.2vw, 40px); }
+.yangon-orbit-target-slot-tone { width: clamp(42px, 3.6vw, 44px); height: clamp(46px, 3.9vw, 48px); }
+.yangon-orbit-slot-glyph,
+.yangon-trail-node span { font-family: 'Noto Sans Myanmar', 'Padauk', 'Nunito', sans-serif; line-height: 1; }
+.yangon-orbit-slot-glyph { display: grid; place-items: center; }
+.yangon-orbit-tone-slot { width: clamp(42px, 3.6vw, 44px); height: clamp(46px, 3.9vw, 48px); }
+.yangon-orbit-tone-slot .yangon-orbit-slot-glyph { font-size: clamp(17px, 1.9vw, 23px); }
+.yangon-trail-node {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  width: clamp(40px, 4.7vw, 56px);
+  min-width: 0;
+  aspect-ratio: 1;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border: 1px solid #d1c28d;
+  border-radius: 13px;
+  color: #493927;
+  background: #fffdf1;
+  box-shadow: 0 3px 0 rgba(132, 108, 57, .25);
+  font-size: clamp(18px, 2.2vw, 27px);
+  font-weight: 800;
+  transition: background .16s ease, box-shadow .16s ease, transform .16s ease;
+}
+.yangon-trail-node:hover:not(:disabled) { transform: translate(-50%, -50%) scale(1.06); }
+.yangon-orbit-center,
+.yangon-trail-center {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  width: clamp(66px, 7vw, 84px);
+  aspect-ratio: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  border: 1px solid #b68b49;
+  border-radius: 23px;
+  color: #fff8e4;
+  background: #bc914e;
+  box-shadow: 0 4px 0 #a57734;
+}
+.yangon-orbit-center small { margin-bottom: 2px; color: #f6e5bb; font-size: 7px; font-weight: 1000; }
+.yangon-orbit-center { z-index: 5; border-radius: 50%; }
+.yangon-orbit-center strong { font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif; font-size: 27px; line-height: 1.1; }
+.destination-quiz-footer { display: grid; min-width: 0; grid-template-columns: minmax(94px, 120px) minmax(0, 1fr) minmax(130px, 165px); align-items: stretch; gap: 10px; }
+.destination-quiz-hint,
+.destination-quiz-secondary {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid #9a6b35;
+  border-radius: 10px;
+  color: #5e4328;
+  background: #fffaf0;
+  font-size: 9px;
+  font-weight: 1000;
+}
+.destination-quiz-hint:hover:not(:disabled),
+.destination-quiz-secondary:hover { background: #f5ebd0; }
+.destination-quiz-hint:disabled { opacity: .55; }
+.destination-quiz-aligned,
+.destination-quiz-trail-progress {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+  border: 1px solid #e3cd84;
+  border-radius: 10px;
+  background: #f5edcb;
+}
+.destination-quiz-aligned small,
+.destination-quiz-trail-progress small { flex: 0 0 auto; color: #466548; font-size: 7px; font-weight: 1000; }
+.destination-quiz-aligned strong { color: #4c321f; font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif; font-size: 21px; white-space: nowrap; }
+.destination-quiz-combination {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+  color: #4c321f;
+  font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif;
+  white-space: nowrap;
+}
+.destination-quiz-combination-part { display: flex; align-items: center; gap: 7px; }
+.destination-quiz-combination-part b,
+.destination-quiz-combination-equals { color: #725d42; font-family: 'Nunito', sans-serif; }
+.destination-quiz-combination-answer { border-left: 1px solid #d9c895; padding-left: 9px; }
+.destination-quiz-aligned span { overflow: hidden; color: #725d42; font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif; font-size: clamp(8px, .8vw, 11px); text-overflow: ellipsis; white-space: nowrap; }
+.destination-quiz-primary,
+.destination-quiz-auto-check {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid #72512f;
+  border-radius: 11px;
+  color: #fff8e6;
+  background: #2f5233;
+  box-shadow: 0 3px 0 #b88932;
+  font-size: clamp(8px, .8vw, 11px);
+  font-weight: 1000;
+  white-space: nowrap;
+}
+.destination-quiz-primary:hover:not(:disabled) { background: #3d6c44; }
+.destination-quiz-auto-check { border-color: #d5c899; color: #705d43; background: #f5edcb; font-size: clamp(8px, .8vw, 11px); pointer-events: none; }
+.yangon-trail-workspace { display: flex; width: 100%; height: 100%; min-height: 300px; flex-direction: column; align-items: center; justify-content: space-around; gap: 6px; }
+.yangon-trail-answer-slots { display: flex; min-height: 37px; align-items: center; justify-content: center; gap: 7px; }
+.yangon-trail-answer-slots span {
+  display: grid;
+  width: clamp(31px, 4vw, 43px);
+  height: 34px;
+  place-items: center;
+  border: 1px solid #d8cda7;
+  border-radius: 8px;
+  color: #3a533f;
+  background: #fffdf1;
+  font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif;
+  font-size: 19px;
+}
+.yangon-trail-answer-slots span.is-filled { border-color: #89ad7b; background: #dcebd4; }
+.yangon-trail-board { width: min(29vw, 34vh, 360px); min-width: 250px; }
+.yangon-trail-ring { inset: 7%; border-color: #c6c092; }
+.yangon-trail-lines { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.yangon-trail-lines polyline { fill: none; stroke: #4a9b69; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+.yangon-trail-node { width: clamp(45px, 5vw, 62px); cursor: grab; }
+.yangon-trail-node:active { cursor: grabbing; }
+.yangon-trail-node.is-used { border-color: #7eaa74; color: #285d3c; background: #dcebd4; box-shadow: 0 3px 0 #a7bd8e; }
+.yangon-trail-node.is-hinted { outline: 3px solid #e3ad52; outline-offset: 3px; }
+.yangon-trail-center { width: 68px; border-color: #c8dede; color: #426d72; background: #e2f1f1; box-shadow: none; }
+.yangon-trail-center svg { margin-bottom: 4px; }
+.yangon-trail-center span { font-size: 7px; font-weight: 1000; letter-spacing: .05em; text-align: center; }
+.yangon-trail-reset {
+  display: inline-flex;
+  min-height: 27px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border: 1px solid #dbc997;
+  border-radius: 999px;
+  color: #684f33;
+  background: #fffaf0;
+  font-size: 8px;
+  font-weight: 1000;
+}
+.yangon-trail-reset:disabled { opacity: .55; }
+.destination-quiz-trail-progress { justify-content: center; gap: 9px; }
+.destination-quiz-trail-progress strong { color: #496548; font-size: 10px; }
+.destination-quiz-trail-action { display: grid; min-height: 40px; place-items: center; color: #806b4e; font-size: 9px; font-weight: 800; }
+.destination-quiz-results {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  width: min(86%, 520px);
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  padding: clamp(26px, 4vw, 48px);
+  border: 2px solid #e4b54e;
+  border-radius: 23px;
+  background: #fdf8e7;
+  box-shadow: 0 8px 22px rgba(55, 37, 17, .24);
+  text-align: center;
+}
+.destination-quiz-results-icon { display: grid; width: 64px; height: 64px; place-items: center; border-radius: 50%; color: #86633a; background: #f2e6c6; }
+.destination-quiz-results-icon.is-passed { color: #2f6847; background: #deecd7; }
+.destination-quiz-results > p { margin: 14px 0 4px; color: #a84c2a; font-size: 9px; font-weight: 1000; letter-spacing: .08em; }
+.destination-quiz-results h1 { margin: 0; color: #4c321f; font-family: Fredoka, 'Nunito', sans-serif; font-size: clamp(24px, 4vw, 36px); }
+.destination-quiz-results > strong { margin-top: 12px; color: #2f5233; font-size: clamp(32px, 5vw, 48px); }
+.destination-quiz-results > span:not(.destination-quiz-results-icon) { max-width: 340px; margin-top: 5px; color: #705b40; font-size: 13px; line-height: 1.5; }
+.destination-quiz-results-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 24px; }
+.destination-quiz-results-actions button { min-width: 138px; }
+
+@media (max-width: 760px) {
+  .destination-quiz-brand { top: 1.5%; left: 4%; width: 27%; height: 8%; }
+  .destination-quiz-profile { top: 2%; right: 2%; width: 59%; }
+  .destination-quiz-card { inset: 17% 3% 3%; grid-template-rows: auto minmax(0, 1fr) auto; gap: 9px; padding: 3%; }
+  .destination-quiz-heading { align-items: flex-start; gap: 5px; }
+  .destination-quiz-heading-title { gap: 7px; }
+  .destination-quiz-heading-title img { display: none; }
+  .destination-quiz-exit { width: 28px; height: 28px; }
+  .destination-quiz-progress { gap: 5px; font-size: 6px; }
+  .destination-quiz-dots { gap: 2px; }
+  .destination-quiz-dots span { width: clamp(7px, 2vw, 12px); height: 6px; }
+  .destination-quiz-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: 7px; }
+  .destination-quiz-prompt { display: grid; grid-template-columns: 84px minmax(0, 1fr); grid-template-rows: auto auto 1fr; gap: 3px 9px; padding: 8px; text-align: left; }
+  .destination-quiz-kicker { grid-column: 2; grid-row: 1; align-self: end; font-size: 7px; }
+  .destination-quiz-prompt h2 { grid-column: 2; grid-row: 2; align-self: start; margin: 0; font-size: 19px; }
+  .destination-quiz-art { grid-column: 1; grid-row: 1 / 4; width: 78px; min-width: 0; margin: 0; font-size: 38px; }
+  .destination-quiz-status { grid-column: 2; grid-row: 3; align-self: end; justify-content: flex-start; min-height: 23px; margin: 0; padding: 3px 5px; font-size: 7px; }
+  .destination-quiz-reveal { display: none; }
+  .destination-quiz-game-panel { min-height: 0; padding: 6px; }
+  .yangon-orbit-workspace { min-height: 0; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); justify-items: center; gap: 2px; }
+  .yangon-orbit-tools { display: grid; width: 100%; grid-template-columns: 1fr 1fr; align-items: center; gap: 5px; }
+  .yangon-game-instructions { grid-column: 1 / -1; margin: 0; }
+  .yangon-game-instructions span { display: none; }
+  .yangon-orbit-control { min-height: 30px; padding: 2px 4px; font-size: 8px; }
+  .yangon-orbit-control button { width: 21px; height: 22px; }
+  .yangon-orbit-position-slot { width: 24px; height: 28px; padding: 2px; font-size: 14px; }
+  .yangon-orbit-position-slot.is-compound { width: 30px; }
+  .yangon-orbit-position-slot.is-outer-vowel { width: 24px; }
+  .yangon-orbit-target-slot-vowel { width: 24px; height: 28px; }
+  .yangon-orbit-target-slot-tone { width: 22px; height: 26px; }
+  .yangon-orbit-tone-slot { width: 22px; height: 26px; padding: 1px; font-size: 12px; }
+  .yangon-orbit-direction { display: none; }
+  .yangon-orbit-board { width: min(64vw, 30vh, 290px); min-width: 235px; }
+  .yangon-orbit-center { width: 62px; }
+  .yangon-trail-workspace { min-height: 0; gap: 2px; }
+  .yangon-trail-answer-slots { min-height: 29px; gap: 4px; }
+  .yangon-trail-answer-slots span { width: 29px; height: 27px; font-size: 16px; }
+  .yangon-trail-board { width: min(62vw, 29vh, 280px); min-width: 225px; }
+  .yangon-trail-node { width: 43px; font-size: 19px; }
+  .yangon-trail-center { width: 54px; }
+  .yangon-trail-reset { min-height: 23px; font-size: 7px; }
+  .destination-quiz-footer { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1fr); gap: 5px; }
+  .destination-quiz-hint,
+  .destination-quiz-primary,
+  .destination-quiz-auto-check { min-height: 34px; gap: 3px; padding: 0 5px; font-size: 7px; }
+  .destination-quiz-aligned,
+  .destination-quiz-trail-progress { gap: 4px; padding: 4px; }
+  .destination-quiz-aligned small,
+  .destination-quiz-trail-progress small { font-size: 6px; }
+  .destination-quiz-aligned strong { font-size: 15px; }
+  .destination-quiz-aligned span { display: block; font-size: 6px; white-space: normal; }
+  .destination-quiz-trail-progress strong { font-size: 7px; }
+  .destination-quiz-trail-action { min-height: 34px; font-size: 7px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .destination-quiz-heading-title img,
+  .yangon-orbit-rotor,
+  .yangon-orbit-position-slot,
+  .yangon-orbit-tone-slot,
+  .yangon-trail-node { animation: none; transition: none; }
+}
 .destination-clear-page {
   width: 100%;
   height: 100vh;

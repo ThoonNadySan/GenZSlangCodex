@@ -18,9 +18,9 @@ const destinationStampImages = {
   yangon: '/generated/yangon-stamp-transparent.png'
 }
 const lockedDestinationStampImages = {
-  inle: '/generated/inle-lock-stamp.png',
-  bagan: '/generated/bagan-lock-stamp.png',
-  mandalay: '/generated/mandalay-lock-stamp.png'
+  inle: '/generated/inle-lock-stamp-transparent.png',
+  bagan: '/generated/bagan-lock-stamp-transparent.png',
+  mandalay: '/generated/mandalay-lock-stamp-transparent.png'
 }
 
 export default function CollectionBook() {
@@ -30,7 +30,7 @@ export default function CollectionBook() {
     .filter(Boolean)
   const defaultDestination = orderedDestinations.find((destination) => collectedCards.includes(destination.id))
     ?? orderedDestinations.find((destination) => destination.unlocked)
-  const initialDestination = selectedDestination && collectedCards.includes(selectedDestination.id)
+  const initialDestination = selectedDestination?.unlocked
     ? selectedDestination
     : defaultDestination
   const [selectedId, setSelectedId] = useState(initialDestination?.id)

@@ -68,7 +68,7 @@ export default function WorldMap() {
             <p>Collect words as you explore!</p><b>{collectedCards.length} / 6 stamps collected</b><div className="collection-progress">{[0, 1, 2, 3, 4, 5].map((item) => <span className={item < collectedCards.length ? 'filled' : ''} key={item} />)}</div>
             <div className="stamp-grid">{collectionOrder.map((id) => { const destination = byId[id]; const collected = collectedCards.includes(id); return <div className={`stamp-card ${collected ? 'collected' : ''} ${selectedStamp === id ? 'selected' : ''}`} key={id} role="button" tabIndex={0} onClick={(event) => { event.stopPropagation(); setSelectedStamp(id) }} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') setSelectedStamp(id) }}>{collected ? <img className="stamp-art stamp-art-full" src={`/generated/${id}-slang-card.png`} alt={`${destination.name} slang sticker`} /> : <><span className="stamp-art stamp-art-locked">?</span><b>Undiscovered</b><small>{destination.name}</small></>}</div> })}</div>
             {selectedStamp && <div className="stamp-detail"><strong>{byId[selectedStamp].name}</strong><span>{collectedCards.includes(selectedStamp) ? `${byId[selectedStamp].slang} · ${byId[selectedStamp].meaning}` : 'Explore this destination to discover its slang!'}</span></div>}
-            <button className="collection-book-link" onClick={() => setActiveScreen('collection')}>Open Slang Book <span>→</span></button>
+            <button className="collection-book-link" onClick={() => setActiveScreen('stamp-collection')}>View Stamp Collection <span>→</span></button>
           </div>}
         </section>
 
