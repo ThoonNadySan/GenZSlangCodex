@@ -3787,7 +3787,7 @@ button { cursor: pointer; }
 .falling-score-box b { font-size: 8px; }
 .falling-score-box strong { font-size: 24px; line-height: 1; }
 .falling-progress-box { min-width: 130px; justify-items: center; }
-.falling-progress-box small { color: #5e8068; font-size: 8px; font-weight: 800; text-align: center; }
+.falling-progress-box small { color: #5e8068; font-size: 10px; font-weight: 800; text-align: center; }
 .falling-content { display: grid; grid-template-columns: 25% minmax(0,1fr); gap: 12px; min-height: 0; }
 .falling-target {
   display: flex;
@@ -3802,13 +3802,15 @@ button { cursor: pointer; }
   text-align: center;
 }
 .falling-target p { margin: 0; font-size: 8px; font-weight: 1000; text-transform: uppercase; }
-.falling-target h2 { margin: 5px 0 2px; font-size: clamp(14px,1.35vw,20px); }
-.falling-target-art { display: grid; width: 68%; height: 31%; min-height: 118px; max-height: 155px; margin: 0 auto 14px; place-items: center; background: transparent; }
-.falling-target-art img { width: 78%; height: 78%; object-fit: contain; }
-.falling-target small { margin: 12px 0 10px; color: #4f8067; font-size: 8px; font-weight: 1000; }
+.falling-target h2 { margin: 5px 0 2px; font-size: clamp(14px,1.35vw,20px); font-weight: 1000; }
+.falling-target-art { display: grid; width: 68%; height: 31%; min-height: 168px; max-height: 168px; margin: 0 auto 14px; place-items: center; overflow: visible; background: transparent; }
+.falling-target-art img { display: block; width: 118px; height: 118px; object-fit: contain; object-position: center; }
+.falling-target-art.is-human img { width: 168px; height: 168px; transform: translateX(0); }
+.falling-target-art.is-cross img { width: 168px; height: 168px; transform: translateX(0); }
+.falling-target small { position: relative; top: -14px; margin: 12px 0 10px; color: #4f8067; font-size: 10px; font-weight: 1000; }
 .falling-progress { display: flex; gap: 5px; margin-bottom: 7px; }
 .falling-progress span { display: grid; width: 25px; height: 25px; place-items: center; border: 1px solid #d9b65d; border-radius: 50%; color: #a68140; background: #fff6ca; font-size: 9px; font-weight: 1000; }
-.falling-progress-labeled { width: 100%; justify-content: center; margin: 13px 0 14px; }
+.falling-progress-labeled { position: relative; top: -14px; width: 100%; justify-content: center; margin: 13px 0 14px; }
 .falling-progress-labeled span { width: 58px; min-height: 58px; height: auto; padding: 5px 4px 4px; border: 1.5px dashed #d6b45f; border-radius: 8px; color: #8b7048; background: #fffaf0; font-size: 7px; }
 .falling-progress-labeled span b { display: grid; width: 28px; height: 28px; margin: 0 auto 3px; place-items: center; border: 1px solid #d3b15a; border-radius: 6px; color: #72583a; background: #fff2bd; font-size: 13px; }
 .falling-progress-labeled span small { display: block; line-height: 1.1; }
@@ -3816,6 +3818,8 @@ button { cursor: pointer; }
 .falling-progress-labeled span.is-current { border-style: dashed; border-color: #d6b45f; color: #39795a; background: #fffaf0; }
 .falling-progress-labeled span.is-current b { border-color: #438c6b; color: #fff; background: #438c6b; }
 .falling-word-equation {
+  position: relative;
+  top: -14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3824,7 +3828,7 @@ button { cursor: pointer; }
   color: #5d4935;
   font-family: 'Noto Sans Myanmar','Padauk',sans-serif;
   margin-top: 10px;
-  font-size: clamp(24px, 2vw, 32px);
+  font-size: clamp(20px, 1.55vw, 24px);
   line-height: 1.25;
   white-space: nowrap;
 }
@@ -3892,10 +3896,9 @@ button { cursor: pointer; }
 .falling-feedback { position: absolute; z-index: 3; bottom: 38px; left: 50%; width: max-content; max-width: 90%; margin: 0; padding: 5px 8px; border-radius: 7px; color: #8a4933; background: #fff3df; font-size: 8px; transform: translateX(-50%); }
 .falling-check { position: absolute; z-index: 4; bottom: 8px; left: 50%; min-height: 28px; padding: 0 14px; border: 1px solid #1f6349; border-radius: 8px; color: white; background: #2d7555; transform: translateX(-50%); font-size: 9px; font-weight: 1000; }
 .falling-success { position: absolute; inset: 20px 30px; display: grid; place-items: center; align-content: center; gap: 6px; border: 1px solid #e8d49e; border-radius: 14px; background: rgba(255,250,234,.96); text-align: center; }
-.falling-success > small { color: #3d8162; font-size: 8px; font-weight: 1000; }
+.falling-success > small { color: #3d8162; font-size: 10px; font-weight: 1000; }
 .falling-success h2 { margin: 0; font-size: clamp(18px,2vw,28px); }
 .falling-success-answer { display: grid; min-width: 0; place-items: center; padding: 4px 12px; border: 0; border-radius: 0; background: transparent; font-family: 'Noto Sans Myanmar','Padauk',sans-serif; font-size: 34px; line-height: 1; }
-.falling-success-points { min-width: 118px; padding: 7px 12px; border-radius: 999px; color: #77512e; background: #ffe09a; font-size: 11px; text-align: center; }
 .falling-success-sparkles { position: absolute; z-index: 5; inset: 0; pointer-events: none; }
 .falling-success-sparkles span {
   --sparkle-x: 50%;
@@ -3947,15 +3950,18 @@ button { cursor: pointer; }
   .falling-score-box b { font-size: 6px; }
   .falling-score-box strong { font-size: 16px; }
   .falling-progress-box { width: 84px; min-width: 0; min-height: 22px; padding: 3px; }
-  .falling-progress-box small { font-size: 6px; line-height: 1.1; }
+  .falling-progress-box small { font-size: 8px; line-height: 1.1; }
   .falling-content { grid-template-columns: 100px minmax(0,1fr); gap: 6px; }
   .falling-target { padding: 8px 4px; }
   .falling-target h2 { font-size: 10px; }
-  .falling-target-art { width: 92%; height: 32%; }
-  .falling-target-art img { width: 92%; height: 92%; }
-  .falling-target small { margin-top: 8px; }
-  .falling-progress-labeled { margin: 8px 0; }
-  .falling-word-equation { gap: 3px; margin-top: 6px; font-size: 22px; }
+  .falling-target-art { width: 92%; height: 32%; min-height: 128px; max-height: 128px; }
+  .falling-target-art img { width: 92px; height: 92px; }
+  .falling-target-art.is-human img { width: 128px; height: 128px; transform: translateX(0); }
+  .falling-target-art.is-cross img { width: 128px; height: 128px; transform: translateX(0); }
+  .falling-target small { top: -10px; margin-top: 8px; }
+  .falling-progress-labeled { top: -10px; margin: 8px 0; }
+  .falling-progress-labeled span { width: 44px; min-height: 50px; }
+  .falling-word-equation { top: -10px; gap: 3px; margin-top: 6px; font-size: 19px; }
   .falling-progress span { width: 20px; height: 20px; }
   .falling-field-heading { height: 62px; }
   .falling-field-heading h2 { font-size: 9px; }
