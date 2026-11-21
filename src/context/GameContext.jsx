@@ -71,7 +71,8 @@ export function GameProvider({ children }) {
     setSelectedDestination(destination)
     const destinationIntro = {
       bagan: 'bagan-intro',
-      naypyitaw: 'naypyitaw-intro'
+      naypyitaw: 'naypyitaw-intro',
+      mandalay: 'mandalay-intro'
     }
     setActiveScreen(destinationIntro[destination.id] || 'assembly')
   }
