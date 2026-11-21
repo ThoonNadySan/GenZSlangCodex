@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowLeft, Check, HelpCircle, RotateCcw } from 'lucide-react'
 import { useGame } from '../context/GameContext'
 import { Button, Modal, TopBar } from './ui'
@@ -159,9 +159,9 @@ const successConfettiPieces = [
 
 export default function AssemblyChallenge() {
   const { selectedDestination } = useGame()
-  return selectedDestination.id === 'naypyitaw'
-    ? <NaypyitawSpellingBuilder />
-    : <LegacyAssemblyChallenge />
+  if (selectedDestination.id === 'naypyitaw') return <NaypyitawSpellingBuilder />
+  if (selectedDestination.id === 'mawlamyine') return <MawlamyineFallingCharacters />
+  return <LegacyAssemblyChallenge />
 }
 
 function NaypyitawSpellingBuilder() {
@@ -195,6 +195,10 @@ function NaypyitawSpellingBuilder() {
     setSelectedTile(null)
     setFeedback('')
   }
+
+  useEffect(() => {
+    if (caught.length === targetParts.length) setShowSuccess(true)
+  }, [caught, targetParts.length])
 
   const shuffleTiles = () => {
     if (showSuccess) return
@@ -353,6 +357,195 @@ function NaypyitawSpellingBuilder() {
       </section>
     </section>
   </main>
+}
+
+function MawlamyineFallingCharacters() {
+  const { setModal, setActiveScreen: navigate } = useGame()
+  const [caught, setCaught] = useState([])
+  const [feedback, setFeedback] = useState('')
+  const [showSuccess, setShowSuccess] = useState(false)
+  const targetParts = [
+    { id: 'consonant', label: 'Pa', value: 'ပ', tileValue: 'ပ' },
+    { id: 'vowel', label: 'Auu', value: 'ူ', tileValue: '◌ူ' }
+  ]
+  const fallingPool = [
+    { id: 'consonant', value: 'ပ', tone: 'consonant' },
+    { id: 'vowel', value: 'ူ', tone: 'vowel' },
+    { id: 'd1', value: 'က', tone: 'consonant' },
+    { id: 'd2', value: '◌ာ', tone: 'vowel' },
+    { id: 'd3', value: 'မ', tone: 'consonant' },
+    { id: 'd4', value: '◌ိ', tone: 'vowel' },
+    { id: 'd5', value: 'တ', tone: 'consonant' },
+    { id: 'd6', value: '◌ေ', tone: 'vowel' },
+    { id: 'd7', value: 'ဆ', tone: 'consonant' },
+    { id: 'd8', value: '◌ဲ', tone: 'vowel' },
+    { id: 'd9', value: 'သ', tone: 'consonant' },
+    { id: 'd10', value: '◌ံ', tone: 'vowel' }
+  ]
+
+  const catchCharacter = (tile) => {
+    if (showSuccess) return
+    const target = targetParts.find((part) => part.id === tile.id)
+    if (!target) {
+      setFeedback('Not that character. Catch the consonant and vowel for Hot.')
+      return
+    }
+    if (caught.includes(tile.id)) return
+    const next = [...caught, tile.id]
+    setCaught(next)
+    if (next.length === targetParts.length) setShowSuccess(true)
+    setFeedback('')
+  }
+
+  const reset = () => {
+    setCaught([])
+    setFeedback('')
+    setShowSuccess(false)
+  }
+
+  return (
+    <main className="falling-page">
+      <section className="falling-scene" aria-label="Mawlamyine character falling challenge">
+        <img className="falling-background" src="/Continuous Myanmar fantasy world · Seven cities and separate AI Castle 1.png" alt="" aria-hidden="true" />
+        <img className="falling-brand" src="/generated/codex-logo.png" alt="GenZ Slang Codex" />
+        <button type="button" className="falling-scene-back" onClick={() => navigate('map')} aria-label="Back to world map"><ArrowLeft size={18} /></button>
+        <div className="falling-timer">00:20</div>
+        <header className="world-map-profile falling-player-bar">
+          <img src="/generated/setting-bar-transparent.png" alt="Player profile, XP, settings and leaderboard" />
+          <button className="profile-hitbox" type="button" onClick={() => setModal('profile')} aria-label="Open profile" />
+          <button className="settings-hitbox" type="button" onClick={() => navigate('settings')} aria-label="Settings" />
+          <button className="leaderboard-hitbox" type="button" onClick={() => setModal('leaderboard')} aria-label="Leaderboard" />
+        </header>
+
+        <article className={`falling-card ${showSuccess ? 'has-success' : ''}`}>
+          <header className="falling-heading">
+            <div>
+              <p>MAWLAMYINE · 1 / 10</p>
+              <div className="falling-heading-row">
+                <h1>Character Falling</h1>
+                <img src="/MonkeyDes1-falling-sticker.png" alt="" aria-hidden="true" />
+              </div>
+              <span>Consonant &amp; Vowel Challenge</span>
+            </div>
+            <div className="falling-header-status">
+              <div className="falling-question-progress" role="img" aria-label="Question 1 of 10">
+                {Array.from({ length: 10 }, (_, index) => <span className={index === 0 ? 'is-current' : ''} key={index} />)}
+              </div>
+              <div className="falling-score">
+                <div className="falling-score-box">
+                  <b>SCORE</b>
+                  <strong>{showSuccess ? '100' : '000'}</strong>
+                </div>
+                <div className="falling-progress-box">
+                  <small>{caught.length} of 2 challenges complete</small>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div className="falling-content">
+            <aside className="falling-target">
+              <p>{caught.length === targetParts.length ? 'WORD COMPLETE' : 'YOUR TARGET'}</p>
+              <h2>Hot 🔥</h2>
+              <div className="falling-target-art"><img src="/HotLogoDes2-sticker.png" alt="Hot" /></div>
+              <small>{caught.length} / 2 challenges complete</small>
+              <div className="falling-progress falling-progress-labeled">
+                        {[1, 2].map((step) => {
+                          const part = targetParts[step - 1]
+                          const isCaught = caught.includes(part.id)
+                          return (
+                            <span className={`falling-progress-step ${isCaught ? 'is-current' : ''}`} key={step}>
+                              <b>{step}</b>
+                              <small>{step === 1 ? 'Consonant' : 'Vowel sign'}</small>
+                            </span>
+                          )
+                        })}
+              </div>
+                      <strong className="falling-word-equation">
+                        <span lang="my">ပ</span>
+                        <span>+</span>
+                        <span lang="my">◌ူ</span>
+                        <span>=</span>
+                        <span lang="my">{caught.length === 2 ? 'ပူ' : '?'}</span>
+                      </strong>
+            </aside>
+
+            <section className="falling-field" aria-label="Falling Burmese characters">
+              {!showSuccess && (
+                <div className="falling-field-heading">
+                  <p>SYLLABLE PRACTICE</p>
+                  <h2>Tap the falling Burmese characters in the correct order!</h2>
+                </div>
+              )}
+              {!showSuccess && (
+                <>
+                  <div className="falling-characters" aria-label="Character tiles">
+                    {fallingPool.map((tile, index) => !caught.includes(tile.id) ? (
+                      <button
+                        type="button"
+                        className={`falling-character falling-character-${tile.tone}`}
+                        style={{
+                          '--fall-delay': `${(index % 6) * 0.18}s`,
+                          '--fall-duration': `${3.8 + (index % 5) * 0.32}s`,
+                          '--fall-left': `${4 + ((index * 23) % 88)}%`,
+                          '--fall-sway': `${-38 + ((index * 31) % 76)}px`
+                        }}
+                        key={`${tile.id}-${index}`}
+                        onClick={() => catchCharacter(tile)}
+                        disabled={showSuccess || caught.includes(tile.id)}
+                        lang="my"
+                        aria-label={tile.id === 'consonant' ? 'Pa' : tile.id === 'vowel' ? 'Auu vowel' : 'Other character'}
+                      >
+                        {tile.value}
+                      </button>
+                    ) : null)}
+                  </div>
+                  {feedback && <p className="falling-feedback" role="status">{feedback}</p>}
+                </>
+              )}
+
+              {showSuccess && (
+                <div className="falling-success" role="status">
+                  <div className="falling-success-sparkles" aria-hidden="true">
+                    {Array.from({ length: 18 }, (_, index) => (
+                      <span
+                        key={index}
+                        style={{
+                          '--sparkle-x': `${8 + ((index * 29) % 84)}%`,
+                          '--sparkle-y': `${12 + ((index * 37) % 70)}%`,
+                          '--sparkle-delay': `${(index % 6) * 180}ms`,
+                          '--sparkle-color': ['#f15b43', '#f4b942', '#50a876', '#52b9ca', '#d76bb3'][index % 5]
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <div className="falling-success-confetti" aria-hidden="true">
+                    {successConfettiPieces.map(([x, rise, rotation, delay, color], index) => (
+                      <span
+                        key={index}
+                        style={{
+                          '--confetti-x': `${x}%`,
+                          '--confetti-rise': `${rise}px`,
+                          '--confetti-rotation': `${rotation}deg`,
+                          '--confetti-delay': `${delay}ms`,
+                          '--confetti-color': color
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <small>LEVEL 1 COMPLETE</small>
+                  <h2>You caught them all!</h2>
+                  <strong className="falling-success-answer" lang="my">ပူ</strong>
+                  <b className="falling-success-points">+100 points</b>
+                  <button type="button" onClick={() => navigate('map')}>Next →</button>
+                </div>
+              )}
+            </section>
+          </div>
+        </article>
+      </section>
+    </main>
+  )
 }
 
 function LegacyAssemblyChallenge() {
