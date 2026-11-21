@@ -196,10 +196,6 @@ function NaypyitawSpellingBuilder() {
     setFeedback('')
   }
 
-  useEffect(() => {
-    if (caught.length === targetParts.length) setShowSuccess(true)
-  }, [caught, targetParts.length])
-
   const shuffleTiles = () => {
     if (showSuccess) return
     const shuffled = [...question.spellingOrder]
