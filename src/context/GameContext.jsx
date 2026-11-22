@@ -74,6 +74,7 @@ export function GameProvider({ children }) {
       naypyitaw: 'naypyitaw-intro',
       mawlamyine: 'mawlamyine-intro',
       yangon: 'yangon-intro',
+      inle: 'inle-intro',
       mandalay: 'mandalay-intro'
     }
     setActiveScreen(destinationIntro[destination.id] || 'assembly')

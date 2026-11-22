@@ -2802,6 +2802,33 @@ button { cursor: pointer; }
   object-position: center bottom;
   animation: destination-intro-float 3.2s ease-in-out -1.6s infinite;
 }
+.destination-intro-art-inle {
+  background: linear-gradient(145deg, #dfeff0, #edf4d7);
+}
+.destination-intro-landmark-inle {
+  top: 3%;
+  left: 8%;
+  width: 84%;
+  height: 73%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 8px rgba(74, 92, 67, .16));
+}
+.destination-intro-inle-sparkle {
+  position: absolute;
+  z-index: 3;
+  color: #f0ba48;
+  font-size: clamp(10px, 1.2vw, 17px);
+  text-shadow: 0 2px 3px rgba(255,255,255,.9);
+  animation: destination-intro-sparkle 2.4s ease-in-out infinite;
+}
+.destination-intro-inle-sparkle-one { top: 14%; left: 8%; color: #df8062; }
+.destination-intro-inle-sparkle-two { top: 7%; right: 11%; animation-delay: .45s; }
+.destination-intro-inle-sparkle-three { right: 4%; bottom: 31%; color: #df8062; animation-delay: .9s; }
+.destination-intro-inle-sparkle-four { left: 12%; bottom: 39%; animation-delay: 1.35s; }
+@keyframes destination-intro-sparkle {
+  0%, 100% { opacity: .35; transform: scale(.65) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.18) rotate(20deg); }
+}
 @keyframes destination-intro-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-7px); }
@@ -2990,6 +3017,48 @@ button { cursor: pointer; }
   font-size: clamp(20px, 2vw, 28px);
   line-height: 1.2;
 }
+.destination-intro-spelling-map-inle {
+  min-height: 150px;
+  grid-template-columns: 1fr 22px 1fr 22px 1fr;
+  grid-template-rows: 74px 44px;
+  grid-template-areas:
+    "base arrow1 postbase arrow2 tone"
+    "example down creaky . .";
+  align-content: start;
+  gap: 4px 8px;
+  padding: 4px 2px;
+  border: 0;
+  background: transparent;
+}
+.destination-intro-inle-example {
+  grid-area: example;
+  align-self: center;
+  color: #36704e;
+  font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif;
+  font-size: clamp(12px, 1.15vw, 16px);
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.destination-intro-inle-arrow-down {
+  grid-area: down;
+  color: #57958b;
+}
+.destination-intro-spelling-map-inle .destination-intro-position {
+  width: 100%;
+  min-height: 58px;
+  border: 1px dashed #add0c6;
+  background: #edf7f3;
+}
+.destination-intro-spelling-map-inle .destination-intro-position-creaky {
+  grid-area: creaky;
+  border-color: #f0d39d;
+  background: #fff3c9;
+}
+.destination-intro-spelling-map-inle .destination-intro-position-base { grid-area: base; }
+.destination-intro-spelling-map-inle .destination-intro-position-postbase { grid-area: postbase; }
+.destination-intro-spelling-map-inle .destination-intro-position-tone { grid-area: tone; }
+.destination-intro-inle-arrow-one { grid-area: arrow1; }
+.destination-intro-inle-arrow-two { grid-area: arrow2; }
 .destination-intro-position small { color: #547768; font-size: clamp(5px, .55vw, 8px); font-weight: 1000; line-height: 1.1; }
 .destination-intro-position strong { color: #36704e; font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif; font-size: clamp(13px, 1.4vw, 19px); line-height: 1.1; white-space: nowrap; }
 .destination-intro-diagram-arrow { display: grid; place-items: center; color: #57958b; font-size: clamp(10px, 1vw, 14px); font-weight: 1000; line-height: 1; }
@@ -3166,16 +3235,34 @@ button { cursor: pointer; }
 .destination-quiz-prompt h2 { margin: 6px 0 0; color: #4c321f; font-family: Fredoka, 'Nunito', sans-serif; font-size: clamp(19px, 2.1vw, 29px); font-weight: 700; line-height: 1.1; }
 .destination-quiz-art {
   display: grid;
-  width: min(19vw, 22vh, 215px);
-  min-width: 118px;
+  width: min(21vw, 25vh, 250px);
+  min-width: 138px;
   aspect-ratio: 1;
   flex: 0 1 auto;
   place-items: center;
-  margin: 12px 0;
+  margin: 8px 0;
+  overflow: hidden;
+  border: 0;
   border-radius: 50%;
   color: #4b7f81;
-  background: #e3f1f2;
-  font-size: clamp(48px, 7vw, 94px);
+  background: transparent;
+}
+.destination-quiz-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: auto;
+  filter: none;
+  transform-origin: 50% 72%;
+  animation: destination-quiz-sticker-shake 2.6s ease-in-out infinite;
+}
+
+@keyframes destination-quiz-sticker-shake {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  20% { transform: translateY(-3px) rotate(-1.8deg) scale(1.025); }
+  40% { transform: translateY(1px) rotate(1.8deg) scale(1.025); }
+  55% { transform: translateY(-2px) rotate(-1deg) scale(1.018); }
+  70% { transform: translateY(0) rotate(1deg) scale(1.01); }
 }
 .destination-quiz-reveal { display: grid; gap: 2px; margin: -4px 0 8px; }
 .destination-quiz-reveal small { color: #8b7050; font-size: 8px; font-weight: 1000; }
@@ -3295,7 +3382,7 @@ button { cursor: pointer; }
 .yangon-orbit-position-slot.is-compound { width: clamp(36px, 3.7vw, 44px); }
 .yangon-orbit-position-slot.is-outer-vowel { width: clamp(30px, 3vw, 36px); }
 .yangon-orbit-position-slot.is-in-target,
-.yangon-orbit-tone-slot.is-in-target { opacity: 0; }
+.yangon-orbit-tone-slot.is-in-target { opacity: 1; }
 .yangon-orbit-target-glyph {
   display: grid;
   width: 100%;
@@ -3516,7 +3603,7 @@ button { cursor: pointer; }
   .destination-quiz-prompt { display: grid; grid-template-columns: 84px minmax(0, 1fr); grid-template-rows: auto auto 1fr; gap: 3px 9px; padding: 8px; text-align: left; }
   .destination-quiz-kicker { grid-column: 2; grid-row: 1; align-self: end; font-size: 7px; }
   .destination-quiz-prompt h2 { grid-column: 2; grid-row: 2; align-self: start; margin: 0; font-size: 19px; }
-  .destination-quiz-art { grid-column: 1; grid-row: 1 / 4; width: 78px; min-width: 0; margin: 0; font-size: 38px; }
+  .destination-quiz-art { grid-column: 1; grid-row: 1 / 4; width: 92px; min-width: 0; margin: 0; }
   .destination-quiz-status { grid-column: 2; grid-row: 3; align-self: end; justify-content: flex-start; min-height: 23px; margin: 0; padding: 3px 5px; font-size: 7px; }
   .destination-quiz-reveal { display: none; }
   .destination-quiz-game-panel { min-height: 0; padding: 6px; }
@@ -3557,6 +3644,7 @@ button { cursor: pointer; }
 }
 @media (prefers-reduced-motion: reduce) {
   .destination-quiz-heading-title img,
+  .destination-quiz-art img,
   .yangon-orbit-rotor,
   .yangon-orbit-position-slot,
   .yangon-orbit-tone-slot,
