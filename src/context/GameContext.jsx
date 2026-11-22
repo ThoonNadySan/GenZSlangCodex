@@ -72,6 +72,7 @@ export function GameProvider({ children }) {
     const destinationIntro = {
       bagan: 'bagan-intro',
       naypyitaw: 'naypyitaw-intro',
+      mawlamyine: 'mawlamyine-intro',
       yangon: 'yangon-intro',
       mandalay: 'mandalay-intro'
     }
