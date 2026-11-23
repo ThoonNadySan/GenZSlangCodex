@@ -26,8 +26,6 @@ export default function YangonIntro() {
         aria-hidden="true"
       />
       <img className="destination-intro-brand" src="/generated/codex-logo.png" alt="GenZ Slang Codex" />
-      <div className="destination-intro-tagline"><BookOpen size={13} /> YOUR SLANG ADVENTURE</div>
-
       <header className="world-map-profile destination-intro-profile">
         <img src="/generated/setting-bar-transparent.png" alt="Player profile, XP, settings and leaderboard" />
         <button className="profile-hitbox" type="button" onClick={() => setModal('profile')} aria-label="Open profile" />

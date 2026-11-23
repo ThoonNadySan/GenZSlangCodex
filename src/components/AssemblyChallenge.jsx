@@ -387,15 +387,152 @@ function MawlamyineFallingCharacters() {
   const [caught, setCaught] = useState([])
   const [feedback, setFeedback] = useState('')
   const [showSuccess, setShowSuccess] = useState(false)
-  const targetParts = [
-    { id: 'consonant', label: 'Pa', value: 'ပ', tileValue: 'ပ' },
-    { id: 'vowel', label: 'Auu', value: 'ူ', tileValue: '◌ူ' }
+  const [hasMistake, setHasMistake] = useState(false)
+  const [questionIndex, setQuestionIndex] = useState(0)
+  const questions = [
+    {
+      targetParts: [
+        { id: 'consonant', label: 'Pa', value: 'ပ', tileValue: 'ပ' },
+        { id: 'vowel', label: 'Auu', value: 'ူ', tileValue: '◌ူ' }
+      ],
+      name: 'Hot',
+      nameBurmese: 'ပူ',
+      targetImage: '/HotLogoDes2-sticker.png',
+      consonantName: 'Pa'
+    },
+    {
+      targetParts: [
+        { id: 'consonant', label: 'La', value: 'လ', tileValue: 'လ' },
+        { id: 'vowel', label: 'Auu', value: 'ူ', tileValue: '◌ူ' }
+      ],
+      name: 'Human',
+      nameBurmese: 'လူ',
+      targetImage: '/humanLodoDes2-centered-sticker.png',
+      consonantName: 'La',
+      targetArtClass: 'is-human'
+    },
+    {
+      targetParts: [
+        { id: 'consonant', label: 'Ka', value: 'က', tileValue: 'က' },
+        { id: 'vowel', label: 'Auu', value: 'ူ', tileValue: '◌ူ' },
+        { id: 'final', label: 'Final mark', value: 'း', tileValue: 'း' }
+      ],
+      name: 'Cross the road',
+      nameBurmese: 'ကူး',
+      targetImage: '/CrossLogoDes2-sticker.png',
+      consonantName: 'Ka',
+      targetArtClass: 'is-cross'
+    },
+    {
+      targetParts: [
+        { id: 'consonant', label: 'Ka', value: 'က', tileValue: 'က' },
+        { id: 'top-vowel', label: 'Top vowel', value: 'ိ', tileValue: '◌ိ' },
+        { id: 'bottom-vowel', label: 'Bottom vowel', value: 'ု', tileValue: '◌ု' },
+        { id: 'final', label: 'Final mark', value: 'း', tileValue: 'း' }
+      ],
+      name: 'Nine',
+      nameBurmese: 'ကိုး',
+      targetImage: '/NineLogoDes2-sticker.png',
+      consonantName: 'Ka',
+      targetArtClass: 'is-nine'
+    },
+    {
+      targetParts: [
+        { id: 'consonant', label: 'A', value: 'အ', tileValue: 'အ' },
+        { id: 'vowel', label: 'Uu', value: 'ူ', tileValue: '◌ူ' }
+      ],
+      name: 'Intestine',
+      nameBurmese: 'အူ',
+      targetImage: '/IntestineLogoDes2-sticker.png',
+      consonantName: 'A',
+      targetArtClass: 'is-intestine'
+    },
+    {
+      targetParts: [
+        { id: 'consonant', label: 'Kha', value: 'ခ', tileValue: 'ခ' },
+        { id: 'top-vowel', label: 'Top vowel', value: 'ိ', tileValue: '◌ိ' },
+        { id: 'bottom-vowel', label: 'Bottom vowel', value: 'ု', tileValue: '◌ု' },
+        { id: 'final', label: 'Final mark', value: 'း', tileValue: 'း' }
+      ],
+      name: 'Steal',
+      nameBurmese: 'ခိုး',
+      targetImage: '/ThiefLogoDes2-sticker.png',
+      consonantName: 'Kha',
+      targetArtClass: 'is-thief'
+    },
+    {
+      targetParts: [
+        { id: 'consonant', label: 'Sa', value: 'ဆ', tileValue: 'ဆ' },
+        { id: 'top-vowel', label: 'Top vowel', value: 'ိ', tileValue: '◌ိ' },
+        { id: 'bottom-vowel', label: 'Bottom vowel', value: 'ု', tileValue: '◌ု' },
+        { id: 'final', label: 'Final mark', value: 'း', tileValue: 'း' }
+      ],
+      name: 'Naughty',
+      nameBurmese: 'ဆိုး',
+      targetImage: '/NaughtyLogoDes2-sticker.png',
+      consonantName: 'Sa',
+      targetArtClass: 'is-naughty'
+    },
+    {
+      targetParts: [
+        { id: 'consonant', label: 'Ka', value: 'က', tileValue: 'က' },
+        { id: 'top-vowel', label: 'Top vowel', value: 'ိ', tileValue: '◌ိ' },
+        { id: 'bottom-vowel', label: 'Bottom vowel', value: 'ု', tileValue: '◌ု' }
+      ],
+      name: 'Elder Brother',
+      nameBurmese: 'ကို',
+      targetImage: '/BrotherLogoDes2-sticker.png',
+      consonantName: 'Ka',
+      targetArtClass: 'is-brother'
+    },
+    {
+      targetParts: [
+        { id: 'consonant', label: 'Sa', stepLabel: 'Consonant', value: 'စ', tileValue: 'စ' },
+        { id: 'vowel', label: 'U', stepLabel: 'Bottom vowel', value: 'ု', tileValue: '◌ု' },
+        { id: 'consonant-2', label: 'Ba', stepLabel: 'Consonant', value: 'ဘ', tileValue: 'ဘ' },
+        { id: 'vowel-2', label: 'Uu vowel', stepLabel: 'Bottom vowel', value: 'ူ', tileValue: '◌ူ' },
+        { id: 'final', label: 'Final mark', stepLabel: 'Final mark', value: 'း', tileValue: 'း' }
+      ],
+      name: 'Savings Box',
+      nameBurmese: 'စုဘူး',
+      targetImage: '/SavingsBoxLogoDes2-sticker.png',
+      consonantName: 'Sa',
+      targetArtClass: 'is-savings-box',
+      groupBreakAfter: 2
+    },
+    {
+      targetParts: [
+        { id: 'consonant', label: 'Ta', stepLabel: 'Consonant', value: 'တ', tileValue: 'တ' },
+        { id: 'top-vowel', label: 'Top vowel', value: 'ိ', tileValue: '◌ိ' },
+        { id: 'bottom-vowel', label: 'Bottom vowel', value: 'ု', tileValue: '◌ု' },
+        { id: 'final-1', label: 'Final mark', stepLabel: 'Final mark', value: '◌့', tileValue: '◌့' },
+        { id: 'consonant-2', label: 'Pha', stepLabel: 'Consonant', value: 'ဖ', tileValue: 'ဖ' },
+        { id: 'vowel-2', label: 'Uu', stepLabel: 'Bottom vowel', value: 'ူ', tileValue: '◌ူ' },
+        { id: 'final-2', label: 'Final mark', stepLabel: 'Final mark', value: 'း', tileValue: 'း' }
+      ],
+      name: 'ToFu (Food)',
+      nameBurmese: 'တို့ဖူး',
+      targetImage: '/TofuLogoDes2-sticker.png',
+      consonantName: 'Ta',
+      targetArtClass: 'is-tofu',
+      groupBreakAfter: 4,
+      stackedGroups: true
+    }
   ]
+  const question = questions[questionIndex]
+  const targetParts = question.targetParts
+  const targetPartIds = new Set(targetParts.map((part) => part.id))
+  const targetPartValues = new Set(targetParts.map((part) => part.value))
   const fallingPool = [
-    { id: 'consonant', value: 'ပ', tone: 'consonant' },
-    { id: 'vowel', value: 'ူ', tone: 'vowel' },
+    ...targetParts.map((part) => ({
+      id: part.id,
+      value: part.value,
+      tone: part.id.startsWith('consonant') ? 'consonant' : part.id.startsWith('final') ? 'final' : 'vowel',
+      ariaLabel: part.id === 'consonant' ? question.consonantName : part.id.startsWith('consonant') ? part.label : part.id === 'vowel' ? `${part.label} vowel` : part.label
+    })),
     { id: 'd1', value: 'က', tone: 'consonant' },
     { id: 'd2', value: '◌ာ', tone: 'vowel' },
+    { id: 'd11', value: '◌ံ', tone: 'final' },
     { id: 'd3', value: 'မ', tone: 'consonant' },
     { id: 'd4', value: '◌ိ', tone: 'vowel' },
     { id: 'd5', value: 'တ', tone: 'consonant' },
@@ -410,7 +547,8 @@ function MawlamyineFallingCharacters() {
     if (showSuccess) return
     const target = targetParts.find((part) => part.id === tile.id)
     if (!target) {
-      setFeedback('Not that character. Catch the consonant and vowel for Hot.')
+      setHasMistake(true)
+      setFeedback(`Not that character. Catch the parts that spell ${question.name}.`)
       return
     }
     if (caught.includes(tile.id)) return
@@ -420,10 +558,30 @@ function MawlamyineFallingCharacters() {
     setFeedback('')
   }
 
+  const renderProgressStep = (part, index) => {
+    const isCaught = caught.includes(part.id)
+    return (
+      <span className={`falling-progress-step ${isCaught ? 'is-current' : ''}`} key={part.id}>
+        <b>{index + 1}</b>
+        <small>{part.stepLabel || (part.id === 'consonant' ? 'Consonant' : part.id === 'top-vowel' ? 'Top vowel' : part.id === 'bottom-vowel' ? 'Bottom vowel' : part.id.startsWith('final') ? 'Final mark' : 'Vowel')}</small>
+      </span>
+    )
+  }
+
   const reset = () => {
     setCaught([])
     setFeedback('')
     setShowSuccess(false)
+    setHasMistake(false)
+  }
+
+  const goToNextQuestion = () => {
+    if (questionIndex < questions.length - 1) {
+      setQuestionIndex((index) => index + 1)
+      reset()
+      return
+    }
+    navigate('mawlamyine-clear')
   }
 
   return (
@@ -443,7 +601,7 @@ function MawlamyineFallingCharacters() {
         <article className={`falling-card ${showSuccess ? 'has-success' : ''}`}>
           <header className="falling-heading">
             <div>
-              <p>MAWLAMYINE · 1 / 10</p>
+              <p>MAWLAMYINE · {questionIndex + 1} / 10</p>
               <div className="falling-heading-row">
                 <h1>Character Falling</h1>
                 <img src="/MonkeyDes1-falling-sticker.png" alt="" aria-hidden="true" />
@@ -451,16 +609,19 @@ function MawlamyineFallingCharacters() {
               <span>Consonant &amp; Vowel Challenge</span>
             </div>
             <div className="falling-header-status">
-              <div className="falling-question-progress" role="img" aria-label="Question 1 of 10">
-                {Array.from({ length: 10 }, (_, index) => <span className={index === 0 ? 'is-current' : ''} key={index} />)}
+              <div className="falling-question-progress" role="img" aria-label={`Question ${questionIndex + 1} of 10`}>
+                {Array.from({ length: 10 }, (_, index) => (
+                  <span
+                    className={index === questionIndex
+                      ? `is-current ${showSuccess ? 'is-correct' : hasMistake ? 'is-wrong' : ''}`
+                      : index < questionIndex ? 'is-complete' : ''}
+                    key={index}
+                  />
+                ))}
               </div>
               <div className="falling-score">
-                <div className="falling-score-box">
-                  <b>SCORE</b>
-                  <strong>{showSuccess ? '100' : '000'}</strong>
-                </div>
                 <div className="falling-progress-box">
-                  <small>{caught.length} of 2 challenges complete</small>
+                  <small>{caught.length} of {targetParts.length} challenges complete</small>
                 </div>
               </div>
             </div>
@@ -469,28 +630,63 @@ function MawlamyineFallingCharacters() {
           <div className="falling-content">
             <aside className="falling-target">
               <p>{caught.length === targetParts.length ? 'WORD COMPLETE' : 'YOUR TARGET'}</p>
-              <h2>Hot 🔥</h2>
-              <div className="falling-target-art"><img src="/HotLogoDes2-sticker.png" alt="Hot" /></div>
-              <small>{caught.length} / 2 challenges complete</small>
-              <div className="falling-progress falling-progress-labeled">
-                        {[1, 2].map((step) => {
-                          const part = targetParts[step - 1]
-                          const isCaught = caught.includes(part.id)
-                          return (
-                            <span className={`falling-progress-step ${isCaught ? 'is-current' : ''}`} key={step}>
-                              <b>{step}</b>
-                              <small>{step === 1 ? 'Consonant' : 'Vowel sign'}</small>
-                            </span>
-                          )
-                        })}
+              <h2>{question.name}</h2>
+              <div className={`falling-target-art ${question.targetArtClass || ''}`}><img src={question.targetImage} alt={question.name} /></div>
+              <small>{caught.length} / {targetParts.length} challenges complete</small>
+              <div className={`falling-progress falling-progress-labeled ${question.stackedGroups ? 'is-stacked' : question.groupBreakAfter ? 'is-grouped' : ''}`}>
+                {question.stackedGroups ? (
+                  <>
+                    <div className="falling-progress-group-row">
+                      {targetParts.slice(0, question.groupBreakAfter).map(renderProgressStep)}
+                    </div>
+                    <span className="falling-progress-group-plus" aria-hidden="true">+</span>
+                    <div className="falling-progress-group-row">
+                      {targetParts.slice(question.groupBreakAfter).map((part, index) => renderProgressStep(part, index + question.groupBreakAfter))}
+                    </div>
+                  </>
+                ) : targetParts.flatMap((part, index) => [
+                  renderProgressStep(part, index),
+                  ...(question.groupBreakAfter === index + 1
+                    ? [<span className="falling-progress-group-plus" aria-hidden="true" key={`group-plus-${index}`}>+</span>]
+                    : [])
+                ])}
               </div>
-                      <strong className="falling-word-equation">
-                        <span lang="my">ပ</span>
-                        <span>+</span>
-                        <span lang="my">◌ူ</span>
-                        <span>=</span>
-                        <span lang="my">{caught.length === 2 ? 'ပူ' : '?'}</span>
-                      </strong>
+              <strong className={`falling-word-equation ${question.stackedGroups ? 'is-stacked' : ''}`}>
+                {question.stackedGroups ? (
+                  <>
+                    <span className="falling-equation-group">
+                      {targetParts.slice(0, question.groupBreakAfter).map((part, index) => (
+                        <span lang="my" key={part.id}>
+                          {index > 0 && <span lang="en" aria-hidden="true">+ </span>}
+                          {caught.includes(part.id) ? part.tileValue : '?'}
+                        </span>
+                      ))}
+                    </span>
+                    <span className="falling-equation-group-plus" aria-hidden="true">+</span>
+                    <span className="falling-equation-group">
+                      {targetParts.slice(question.groupBreakAfter).map((part, index) => (
+                        <span lang="my" key={part.id}>
+                          {index > 0 && <span lang="en" aria-hidden="true">+ </span>}
+                          {caught.includes(part.id) ? part.tileValue : '?'}
+                        </span>
+                      ))}
+                      <span lang="en" aria-hidden="true">=</span>
+                      <span lang="my">{caught.length === targetParts.length ? question.nameBurmese : '?'}</span>
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    {targetParts.map((part, index) => (
+                      <span lang="my" key={part.id}>
+                        {index > 0 && <span lang="en" aria-hidden="true">+ </span>}
+                        {caught.includes(part.id) ? part.tileValue : '?'}
+                      </span>
+                    ))}
+                    <span>=</span>
+                    <span lang="my">{caught.length === targetParts.length ? question.nameBurmese : '?'}</span>
+                  </>
+                )}
+              </strong>
             </aside>
 
             <section className="falling-field" aria-label="Falling Burmese characters">
@@ -503,25 +699,29 @@ function MawlamyineFallingCharacters() {
               {!showSuccess && (
                 <>
                   <div className="falling-characters" aria-label="Character tiles">
-                    {fallingPool.map((tile, index) => !caught.includes(tile.id) ? (
-                      <button
-                        type="button"
-                        className={`falling-character falling-character-${tile.tone}`}
-                        style={{
-                          '--fall-delay': `${(index % 6) * 0.18}s`,
-                          '--fall-duration': `${3.8 + (index % 5) * 0.32}s`,
-                          '--fall-left': `${4 + ((index * 23) % 88)}%`,
-                          '--fall-sway': `${-38 + ((index * 31) % 76)}px`
-                        }}
-                        key={`${tile.id}-${index}`}
-                        onClick={() => catchCharacter(tile)}
-                        disabled={showSuccess || caught.includes(tile.id)}
-                        lang="my"
-                        aria-label={tile.id === 'consonant' ? 'Pa' : tile.id === 'vowel' ? 'Auu vowel' : 'Other character'}
-                      >
-                        {tile.value}
-                      </button>
-                    ) : null)}
+                    {fallingPool.map((tile, index) => {
+                      const duplicateTargetCharacter = !targetPartIds.has(tile.id) && targetPartValues.has(tile.value)
+                      if (caught.includes(tile.id) || duplicateTargetCharacter) return null
+                      return (
+                        <button
+                          type="button"
+                          className={`falling-character falling-character-${tile.tone}`}
+                          style={{
+                            '--fall-delay': `${(index % 6) * 0.18}s`,
+                            '--fall-duration': `${3.8 + (index % 5) * 0.32}s`,
+                            '--fall-left': `${4 + ((index * 23) % 88)}%`,
+                            '--fall-sway': `${-38 + ((index * 31) % 76)}px`
+                          }}
+                          key={`${tile.id}-${index}`}
+                          onClick={() => catchCharacter(tile)}
+                          disabled={showSuccess || caught.includes(tile.id)}
+                          lang="my"
+                          aria-label={tile.ariaLabel || 'Other character'}
+                        >
+                          {tile.value}
+                        </button>
+                      )
+                    })}
                   </div>
                   {feedback && <p className="falling-feedback" role="status">{feedback}</p>}
                 </>
@@ -556,11 +756,10 @@ function MawlamyineFallingCharacters() {
                       />
                     ))}
                   </div>
-                  <small>LEVEL 1 COMPLETE</small>
+                  <small>LEVEL {questionIndex + 1} COMPLETE</small>
                   <h2>You caught them all!</h2>
-                  <strong className="falling-success-answer" lang="my">ပူ</strong>
-                  <b className="falling-success-points">+100 points</b>
-                  <button type="button" onClick={() => navigate('map')}>Next →</button>
+                  <strong className="falling-success-answer" lang="my">{question.nameBurmese}</strong>
+                  <button type="button" onClick={goToNextQuestion}>Next →</button>
                 </div>
               )}
             </section>

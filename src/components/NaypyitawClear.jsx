@@ -39,12 +39,16 @@ const screenConfettiPieces = Array.from({ length: 72 }, (_, index) => ({
   color: screenConfettiColors[index % screenConfettiColors.length]
 }))
 
-export default function NaypyitawClear() {
+export default function NaypyitawClear({ destinationId = 'naypyitaw' }) {
   const { setActiveScreen, setModal } = useGame()
+  const isMawlamyine = destinationId === 'mawlamyine'
+  const destinationName = isMawlamyine ? 'Mawlamyine' : 'Naypyitaw'
+  const introScreen = isMawlamyine ? 'mawlamyine-intro' : 'naypyitaw-intro'
+  const collectibleImage = isMawlamyine ? '/MawlamyineIntro-sticker.png' : '/IntroNPTDes1-sticker.png'
 
   return (
     <main className="destination-clear-page">
-      <section className="destination-clear-scene" aria-label="Naypyitaw destination cleared">
+      <section className="destination-clear-scene" aria-label={`${destinationName} destination cleared`}>
         <div className="destination-clear-screen-confetti" aria-hidden="true">
           {screenConfettiPieces.map((piece) => (
             <span
@@ -68,7 +72,7 @@ export default function NaypyitawClear() {
           aria-hidden="true"
         />
         <img className="destination-clear-brand" src="/generated/codex-logo.png" alt="GenZ Slang Codex" />
-        <div className="destination-clear-tab">NAYPYITAW · ASSEMBLY CHALLENGE</div>
+        <div className="destination-clear-tab">{destinationName.toUpperCase()} · ASSEMBLY CHALLENGE</div>
 
         <header className="world-map-profile destination-clear-profile">
           <img src="/generated/setting-bar-transparent.png" alt="Player profile, XP, settings and leaderboard" />
@@ -114,7 +118,7 @@ export default function NaypyitawClear() {
                 <img src="/monkey-another-pose-sticker.png" alt="Slang Buddy" />
                 <div>
                   <h2>Great work, Explorer!</h2>
-                  <p>You answered all 10 Naypyitaw spelling challenges correctly. Keep practicing to improve your Burmese spelling skills!</p>
+                  <p>You answered all 10 {destinationName} spelling challenges correctly. Keep practicing to improve your Burmese spelling skills!</p>
                 </div>
               </div>
               <div className="destination-clear-strength">
@@ -128,18 +132,18 @@ export default function NaypyitawClear() {
             <aside className="destination-clear-collectible">
               <small>YOUR COLLECTIBLE</small>
               <div className="destination-clear-collectible-art">
-                <img src="/IntroNPTDes1-sticker.png" alt="Naypyitaw destination" />
+                <img src={collectibleImage} alt={`${destinationName} destination`} />
               </div>
-              <h2>Naypyitaw</h2>
+              <h2>{destinationName}</h2>
               <span><Trophy size={12} /> DESTINATION COMPLETE</span>
             </aside>
           </div>
 
           <footer className="destination-clear-actions">
-            <button type="button" className="destination-clear-retry" onClick={() => setActiveScreen('naypyitaw-intro')}>
+            <button type="button" className="destination-clear-retry" onClick={() => setActiveScreen(introScreen)}>
               <RotateCcw size={16} /> RETRY
             </button>
-            <button type="button" className="destination-clear-continue" onClick={() => setActiveScreen('map')}>
+            <button type="button" className="destination-clear-continue" onClick={() => setActiveScreen('collection')}>
               COLLECT &amp; CONTINUE <ArrowRight size={16} />
             </button>
           </footer>

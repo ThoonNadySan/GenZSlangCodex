@@ -37,16 +37,16 @@ const toneNodes = [
 ]
 
 const questions = [
-  { type: 'syllable_orbit', word: 'ရေ', meaning: 'Water', icon: '💧', base: 'ရ', vowel: 'ေ', tone: '∅' },
-  { type: 'syllable_orbit', word: 'နေ', meaning: 'Sun', icon: '☀️', base: 'န', vowel: 'ေ', tone: '∅' },
-  { type: 'syllable_orbit', word: 'ဈေး', meaning: 'Market', icon: '🛍️', base: 'ဈ', vowel: 'ေ', tone: 'း' },
-  { type: 'syllable_orbit', word: 'တော', meaning: 'Forest', icon: '🌳', base: 'တ', vowel: 'ော', tone: '∅' },
-  { type: 'syllable_orbit', word: 'ခေါ်', meaning: 'Call', icon: '📣', base: 'ခ', vowel: 'ော်', tone: '∅' },
-  { type: 'syllable_orbit', word: 'လေ', meaning: 'Wind', icon: '🍃', base: 'လ', vowel: 'ေ', tone: '∅' },
-  { type: 'syllable_orbit', word: 'ဆေး', meaning: 'Medicine', icon: '💊', base: 'ဆ', vowel: 'ေ', tone: 'း' },
-  { type: 'syllable_orbit', word: 'မေ့', meaning: 'Forget', icon: '💭', base: 'မ', vowel: 'ေ', tone: '့' },
-  { type: 'syllable_orbit', word: 'စော', meaning: 'Early', icon: '🌅', base: 'စ', vowel: 'ော', tone: '∅' },
-  { type: 'syllable_orbit', word: 'အေး', meaning: 'Calm / Relaxed', icon: '🌿', base: 'အ', vowel: 'ေ', tone: 'း' }
+  { type: 'syllable_orbit', word: 'ရေ', meaning: 'Water', icon: '/generated/yangon-quiz-sticker-1.png', base: 'ရ', vowel: 'ေ', tone: '∅' },
+  { type: 'syllable_orbit', word: 'နေ', meaning: 'Sun', icon: '/generated/yangon-quiz-sticker-2.png', base: 'န', vowel: 'ေ', tone: '∅' },
+  { type: 'syllable_orbit', word: 'ဈေး', meaning: 'Market', icon: '/generated/yangon-quiz-sticker-3.png', base: 'ဈ', vowel: 'ေ', tone: 'း' },
+  { type: 'syllable_orbit', word: 'တော', meaning: 'Forest', icon: '/generated/yangon-quiz-sticker-4.png', base: 'တ', vowel: 'ော', tone: '∅' },
+  { type: 'syllable_orbit', word: 'ခေါ်', meaning: 'Call', icon: '/generated/yangon-quiz-sticker-5.png', base: 'ခ', vowel: 'ော်', tone: '∅' },
+  { type: 'syllable_orbit', word: 'လေ', meaning: 'Wind', icon: '/generated/yangon-quiz-sticker-6.png', base: 'လ', vowel: 'ေ', tone: '∅' },
+  { type: 'syllable_orbit', word: 'ဆေး', meaning: 'Medicine', icon: '/generated/yangon-quiz-sticker-7.png', base: 'ဆ', vowel: 'ေ', tone: 'း' },
+  { type: 'syllable_orbit', word: 'မေ့', meaning: 'Forget', icon: '/generated/yangon-quiz-sticker-8.png', base: 'မ', vowel: 'ေ', tone: '့' },
+  { type: 'syllable_orbit', word: 'စော', meaning: 'Early', icon: '/generated/yangon-quiz-sticker-9.png', base: 'စ', vowel: 'ော', tone: '∅' },
+  { type: 'syllable_orbit', word: 'အေး', meaning: 'Cold', icon: '/generated/yangon-quiz-sticker-10.png', base: 'အ', vowel: 'ေ', tone: 'း' }
 ]
 
 function shuffleTrailNodes(question) {
@@ -156,6 +156,11 @@ function wrongPreVowelIndex(question) {
   return question.vowel === 'ေ' ? 1 : 0
 }
 
+function vowelRotationForIndex(index) {
+  const nodeAngle = orbitSlots[0].nodes[index]?.angle ?? orbitSlots[0].nodes[0].angle
+  return (180 - nodeAngle + 360) % 360
+}
+
 function wrongToneRotation(question) {
   if (question.tone === '့') return 270
   if (question.tone === 'း') return 180
@@ -217,7 +222,7 @@ export default function YangonQuiz() {
   const { player, xp, setActiveScreen, setModal, collectedCards, reward } = useGame()
   const [questionIndex, setQuestionIndex] = useState(0)
   const [score, setScore] = useState(0)
-  const [vowelRotationDeg, setVowelRotationDeg] = useState(0)
+  const [vowelRotationDeg, setVowelRotationDeg] = useState(() => vowelRotationForIndex(wrongPreVowelIndex(questions[0])))
   const [toneRotationDeg, setToneRotationDeg] = useState(wrongToneRotation(questions[0]))
   const [preVowelIndex, setPreVowelIndex] = useState(wrongPreVowelIndex(questions[0]))
   const [postVowelIndex, setPostVowelIndex] = useState(wrongPostVowelIndex(questions[0]))
@@ -361,8 +366,9 @@ export default function YangonQuiz() {
 
     const nextIndex = questionIndex + 1
     setQuestionIndex(nextIndex)
-    setVowelRotationDeg(0)
-    setPreVowelIndex(wrongPreVowelIndex(questions[nextIndex]))
+    const nextPreVowelIndex = wrongPreVowelIndex(questions[nextIndex])
+    setPreVowelIndex(nextPreVowelIndex)
+    setVowelRotationDeg(vowelRotationForIndex(nextPreVowelIndex))
     setPostVowelIndex(wrongPostVowelIndex(questions[nextIndex]))
     setToneRotationDeg(wrongToneRotation(questions[nextIndex]))
     setSelectedTrailNodes([])
@@ -375,8 +381,9 @@ export default function YangonQuiz() {
   const retryQuiz = () => {
     setQuestionIndex(0)
     setScore(0)
-    setVowelRotationDeg(0)
-    setPreVowelIndex(wrongPreVowelIndex(questions[0]))
+    const firstPreVowelIndex = wrongPreVowelIndex(questions[0])
+    setVowelRotationDeg(vowelRotationForIndex(firstPreVowelIndex))
+    setPreVowelIndex(firstPreVowelIndex)
     setPostVowelIndex(wrongPostVowelIndex(questions[0]))
     setToneRotationDeg(wrongToneRotation(questions[0]))
     setSelectedTrailNodes([])
@@ -450,7 +457,9 @@ export default function YangonQuiz() {
             <aside className="destination-quiz-prompt">
               <p className="destination-quiz-kicker">SPELL IN BURMESE</p>
               <h2>{question.meaning}</h2>
-              <div className="destination-quiz-art" aria-hidden="true">{question.icon}</div>
+              <div className="destination-quiz-art" aria-hidden="true">
+                <img src={question.icon} alt="" />
+              </div>
               {question.type === 'letter_trail' && phase === 'correct' && (
                 <div className="destination-quiz-reveal">
                   <small>YOU BUILT</small>
@@ -494,31 +503,20 @@ export default function YangonQuiz() {
                     </div>
                     {expectedVowels.map(({ value, position }) => {
                       const radius = vowelTiles.find((tile) => tile.value === value)?.radius ?? 24
-                      const selectedVowel = position === 'right'
-                        ? postVowels[postVowelIndex]
-                        : preVowels[preVowelIndex]
                       return (
                         <span
                           key={`${value}-${position}`}
                           className="yangon-orbit-target-slot yangon-orbit-target-slot-vowel"
                           style={orbitPointForPosition(position, radius)}
                           aria-hidden="true"
-                        >
-                          <strong lang="my" className="yangon-orbit-target-glyph">{selectedVowel}</strong>
-                        </span>
+                        />
                       )
                     })}
                     <span
                       className="yangon-orbit-target-slot yangon-orbit-target-slot-tone"
                       style={orbitPointForPosition('right', 52)}
                       aria-hidden="true"
-                    >
-                      {positionedTones.find((tile) => tile.currentPosition === 'right')?.value && (
-                        <strong lang="my" className="yangon-orbit-target-glyph">
-                          {positionedTones.find((tile) => tile.currentPosition === 'right').value}
-                        </strong>
-                      )}
-                    </span>
+                    />
                     <div className="yangon-orbit-rotor yangon-orbit-rotor-inner" style={{ transform: `rotate(${vowelRotationDeg}deg)` }}>
                       <span className="yangon-orbit-ring yangon-orbit-ring-inner" />
                       {positionedVowels.map(({ value, angle, radius, position, label, currentPosition }) => (

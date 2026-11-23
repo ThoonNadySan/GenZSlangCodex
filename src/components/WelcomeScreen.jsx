@@ -32,9 +32,6 @@ export default function WelcomeScreen() {
 
         <div className="welcome-map">
           <img src="/Continuous Myanmar fantasy world · Seven cities and separate AI Castle 1.png" alt="Illustrated Myanmar world map" />
-          <div className="welcome-monkey-frame">
-            <img className="welcome-monkey" src="/welcome-monkey.png" alt="Friendly monkey guide" />
-          </div>
           <div className="welcome-title" aria-label="GenZ Slang Codex">
             <span className="welcome-title-top">GenZ</span>
             <span className="welcome-title-bottom">
