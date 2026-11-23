@@ -6,7 +6,8 @@ const collectionOrder = ['naypyitaw', 'mawlamyine', 'yangon', 'inle', 'bagan', '
 const destinationStampImages = {
   naypyitaw: '/generated/naypyitaw-stamp-transparent.png',
   mawlamyine: '/generated/mawlamyine-stamp-transparent.png',
-  yangon: '/generated/yangon-stamp-transparent.png'
+  yangon: '/generated/yangon-stamp-transparent.png',
+  destination7: '/generated/myitkyina-stamp-transparent.png'
 }
 const lockedStampImages = {
   inle: '/generated/inle-lock-stamp-transparent.png',

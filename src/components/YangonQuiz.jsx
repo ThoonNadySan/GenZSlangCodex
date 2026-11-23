@@ -8,7 +8,7 @@ import {
   RotateCcw,
   Sparkles
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useGame } from '../context/GameContext'
 
 const emptyMark = '∅'
@@ -279,14 +279,11 @@ export default function YangonQuiz() {
     : 'Connect the pieces in order.'
   const statusMessage = phase === 'correct'
     ? 'Ready to continue!'
+    : phase === 'checked-correct'
+      ? 'Great trail! You got it right!'
+      : phase === 'checked-wrong'
+        ? 'Almost! Clear the trail and try again.'
     : feedback || defaultStatus
-
-  useEffect(() => {
-    if (phase !== 'playing' || !orbitAnswerCorrect) return
-    setPhase('correct')
-    setFeedback('Perfect alignment!')
-    setScore((value) => value + 1)
-  }, [phase, orbitAnswerCorrect])
 
   const rotateVowelRing = (direction) => {
     if (phase !== 'playing') return
@@ -324,11 +321,6 @@ export default function YangonQuiz() {
     setFeedback('')
     setHintedNode(null)
 
-    if (nextNodes.length === question.components.length) {
-      setScore((value) => value + 1)
-      setPhase('correct')
-      setFeedback('Beautiful trail!')
-    }
   }
 
   const handleTrailDrop = (event) => {
@@ -353,6 +345,20 @@ export default function YangonQuiz() {
     setSelectedTrailNodes([])
     setHintedNode(null)
     setFeedback('')
+    setPhase('playing')
+  }
+
+  const checkAnswer = () => {
+    const answerIsCorrect = isOrbit
+      ? orbitAnswerCorrect
+      : selectedTrailNodes.every((nodeId, index) => {
+          const node = trailNodes.find((item) => item.id === nodeId)
+          return node?.value === question.components[index]
+        }) && selectedTrailNodes.length === question.components.length
+
+    setPhase(answerIsCorrect ? 'checked-correct' : 'checked-wrong')
+    setFeedback(answerIsCorrect ? 'Beautiful trail!' : 'Almost! Try the pieces in a different order.')
+    if (answerIsCorrect) setScore((value) => value + 1)
   }
 
   const continueQuiz = () => {
@@ -460,20 +466,30 @@ export default function YangonQuiz() {
               <div className="destination-quiz-art" aria-hidden="true">
                 <img src={question.icon} alt="" />
               </div>
-              {question.type === 'letter_trail' && phase === 'correct' && (
+              {question.type === 'letter_trail' && (phase === 'correct' || phase === 'checked-correct') && (
                 <div className="destination-quiz-reveal">
                   <small>YOU BUILT</small>
                   <strong lang="my">{question.word}</strong>
                 </div>
               )}
-              <div className={`destination-quiz-status ${phase === 'correct' ? 'is-correct' : ''}`} role="status">
-                {phase === 'correct' ? <Check size={13} /> : <Sparkles size={13} />}
+              <div className={`destination-quiz-status ${phase === 'correct' || phase === 'checked-correct' ? 'is-correct' : phase === 'checked-wrong' ? 'is-wrong' : ''}`} role="status">
+                {phase === 'correct' || phase === 'checked-correct' ? <Check size={13} /> : <Sparkles size={13} />}
                 <span>{statusMessage}</span>
               </div>
             </aside>
 
             <section className="destination-quiz-game-panel" aria-label={isOrbit ? 'Syllable Orbit game' : 'Letter Trail game'}>
-              {isOrbit ? (
+              {phase === 'checked-correct' ? (
+                <div className="destination-quiz-answer-feedback is-correct" role="status">
+                  <img src="/happy-slang-buddy-transparent.png" alt="" />
+                  <div><small>SLANG BUDDY · ✓ CORRECT</small><strong>Great build! You got it right!</strong></div>
+                </div>
+              ) : phase === 'checked-wrong' ? (
+                <div className="destination-quiz-answer-feedback is-wrong" role="status">
+                  <img src="/happy-slang-buddy-transparent.png" alt="" />
+                  <div><small>SLANG BUDDY · NOT QUITE</small><strong>Almost! Try again and align the correct pieces.</strong></div>
+                </div>
+              ) : isOrbit ? (
                 <div className="yangon-orbit-workspace">
                   <div className="yangon-orbit-tools">
                     <div className="yangon-game-instructions">
@@ -578,36 +594,44 @@ export default function YangonQuiz() {
             </section>
           </div>
 
-          <footer className={`destination-quiz-footer ${isOrbit ? '' : 'is-trail'}`}>
-            <button type="button" className="destination-quiz-hint" onClick={giveHint} disabled={phase !== 'playing'}>
-              <Lightbulb size={15} /> GET A HINT
-            </button>
-            {isOrbit ? (
-              <div className="destination-quiz-aligned">
-                <small>ALIGNED:</small>
-                <div className="destination-quiz-combination" lang="my" aria-label="Selected spelling combination">
-                  <strong>{question.base}</strong>
-                  {orbitParts.map((part, index) => (
-                    <span className="destination-quiz-combination-part" key={`${part}-${index}`}>
-                      <b>+</b><strong>{part}</strong>
-                    </span>
-                  ))}
-                  <b className="destination-quiz-combination-equals">=</b>
-                  <strong className="destination-quiz-combination-answer">{assembledAnswer}</strong>
+          <footer className={`destination-quiz-footer ${isOrbit ? '' : 'is-trail'} ${phase === 'checked-correct' ? 'has-success' : phase === 'checked-wrong' ? 'has-retry' : ''}`}>
+            {phase === 'checked-correct' ? (
+              <div className="destination-quiz-success-panel" role="status">
+                <div className="destination-quiz-success-confetti" aria-hidden="true">
+                  {Array.from({ length: 18 }, (_, index) => <span key={index} style={{ '--confetti-index': index, left: `${(index * 37) % 100}%` }} />)}
                 </div>
+                <img src="/happy-slang-buddy-transparent.png" alt="" />
+                <div><small>SLANG BUDDY · ✓ CORRECT</small><strong>{isOrbit ? 'Great build! You got it right!' : 'Great trail! You got it right!'}</strong></div>
+                <button type="button" className="destination-quiz-primary" onClick={continueQuiz}>CONTINUE <ArrowRight size={16} /></button>
+              </div>
+            ) : phase === 'checked-wrong' ? (
+              <div className="destination-quiz-retry-panel" role="status">
+                <img src="/happy-slang-buddy-transparent.png" alt="" />
+                <div><small>SLANG BUDDY · NOT QUITE</small><strong>Almost! Try again and align the correct pieces.</strong></div>
+                <button type="button" className="destination-quiz-primary" onClick={isOrbit ? () => setPhase('playing') : clearTrail}>TRY AGAIN <RotateCcw size={15} /></button>
               </div>
             ) : (
-              <div className="destination-quiz-trail-progress">
-                <small>TRAIL</small>
-                <strong>{selectedTrailNodes.length} / {question.components.length} connected</strong>
-              </div>
-            )}
-            {phase === 'correct' ? (
-              <button type="button" className="destination-quiz-primary" onClick={continueQuiz}>CONTINUE <ArrowRight size={16} /></button>
-            ) : isOrbit ? (
-              <div className="destination-quiz-auto-check"><Sparkles size={14} /> AUTO-CHECK WHEN ALIGNED</div>
-            ) : (
-              <span className="destination-quiz-trail-action">Select a ring piece</span>
+              <>
+                <button type="button" className="destination-quiz-hint" onClick={giveHint} disabled={phase !== 'playing'}>
+                  <Lightbulb size={15} /> GET A HINT
+                </button>
+                {isOrbit ? (
+                  <div className="destination-quiz-aligned">
+                    <small>ALIGNED:</small>
+                    <div className="destination-quiz-combination" lang="my" aria-label="Selected spelling combination">
+                      <strong>{question.base}</strong>
+                      {orbitParts.map((part, index) => (
+                        <span className="destination-quiz-combination-part" key={`${part}-${index}`}><b>+</b><strong>{part}</strong></span>
+                      ))}
+                      <b className="destination-quiz-combination-equals">=</b>
+                      <strong className="destination-quiz-combination-answer">{assembledAnswer}</strong>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="destination-quiz-trail-progress"><small>TRAIL</small><strong>{selectedTrailNodes.length} / {question.components.length} connected</strong></div>
+                )}
+                <button type="button" className="destination-quiz-primary" onClick={checkAnswer}>CHECK ANSWER <Check size={15} /></button>
+              </>
             )}
           </footer>
 

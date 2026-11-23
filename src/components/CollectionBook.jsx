@@ -10,12 +10,14 @@ const cityImages = {
   yangon: '/generated/yangon-transparent.png',
   inle: '/generated/inle-transparent.png',
   bagan: '/generated/bagan-transparent.png',
-  mandalay: '/generated/mandalay-transparent.png'
+  mandalay: '/generated/mandalay-transparent.png',
+  destination7: '/Myitkyina-sticker.png'
 }
 const destinationStampImages = {
   naypyitaw: '/generated/naypyitaw-stamp-transparent.png',
   mawlamyine: '/generated/mawlamyine-stamp-transparent.png',
-  yangon: '/generated/yangon-stamp-transparent.png'
+  yangon: '/generated/yangon-stamp-transparent.png',
+  destination7: '/generated/myitkyina-stamp-transparent.png'
 }
 const lockedDestinationStampImages = {
   inle: '/generated/inle-lock-stamp-transparent.png',

@@ -58,6 +58,10 @@ export default function InleQuiz() {
   const question = questions[questionIndex]
   const statusMessage = phase === 'correct'
     ? 'Ready to continue!'
+    : phase === 'checked-correct'
+      ? 'Great trail! You got it right!'
+      : phase === 'checked-wrong'
+        ? 'Almost! Clear the trail and try again.'
     : feedback || 'Connect the pieces in order.'
 
   const selectTrailNode = (nodeId) => {
@@ -75,11 +79,6 @@ export default function InleQuiz() {
     setFeedback('')
     setHintedNode(null)
 
-    if (nextNodes.length === question.components.length) {
-      setScore((value) => value + 1)
-      setPhase('correct')
-      setFeedback('Beautiful trail!')
-    }
   }
 
   const handleTrailDrop = (event) => {
@@ -99,6 +98,18 @@ export default function InleQuiz() {
     setSelectedTrailNodes([])
     setHintedNode(null)
     setFeedback('')
+    setPhase('playing')
+  }
+
+  const checkAnswer = () => {
+    const answerIsCorrect = selectedTrailNodes.every((nodeId, index) => {
+      const node = trailNodes.find((item) => item.id === nodeId)
+      return node?.value === question.components[index]
+    }) && selectedTrailNodes.length === question.components.length
+
+    setPhase(answerIsCorrect ? 'checked-correct' : 'checked-wrong')
+    setFeedback(answerIsCorrect ? 'Beautiful trail!' : 'Almost! Try the pieces in a different order.')
+    if (answerIsCorrect) setScore((value) => value + 1)
   }
 
   const continueQuiz = () => {
@@ -194,14 +205,14 @@ export default function InleQuiz() {
               <p className="destination-quiz-kicker">SPELL IN BURMESE</p>
               <h2>{question.meaning}</h2>
               <div className="destination-quiz-art" aria-hidden="true">{question.icon}</div>
-              {phase === 'correct' && (
+              {(phase === 'correct' || phase === 'checked-correct') && (
                 <div className="destination-quiz-reveal">
                   <small>YOU BUILT</small>
                   <strong lang="my">{question.word}</strong>
                 </div>
               )}
-              <div className={`destination-quiz-status ${phase === 'correct' ? 'is-correct' : ''}`} role="status">
-                {phase === 'correct' ? <Check size={13} /> : <Sparkles size={13} />}
+              <div className={`destination-quiz-status ${phase.includes('correct') ? 'is-correct' : phase === 'checked-wrong' ? 'is-wrong' : ''}`} role="status">
+                {phase.includes('correct') ? <Check size={13} /> : <Sparkles size={13} />}
                 <span>{statusMessage}</span>
               </div>
             </aside>
@@ -245,18 +256,33 @@ export default function InleQuiz() {
             </section>
           </div>
 
-          <footer className="destination-quiz-footer is-trail">
-            <button type="button" className="destination-quiz-hint" onClick={giveHint} disabled={phase !== 'playing'}>
-              <Lightbulb size={15} /> GET A HINT
-            </button>
-            <div className="destination-quiz-trail-progress">
-              <small>TRAIL</small>
-              <strong>{selectedTrailNodes.length} / {question.components.length} connected</strong>
-            </div>
-            {phase === 'correct' ? (
-              <button type="button" className="destination-quiz-primary" onClick={continueQuiz}>CONTINUE <ArrowRight size={16} /></button>
+          <footer className={`destination-quiz-footer is-trail ${phase === 'checked-correct' ? 'has-success' : phase === 'checked-wrong' ? 'has-retry' : ''}`}>
+            {phase === 'checked-correct' ? (
+              <div className="destination-quiz-success-panel" role="status">
+                <div className="destination-quiz-success-confetti" aria-hidden="true">
+                  {Array.from({ length: 18 }, (_, index) => <span key={index} style={{ '--confetti-index': index, left: `${(index * 37) % 100}%` }} />)}
+                </div>
+                <img src="/happy-slang-buddy-transparent.png" alt="" />
+                <div><small>SLANG BUDDY · ✓ CORRECT</small><strong>Great trail! You got it right!</strong></div>
+                <button type="button" className="destination-quiz-primary" onClick={continueQuiz}>CONTINUE <ArrowRight size={16} /></button>
+              </div>
+            ) : phase === 'checked-wrong' ? (
+              <div className="destination-quiz-retry-panel" role="status">
+                <img src="/happy-slang-buddy-transparent.png" alt="" />
+                <div><small>SLANG BUDDY · NOT QUITE</small><strong>Almost! Clear the trail and try again.</strong></div>
+                <button type="button" className="destination-quiz-primary" onClick={clearTrail}>TRY AGAIN <RotateCcw size={15} /></button>
+              </div>
             ) : (
-              <span className="destination-quiz-trail-action">Select a ring piece</span>
+              <>
+                <button type="button" className="destination-quiz-hint" onClick={giveHint} disabled={phase !== 'playing'}>
+                  <Lightbulb size={15} /> GET A HINT
+                </button>
+                <div className="destination-quiz-trail-progress">
+                  <small>TRAIL</small>
+                  <strong>{selectedTrailNodes.length} / {question.components.length} connected</strong>
+                </div>
+                <button type="button" className="destination-quiz-primary" onClick={checkAnswer}>CHECK ANSWER <Check size={15} /></button>
+              </>
             )}
           </footer>
         </article>
