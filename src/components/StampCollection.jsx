@@ -2,7 +2,7 @@ import { ArrowLeft, Check, Lock, Sparkles, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useGame } from '../context/GameContext'
 
-const collectionOrder = ['naypyitaw', 'mawlamyine', 'yangon', 'inle', 'bagan', 'mandalay']
+const collectionOrder = ['naypyitaw', 'mawlamyine', 'yangon', 'inle', 'bagan', 'mandalay', 'destination7']
 const destinationStampImages = {
   naypyitaw: '/generated/naypyitaw-stamp-transparent.png',
   mawlamyine: '/generated/mawlamyine-stamp-transparent.png',
@@ -84,7 +84,7 @@ export default function StampCollection() {
                       disabled={isLocked}
                       aria-label={isLocked ? `${destination.name} stamp is locked` : `View ${destination.name} stamp details`}
                     >
-                      <img src={stampImage} alt="" />
+                      {stampImage ? <img src={stampImage} alt="" /> : <span className="stamp-collection-placeholder-art" aria-hidden="true">{destination.icon}</span>}
                     </button>
                   </div>
                   {isLocked

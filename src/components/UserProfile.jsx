@@ -3,17 +3,8 @@ import { useState } from 'react'
 import { useGame } from '../context/GameContext'
 import { AvatarDisplay } from './ui'
 
-const collectionCards = [
-  { name: 'Naypyitaw', stamp: 'naypyitaw', collected: true },
-  { name: 'Yangon', stamp: 'yangon', collected: true },
-  { name: 'Mawlamyine', collected: false },
-  { name: 'Inle Lake', collected: false },
-  { name: 'Bagan', collected: false },
-  { name: 'Mandalay', collected: false },
-]
-
 export default function UserProfile() {
-  const { player, setPlayer, xp, setModal, setActiveScreen, setAvatarReturnScreen, profileNeedsSave, setProfileNeedsSave } = useGame()
+  const { player, setPlayer, xp, destinations, collectedCards, setModal, setActiveScreen, setAvatarReturnScreen, profileNeedsSave, setProfileNeedsSave } = useGame()
   const [savedName, setSavedName] = useState(player.name)
   const level = Math.floor(xp / 100) + 1
   const levelProgress = xp % 100
@@ -80,13 +71,22 @@ export default function UserProfile() {
           <div className="profile-xp-bar"><span style={{ width: `${Math.max(8, levelProgress)}%` }} /></div>
           <small>{Math.max(0, level * 100 - xp)} XP to your next level. Keep exploring!</small>
           <h3 className="profile-collection-title">SLANG COLLECTION 📚</h3>
-          <b className="profile-collection-count">{collectionCards.filter((card) => card.collected).length} / 6 stamps collected</b>
+          <b className="profile-collection-count">{collectedCards.length} / {destinations.length} stamps collected</b>
           <div className="profile-collection-grid">
-            {collectionCards.map((card) => <div key={card.name} className={`profile-collection-card ${card.collected ? 'is-collected' : 'is-locked'}`}>
-              {card.collected ? <span className={`profile-stamp profile-stamp-${card.stamp}`} aria-label={`${card.name} stamp`} /> : <span className="profile-locked-stamp">?</span>}
-              <b>{card.name}</b>
-              <small>{card.collected ? <><Check size={10} /> COLLECTED</> : <><Lock size={10} /> LOCKED</>}</small>
-            </div>)}
+            {destinations.map((destination) => {
+              const collected = collectedCards.includes(destination.id)
+              return (
+                <div key={destination.id} className={`profile-collection-card ${collected ? 'is-collected' : 'is-locked'}`}>
+                  {collected
+                    ? destination.id === 'destination7'
+                      ? <span className="profile-stamp-destination7" aria-label={`${destination.name} stamp`}>{destination.icon}</span>
+                      : <span className={`profile-stamp profile-stamp-${destination.id}`} aria-label={`${destination.name} stamp`} />
+                    : <span className="profile-locked-stamp">?</span>}
+                  <b>{destination.name}</b>
+                  <small>{collected ? <><Check size={10} /> COLLECTED</> : <><Lock size={10} /> LOCKED</>}</small>
+                </div>
+              )
+            })}
           </div>
         </div>
 

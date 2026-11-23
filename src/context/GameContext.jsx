@@ -43,11 +43,12 @@ const initialDestinations = [
   { id: 'yangon', name: 'Yangon', region: 'Lower Myanmar', icon: '🛕', color: '#ffbd69', unlocked: true, slang: 'ချောတယ်' },
   { id: 'mawlamyine', name: 'Mawlamyine', region: 'Mon State', icon: '🌴', color: '#86f0ce', unlocked: true, slang: 'မိုက်တယ်', meaning: 'Cool' },
   { id: 'naypyitaw', name: 'Naypyitaw', region: 'Central Myanmar', icon: '🏛️', color: '#b7a5ff', unlocked: true, slang: 'အာလူးဖုတ်', meaning: 'To talk nonsense or exaggerate' },
-  { id: 'bagan', name: 'Bagan', region: 'Archaeological Zone', icon: '🌅', color: '#ff8b89', unlocked: false, slang: 'လန်းတယ်' },
-  { id: 'inle', name: 'Inle Lake', region: 'Shan State', icon: '🛶', color: '#8bd5ff', unlocked: false, slang: 'ဟုတ်တယ်' },
-  { id: 'mandalay', name: 'Mandalay', region: 'Mandalay Region', icon: '🏯', color: '#ffd36e', unlocked: false, slang: 'ရပြီ' }
+  { id: 'bagan', name: 'Bagan', region: 'Archaeological Zone', icon: '🌅', color: '#ff8b89', unlocked: true, slang: 'လန်းတယ်' },
+  { id: 'inle', name: 'Inle Lake', region: 'Shan State', icon: '🛶', color: '#8bd5ff', unlocked: true, slang: 'ဟုတ်တယ်' },
+  { id: 'mandalay', name: 'Mandalay', region: 'Mandalay Region', icon: '🏯', color: '#ffd36e', unlocked: true, slang: 'ရပြီ' },
+  { id: 'destination7', name: 'Myitkyina', region: 'Kachin State', icon: '🏞️', color: '#e69d45', unlocked: true, slang: 'ခေါင်းဆောင်', meaning: 'Leader' }
 ]
-const progressionOrder = ['naypyitaw', 'mawlamyine', 'yangon', 'inle', 'bagan', 'mandalay']
+const progressionOrder = ['naypyitaw', 'mawlamyine', 'yangon', 'inle', 'bagan', 'mandalay', 'destination7']
 
 const GameContext = createContext(null)
 
@@ -73,7 +74,8 @@ export function GameProvider({ children }) {
       bagan: 'bagan-intro',
       naypyitaw: 'naypyitaw-intro',
       yangon: 'yangon-intro',
-      mandalay: 'mandalay-intro'
+      mandalay: 'mandalay-intro',
+      destination7: 'destination7-intro'
     }
     setActiveScreen(destinationIntro[destination.id] || 'assembly')
   }
@@ -92,12 +94,21 @@ export function GameProvider({ children }) {
       unlockNext()
     }
   }
+  const addXp = (points) => {
+    setScore((value) => value + points)
+    setXp((value) => value + points)
+  }
+  const completeDestination = () => {
+    if (collectedCards.includes(selectedDestination.id)) return
+    setCollectedCards((cards) => [...cards, selectedDestination.id])
+    unlockNext()
+  }
   const value = useMemo(() => ({
     activeScreen, setActiveScreen, player, setPlayer, score, setScore, xp, lives, setLives,
     coins, destinations, selectedDestination, setSelectedDestination, collectedCards, modal, setModal,
     avatarReturnScreen, setAvatarReturnScreen,
     profileNeedsSave, setProfileNeedsSave,
-    settings, setSettings, openDestination, reward
+    settings, setSettings, openDestination, reward, addXp, completeDestination
   }), [activeScreen, player, score, xp, lives, coins, destinations, selectedDestination, collectedCards, modal, avatarReturnScreen, profileNeedsSave, settings])
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>
 }

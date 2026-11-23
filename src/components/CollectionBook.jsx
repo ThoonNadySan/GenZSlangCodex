@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Lock } from 'lucide-react'
 import { useGame } from '../context/GameContext'
 
-const destinationOrder = ['naypyitaw', 'mawlamyine', 'yangon', 'inle', 'bagan', 'mandalay']
+const destinationOrder = ['naypyitaw', 'mawlamyine', 'yangon', 'inle', 'bagan', 'mandalay', 'destination7']
 const destinationNumbers = Object.fromEntries(destinationOrder.map((id, index) => [id, String(index + 1).padStart(2, '0')]))
 const cityImages = {
   naypyitaw: '/generated/naypyitaw-sticker.png',
@@ -131,7 +131,7 @@ export default function CollectionBook() {
               <p className={`slang-book-status ${collected ? '' : 'is-available'}`}>
                 {collected ? '✓ Collected' : 'Destination unlocked'}
               </p>
-              <p className="slang-book-progress">{collectedCards.length} / 6 Collected</p>
+              <p className="slang-book-progress">{collectedCards.length} / {orderedDestinations.length} Collected</p>
             </section>
 
             <section className="slang-book-detail-page" aria-label={`${destination.name} slang details`}>
@@ -173,7 +173,7 @@ export default function CollectionBook() {
                   aria-label={`${item.name}${item.unlocked ? itemCollected ? ', collected' : ', unlocked' : ', locked'}`}
                 >
                   <span className={`slang-book-destination-stamp ${isLocked ? 'has-full-stamp' : item.id !== 'naypyitaw' ? 'uses-custom-art' : ''}`}>
-                    <img src={itemStamp} alt="" />
+                    {itemStamp ? <img src={itemStamp} alt="" /> : <span aria-hidden="true">{item.icon}</span>}
                   </span>
                   {isLocked && <span className="slang-book-lock"><Lock size={12} /></span>}
                   <span className="slang-book-destination-name">{item.name}</span>
