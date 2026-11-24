@@ -41,7 +41,7 @@ export default function StampCollection() {
   return (
     <main className="stamp-collection-screen">
       <section className="stamp-collection-canvas" aria-label="Stamp collection">
-        <img className="stamp-collection-background" src="/continuous-myanmar-storybook-world.png" alt="" />
+        <img className="stamp-collection-background" src="/Continuous Myanmar fantasy world · Seven cities and separate AI Castle 1.png" alt="" />
         <div className="stamp-collection-shade" />
         <div className="world-map-brand"><img src="/generated/codex-logo.png" alt="GenZ Slang Codex" /></div>
 
@@ -77,7 +77,7 @@ export default function StampCollection() {
                 >
                   <span className="stamp-collection-spark stamp-collection-spark-one" aria-hidden="true" />
                   <span className="stamp-collection-spark stamp-collection-spark-two" aria-hidden="true" />
-                  <div className="stamp-collection-art">
+                  <div className={`stamp-collection-art ${destination.id === 'destination7' ? 'is-myitkyina' : ''}`}>
                     <button
                       type="button"
                       className="stamp-collection-stamp-button"

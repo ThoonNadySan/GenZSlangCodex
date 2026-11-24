@@ -144,7 +144,7 @@ function getNodePoint(index, count) {
 }
 
 export default function LetterTrail() {
-  const { xp, player, setActiveScreen, setModal, reward } = useGame()
+  const { xp, player, setActiveScreen, setModal, reward, completeDestination } = useGame()
   const [questionIndex, setQuestionIndex] = useState(0)
   const [trail, setTrail] = useState([])
   const [checked, setChecked] = useState(false)
@@ -354,6 +354,7 @@ export default function LetterTrail() {
 
   const continueChallenge = () => {
     if (questionIndex === questions.length - 1) {
+      completeDestination()
       setComplete(true)
       return
     }

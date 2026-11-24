@@ -21,6 +21,14 @@ const stampArtwork = {
   mandalay: '/generated/mandalay-lock-stamp-transparent.png',
   destination7: '/generated/myitkyina-stamp-transparent.png'
 }
+const routeSegments = [
+  { completedBy: 'naypyitaw', d: 'M 460 650 C 560 720 660 820 660 850' },
+  { completedBy: 'mawlamyine', d: 'M 660 850 C 560 900 390 890 290 840' },
+  { completedBy: 'yangon', d: 'M 290 840 C 280 700 430 620 680 500' },
+  { completedBy: 'inle', d: 'M 680 500 C 530 490 320 610 130 540' },
+  { completedBy: 'bagan', d: 'M 130 540 C 150 430 220 340 300 300' },
+  { completedBy: 'mandalay', d: 'M 300 300 C 370 250 450 210 520 210' }
+]
 
 export default function WorldMap() {
   const { destinations, openDestination, setActiveScreen, setModal, collectedCards } = useGame()
@@ -76,14 +84,20 @@ export default function WorldMap() {
           </button>
           {collectionOpen && <div className="collection-popup-content">
             <p>All 7 destinations and slang are unlocked!</p><b>{collectedCards.length} / {destinations.length} stamps collected</b><div className="collection-progress">{destinations.map((destination) => <span className={collectedCards.includes(destination.id) ? 'filled' : ''} key={destination.id} />)}</div>
-            <div className="stamp-grid">{collectionOrder.map((id) => { const destination = byId[id]; if (!destination) return null; const collected = collectedCards.includes(id); return <div className={`stamp-card ${collected ? 'collected' : ''} ${selectedStamp === id ? 'selected' : ''}`} key={id} role="button" tabIndex={0} onClick={(event) => { event.stopPropagation(); setSelectedStamp(id) }} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') setSelectedStamp(id) }}>            {collected ? <><img className="stamp-art stamp-art-full" src={stampArtwork[id]} alt="" /><b lang="my">{destination.slang}</b><small>{destination.meaning ?? destination.name}</small></> : <><span className="stamp-art stamp-art-locked">?</span><b>Undiscovered</b><small>{destination.name}</small></>}</div> })}</div>
+            <div className="stamp-grid">{collectionOrder.map((id) => { const destination = byId[id]; if (!destination) return null; const collected = collectedCards.includes(id); return <div className={`stamp-card ${collected ? 'collected' : ''} ${selectedStamp === id ? 'selected' : ''}`} key={id} role="button" tabIndex={0} onClick={(event) => { event.stopPropagation(); setSelectedStamp(id) }} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') setSelectedStamp(id) }}>            {collected ? <><img className={`stamp-art stamp-art-full ${id === 'destination7' ? 'stamp-art-myitkyina' : ''}`} src={stampArtwork[id]} alt="" /><b lang="my">{destination.slang}</b><small>{destination.meaning ?? destination.name}</small></> : <><span className="stamp-art stamp-art-locked">?</span><b>Undiscovered</b><small>{destination.name}</small></>}</div> })}</div>
             {selectedStamp && byId[selectedStamp] && <div className="stamp-detail"><strong>{byId[selectedStamp].name}</strong><span>{collectedCards.includes(selectedStamp) ? `${byId[selectedStamp].slang} · ${byId[selectedStamp].meaning ?? `A local slang phrase from ${byId[selectedStamp].region}`}` : 'Explore this destination to discover its slang!'}</span></div>}
             <button className="collection-book-link" onClick={() => setActiveScreen('stamp-collection')}>View Stamp Collection <span>→</span></button>
           </div>}
         </section>
 
         <svg className="map-route" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M 460 650 C 560 720 660 820 660 850 C 560 900 390 890 290 840 C 280 700 430 620 680 500 C 530 490 320 610 130 540 C 150 430 220 340 300 300 C 370 250 450 210 520 210" />
+          {routeSegments.map(({ completedBy, d }) => (
+            <path
+              key={completedBy}
+              className={`route-segment ${collectedCards.includes(completedBy) ? 'is-completed' : ''}`}
+              d={d}
+            />
+          ))}
         </svg>
         <div className="map-stops">
           {mapStops.map(({ id, number, className }) => {

@@ -17,6 +17,9 @@ const destinationStampImages = {
   naypyitaw: '/generated/naypyitaw-stamp-transparent.png',
   mawlamyine: '/generated/mawlamyine-stamp-transparent.png',
   yangon: '/generated/yangon-stamp-transparent.png',
+  inle: '/generated/inle-lock-stamp-transparent.png',
+  bagan: '/generated/bagan-lock-stamp-transparent.png',
+  mandalay: '/generated/mandalay-lock-stamp-transparent.png',
   destination7: '/generated/myitkyina-stamp-transparent.png'
 }
 const lockedDestinationStampImages = {
@@ -116,7 +119,7 @@ export default function CollectionBook() {
               <p className="slang-book-eyebrow">Destination stamp</p>
               <div className={`slang-book-stamp ${destinationStampImage ? 'has-complete-art' : hasIllustratedTemplate ? 'has-template' : 'is-custom-city'}`} aria-label={`${destination.name} stamp`}>
                 {destinationStampImage
-                  ? <img className="slang-book-complete-stamp" src={destinationStampImage} alt={`${destination.name} destination stamp`} />
+                  ? <img className={`slang-book-complete-stamp ${destination.id === 'destination7' ? 'is-myitkyina' : ''}`} src={destinationStampImage} alt={`${destination.name} destination stamp`} />
                   : <>
                     {hasIllustratedTemplate && <img className="slang-book-stamp-template" src="/generated/stamp-template-transparent.png" alt="" />}
                     <span className="slang-book-landmark-frame">
@@ -185,7 +188,7 @@ export default function CollectionBook() {
           </div>
           </section>
 
-          <button className="slang-book-back slang-book-back-collection" onClick={() => setActiveScreen('map')}>
+          <button className="slang-book-back slang-book-back-collection" onClick={() => setActiveScreen('stamp-collection')}>
             <span aria-hidden="true">←</span> Back to collection
           </button>
           <button className="slang-book-back slang-book-back-map" onClick={() => setActiveScreen('map')}>

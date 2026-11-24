@@ -40,7 +40,7 @@ const screenConfettiPieces = Array.from({ length: 72 }, (_, index) => ({
 }))
 
 export default function NaypyitawClear({ destinationId = 'naypyitaw' }) {
-  const { setActiveScreen, setModal } = useGame()
+  const { setActiveScreen, setModal, completeDestination } = useGame()
   const isMawlamyine = destinationId === 'mawlamyine'
   const destinationName = isMawlamyine ? 'Mawlamyine' : 'Naypyitaw'
   const introScreen = isMawlamyine ? 'mawlamyine-intro' : 'naypyitaw-intro'
@@ -143,7 +143,7 @@ export default function NaypyitawClear({ destinationId = 'naypyitaw' }) {
             <button type="button" className="destination-clear-retry" onClick={() => setActiveScreen(introScreen)}>
               <RotateCcw size={16} /> RETRY
             </button>
-            <button type="button" className="destination-clear-continue" onClick={() => setActiveScreen('collection')}>
+            <button type="button" className="destination-clear-continue" onClick={() => { completeDestination(); setActiveScreen('collection') }}>
               COLLECT &amp; CONTINUE <ArrowRight size={16} />
             </button>
           </footer>

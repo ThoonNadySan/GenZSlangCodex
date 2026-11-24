@@ -40,16 +40,15 @@ function readSettings() {
 }
 
 const initialDestinations = [
-  { id: 'yangon', name: 'Yangon', region: 'Lower Myanmar', icon: '🛕', color: '#ffbd69', unlocked: true, slang: 'ချောတယ်', meaning: 'Attractive / looks good' },
-  { id: 'mawlamyine', name: 'Mawlamyine', region: 'Mon State', icon: '🌴', color: '#86f0ce', unlocked: true, slang: 'မိုက်တယ်', meaning: 'Cool' },
+  { id: 'yangon', name: 'Yangon', region: 'Lower Myanmar', icon: '🛕', color: '#ffbd69', unlocked: false, slang: 'ချောတယ်', meaning: 'Attractive / looks good' },
+  { id: 'mawlamyine', name: 'Mawlamyine', region: 'Mon State', icon: '🌴', color: '#86f0ce', unlocked: false, slang: 'မိုက်တယ်', meaning: 'Cool' },
   { id: 'naypyitaw', name: 'Naypyitaw', region: 'Central Myanmar', icon: '🏛️', color: '#b7a5ff', unlocked: true, slang: 'အာလူးဖုတ်', meaning: 'To talk nonsense or exaggerate' },
-  { id: 'bagan', name: 'Bagan', region: 'Archaeological Zone', icon: '🌅', color: '#ff8b89', unlocked: true, slang: 'လန်းတယ်', meaning: 'Fresh / stylish' },
-  { id: 'inle', name: 'Inle Lake', region: 'Shan State', icon: '🛶', color: '#8bd5ff', unlocked: true, slang: 'ဟုတ်တယ်', meaning: "Yes / that's right" },
-  { id: 'mandalay', name: 'Mandalay', region: 'Mandalay Region', icon: '🏯', color: '#ffd36e', unlocked: true, slang: 'ရပြီ', meaning: 'Got it / all set' },
-  { id: 'destination7', name: 'Myitkyina', region: 'Kachin State', icon: '🏞️', color: '#e69d45', unlocked: true, slang: 'ခေါင်းဆောင်', meaning: 'Leader' }
+  { id: 'bagan', name: 'Bagan', region: 'Archaeological Zone', icon: '🌅', color: '#ff8b89', unlocked: false, slang: 'လန်းတယ်', meaning: 'Fresh / stylish' },
+  { id: 'inle', name: 'Inle Lake', region: 'Shan State', icon: '🛶', color: '#8bd5ff', unlocked: false, slang: 'ဟုတ်တယ်', meaning: "Yes / that's right" },
+  { id: 'mandalay', name: 'Mandalay', region: 'Mandalay Region', icon: '🏯', color: '#ffd36e', unlocked: false, slang: 'ရပြီ', meaning: 'Got it / all set' },
+  { id: 'destination7', name: 'Myitkyina', region: 'Kachin State', icon: '🏞️', color: '#e69d45', unlocked: false, slang: 'ခေါင်းဆောင်', meaning: 'Leader' }
 ]
 const progressionOrder = ['naypyitaw', 'mawlamyine', 'yangon', 'inle', 'bagan', 'mandalay', 'destination7']
-const allDestinationIds = initialDestinations.map((destination) => destination.id)
 
 const GameContext = createContext(null)
 
@@ -61,7 +60,7 @@ export function GameProvider({ children }) {
   const [lives, setLives] = useState(3)
   const [coins, setCoins] = useState(240)
   const [destinations, setDestinations] = useState(initialDestinations)
-  const [collectedCards, setCollectedCards] = useState(allDestinationIds)
+  const [collectedCards, setCollectedCards] = useState([])
   const [selectedDestination, setSelectedDestination] = useState(initialDestinations[0])
   const [modal, setModal] = useState(null)
   const [avatarReturnScreen, setAvatarReturnScreen] = useState(null)
@@ -82,29 +81,24 @@ export function GameProvider({ children }) {
     }
     setActiveScreen(destinationIntro[destination.id] || 'assembly')
   }
-  const unlockNext = () => {
-    setDestinations((items) => {
-      const nextId = progressionOrder.find((id) => !items.find((item) => item.id === id)?.unlocked)
-      return nextId ? items.map((item) => item.id === nextId ? { ...item, unlocked: true } : item) : items
-    })
+  const unlockNext = (completedId) => {
+    const completedIndex = progressionOrder.indexOf(completedId)
+    const nextId = progressionOrder[completedIndex + 1]
+    if (!nextId) return
+    setDestinations((items) => items.map((item) => item.id === nextId ? { ...item, unlocked: true } : item))
   }
   const reward = (points = 80) => {
     setScore((value) => value + points)
     setXp((value) => value + points)
     setCoins((value) => value + 25)
-    if (!collectedCards.includes(selectedDestination.id)) {
-      setCollectedCards((cards) => [...cards, selectedDestination.id])
-      unlockNext()
-    }
   }
   const addXp = (points) => {
     setScore((value) => value + points)
     setXp((value) => value + points)
   }
   const completeDestination = () => {
-    if (collectedCards.includes(selectedDestination.id)) return
-    setCollectedCards((cards) => [...cards, selectedDestination.id])
-    unlockNext()
+    setCollectedCards((cards) => cards.includes(selectedDestination.id) ? cards : [...cards, selectedDestination.id])
+    unlockNext(selectedDestination.id)
   }
   const value = useMemo(() => ({
     activeScreen, setActiveScreen, player, setPlayer, score, setScore, xp, lives, setLives,

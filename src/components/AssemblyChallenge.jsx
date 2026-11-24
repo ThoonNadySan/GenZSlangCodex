@@ -174,7 +174,7 @@ export default function AssemblyChallenge() {
 }
 
 function NaypyitawSpellingBuilder() {
-  const { setModal, setActiveScreen: navigate, reward } = useGame()
+  const { setModal, setActiveScreen: navigate, reward, completeDestination } = useGame()
   const [questionIndex, setQuestionIndex] = useState(0)
   const [tileOrder, setTileOrder] = useState(initialSpellingOrder)
   const [selectedTile, setSelectedTile] = useState(null)
@@ -242,6 +242,7 @@ function NaypyitawSpellingBuilder() {
     if (!showSuccess) return
     if (questionIndex >= spellingQuestions.length - 1) {
       reward(80)
+      completeDestination()
       navigate('naypyitaw-clear')
       return
     }
@@ -771,7 +772,7 @@ function MawlamyineFallingCharacters() {
 }
 
 function LegacyAssemblyChallenge() {
-  const { selectedDestination, setActiveScreen, reward, settings } = useGame()
+  const { selectedDestination, setActiveScreen, reward, completeDestination, settings } = useGame()
   const [selected, setSelected] = useState({ consonant: '', vowel: '', tone: '' })
   const [feedback, setFeedback] = useState(null)
   const [hint, setHint] = useState(false)
@@ -780,7 +781,10 @@ function LegacyAssemblyChallenge() {
   const check = () => {
     const correct = Object.values(selected).every(Boolean)
     if (settings.answerFeedback) setFeedback(correct ? 'success' : 'retry')
-    if (correct) reward(80)
+    if (correct) {
+      reward(80)
+      completeDestination()
+    }
   }
   const leaveQuiz = () => {
     if (settings.confirmLeave) setConfirmLeave(true)

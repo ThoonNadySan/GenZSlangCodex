@@ -103,7 +103,7 @@ const completionConfettiPieces = Array.from({ length: 56 }, (_, index) => ({
 }))
 
 export default function Destination5Bagan() {
-  const { xp, player, setActiveScreen, setModal, reward } = useGame()
+  const { xp, player, setActiveScreen, setModal, reward, completeDestination } = useGame()
   const [questionIndex, setQuestionIndex] = useState(0)
   const [placed, setPlaced] = useState([])
   const [checked, setChecked] = useState(false)
@@ -206,6 +206,7 @@ export default function Destination5Bagan() {
   const continueChallenge = () => {
     if (!checked) return
     if (questionIndex === questions.length - 1) {
+      completeDestination()
       setComplete(true)
       return
     }

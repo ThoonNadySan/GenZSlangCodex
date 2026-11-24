@@ -45,7 +45,7 @@ function orbitPoint(index, count, radius) {
 }
 
 export default function InleQuiz() {
-  const { player, xp, setActiveScreen, setModal, collectedCards, reward } = useGame()
+  const { player, xp, setActiveScreen, setModal, collectedCards, reward, completeDestination } = useGame()
   const [questionIndex, setQuestionIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [selectedTrailNodes, setSelectedTrailNodes] = useState([])
@@ -115,7 +115,10 @@ export default function InleQuiz() {
   const continueQuiz = () => {
     if (questionIndex === questions.length - 1) {
       const passed = score >= 8
-      if (passed && !collectedCards.includes('inle')) reward(80)
+      if (passed) {
+        if (!collectedCards.includes('inle')) reward(80)
+        completeDestination()
+      }
       setResult({ score, passed })
       setPhase('results')
       return

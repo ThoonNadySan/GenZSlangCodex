@@ -219,7 +219,7 @@ function OrbitRingControl({ label, onRotate, disabled }) {
 }
 
 export default function YangonQuiz() {
-  const { player, xp, setActiveScreen, setModal, collectedCards, reward } = useGame()
+  const { player, xp, setActiveScreen, setModal, collectedCards, reward, completeDestination } = useGame()
   const [questionIndex, setQuestionIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [vowelRotationDeg, setVowelRotationDeg] = useState(() => vowelRotationForIndex(wrongPreVowelIndex(questions[0])))
@@ -364,7 +364,10 @@ export default function YangonQuiz() {
   const continueQuiz = () => {
     if (questionIndex === questions.length - 1) {
       const passed = score >= 8
-      if (passed && !collectedCards.includes('yangon')) reward(80)
+      if (passed) {
+        if (!collectedCards.includes('yangon')) reward(80)
+        completeDestination()
+      }
       setResult({ score, passed })
       setPhase('results')
       return
