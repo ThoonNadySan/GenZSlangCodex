@@ -40,15 +40,16 @@ function readSettings() {
 }
 
 const initialDestinations = [
-  { id: 'yangon', name: 'Yangon', region: 'Lower Myanmar', icon: '🛕', color: '#ffbd69', unlocked: false, slang: 'ချောတယ်', meaning: 'Attractive / looks good' },
-  { id: 'mawlamyine', name: 'Mawlamyine', region: 'Mon State', icon: '🌴', color: '#86f0ce', unlocked: false, slang: 'မိုက်တယ်', meaning: 'Cool' },
+  { id: 'yangon', name: 'Yangon', region: 'Lower Myanmar', icon: '🛕', color: '#ffbd69', unlocked: true, slang: 'ချောတယ်', meaning: 'Attractive / looks good' },
+  { id: 'mawlamyine', name: 'Mawlamyine', region: 'Mon State', icon: '🌴', color: '#86f0ce', unlocked: true, slang: 'မိုက်တယ်', meaning: 'Cool' },
   { id: 'naypyitaw', name: 'Naypyitaw', region: 'Central Myanmar', icon: '🏛️', color: '#b7a5ff', unlocked: true, slang: 'အာလူးဖုတ်', meaning: 'To talk nonsense or exaggerate' },
-  { id: 'bagan', name: 'Bagan', region: 'Archaeological Zone', icon: '🌅', color: '#ff8b89', unlocked: false, slang: 'လန်းတယ်', meaning: 'Fresh / stylish' },
-  { id: 'inle', name: 'Inle Lake', region: 'Shan State', icon: '🛶', color: '#8bd5ff', unlocked: false, slang: 'ဟုတ်တယ်', meaning: "Yes / that's right" },
-  { id: 'mandalay', name: 'Mandalay', region: 'Mandalay Region', icon: '🏯', color: '#ffd36e', unlocked: false, slang: 'ရပြီ', meaning: 'Got it / all set' },
-  { id: 'destination7', name: 'Myitkyina', region: 'Kachin State', icon: '🏞️', color: '#e69d45', unlocked: false, slang: 'ခေါင်းဆောင်', meaning: 'Leader' }
+  { id: 'bagan', name: 'Bagan', region: 'Archaeological Zone', icon: '🌅', color: '#ff8b89', unlocked: true, slang: 'လန်းတယ်', meaning: 'Fresh / stylish' },
+  { id: 'inle', name: 'Inle Lake', region: 'Shan State', icon: '🛶', color: '#8bd5ff', unlocked: true, slang: 'ဟုတ်တယ်', meaning: "Yes / that's right" },
+  { id: 'mandalay', name: 'Mandalay', region: 'Mandalay Region', icon: '🏯', color: '#ffd36e', unlocked: true, slang: 'ရပြီ', meaning: 'Got it / all set' },
+  { id: 'destination7', name: 'Myitkyina', region: 'Kachin State', icon: '🏞️', color: '#e69d45', unlocked: true, slang: 'ခေါင်းဆောင်', meaning: 'Leader' }
 ]
 const progressionOrder = ['naypyitaw', 'mawlamyine', 'yangon', 'inle', 'bagan', 'mandalay', 'destination7']
+const allDestinationIds = initialDestinations.map((destination) => destination.id)
 
 const GameContext = createContext(null)
 
@@ -60,7 +61,7 @@ export function GameProvider({ children }) {
   const [lives, setLives] = useState(3)
   const [coins, setCoins] = useState(240)
   const [destinations, setDestinations] = useState(initialDestinations)
-  const [collectedCards, setCollectedCards] = useState([])
+  const [collectedCards, setCollectedCards] = useState(allDestinationIds)
   const [selectedDestination, setSelectedDestination] = useState(initialDestinations[0])
   const [modal, setModal] = useState(null)
   const [avatarReturnScreen, setAvatarReturnScreen] = useState(null)
